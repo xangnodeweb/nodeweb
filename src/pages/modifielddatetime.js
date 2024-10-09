@@ -135,11 +135,10 @@ export default function Modifielddatetime() {
             if (statuscode.status == false && statuscode.code == 2) {
 
                 callopenmodal(data.data.result.Code[0], data.data.result.Description[0], data.data.result.IsSuccess[0], data.data.result.OrderRef[0], data.data.result.TransactionID[0], "", 2, true);
-
-            } else {
-                callopenmodal("", "cannot modify phone ConnectTimeoutError", "", "", "", "", 1, true);
-
+                return
             }
+            callopenmodal("", "cannot modify phone", "", "", "", "", 1, true);
+
         }
     }
 

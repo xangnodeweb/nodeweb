@@ -59,10 +59,10 @@ export default function inquery() {
                     const statucode = error.response.data;
                     if (statucode.status == false && statucode.code == 2) {
                         callopenmodal("", "cannot inquery phone ConnectTimeoutError", 1);
-                    }else{
-                        callopenmodal("", "cannot inquery phone ConnectTimeoutError", 1);
+                        return
                     }
                 }
+                callopenmodal("", "cannot inquery phone ", 1);
             }
 
             console.log(error)
