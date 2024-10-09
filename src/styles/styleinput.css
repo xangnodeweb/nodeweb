@@ -1,0 +1,175 @@
+p.css-wq8qsl-MuiFormHelperText-root {
+    margin-left: 0;
+    color: #FF0000;
+}
+
+svg.css-20bmp1-MuiSvgIcon-root {
+    fill: #0a5dc2;
+}
+
+svg.css-1lzspe0-MuiSvgIcon-root {
+    fill: #000000;
+}
+
+div.css-dplwbx-MuiPickersCalendarHeader-label {
+    color: #000000;
+}
+
+svg.css-1eeiwjo-MuiSvgIcon-root-MuiPickersCalendarHeader-switchViewIcon {
+    fill: #000000;
+}
+
+input.css-1jk99ih-MuiInputBase-input-MuiOutlinedInput-input {
+    height: 0.80rem;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+
+}
+
+input.css-1jk99ih-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled {
+    -webkit-text-fill-color: #000000;
+
+}
+
+span.rs-form-help-text {
+    color: #FF0000;
+
+}
+
+button.rs-btn {
+    width: 74px;
+}
+
+button.rs-btn-subtle {
+    background-color: #0000000f;
+}
+
+input::-webkit-file-upload-button {
+    display: none;
+}
+
+div.css-10o2lyd-MuiStack-root>.MuiTextField-root,
+.css-10o2lyd-MuiStack-root>.MuiPickersTextField-root {
+    width: 100%;
+    min-width: 100%;
+}
+
+button.css-1wy8uaa-MuiButtonBase-root-MuiPickersDay-root:hover {
+    background-color: #3b3b3b65;
+    color: #000000;
+    font-size: 12px;
+}
+
+
+div.css-10o2lyd-MuiStack-root {
+    padding-top: 0;
+    overflow: unset;
+}
+
+li.css-1h4bzp1-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
+    background-color: #ffffff00;
+}
+
+li.css-1h4bzp1-MuiButtonBase-root-MuiMenuItem-root {
+    line-height: 2;
+}
+
+.modal-success  {
+    width: 400px;
+    margin: auto;
+}
+
+
+.btnfile {
+    width: 115px;
+    height: 35px;
+    border-radius: 5px;
+    background-color: #517fa4;
+    cursor: pointer;
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding-left: 4px;
+    padding-right: 4px;
+    transition: all 0.3s ease;
+}
+
+.btnfile:hover {
+    width: 115px;
+    /*   width 115 pxs */
+    height: 35px;
+    /*   width 40 pxs */
+    border-radius: 5px;
+    background-color: #517fa4;
+    cursor: pointer;
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding-left: 4px;
+    padding-right: 4px;
+    transition: all 0.3s ease;
+}
+
+.btnfile-none {
+    width: 115px;
+    height: 35px;
+    border-radius: 5px;
+    background-color: #dddddd;
+    cursor: pointer;
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding-left: 4px;
+    padding-right: 4px;
+    transition: all 0.3s ease;
+}
+
+.transition-box-btn {
+    transition: all 0.35s ease;
+}
+
+
+
+.loader {
+
+    margin: auto;
+    border: 13px solid #EAF0F6;
+    border-radius: 50%;
+    border-top: 13px solid #517fa4;
+    width: 100px;
+    height: 100px;
+    animation: spinner 1.2s linear infinite;
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+*{
+ font-family: "Saysettha OT";
+ font-family: "Nuanta";
+}
+@font-face {
+    font-family: "Saysettha OT" ;
+    src: url(../../image/SaysetthaOT.ttf);
+}
+@font-face {
+    font-family: "Nuanta" ;
+    src: url(../../image/Nuantas-Regular.ttf);
+}
