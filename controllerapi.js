@@ -4,7 +4,7 @@ const express = require("express")();
 
 const { bodyinquery, bodymodiefield, bodyaddpackage } = require("./modelbody");
 const { parseString } = require("xml2js");
-
+const fetch = require("node-fetch");
 
 
 app.post("/inqueryphone", async (req, res) => {
