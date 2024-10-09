@@ -6,7 +6,7 @@
     "build": "NODE_ENV=production webpack",
     "build-dev": "webpack --watch",
     "server": "nodemon app.js",
-    "start" : "nodemon apppath.js",
+    "start": "nodemon apppath.js",
     "dev": "concurrently \"npm run server\" \"npm run build-dev\" \"npm run start\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,6 +27,7 @@
     "easy-soap-request": "^5.6.1",
     "exceljs": "^4.4.0",
     "express": "^4.20.0",
+    "node-openvpn": "^0.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-input-mask": "^2.0.4",
