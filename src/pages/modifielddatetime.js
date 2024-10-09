@@ -82,7 +82,10 @@ export default function Modifielddatetime() {
             console.log(statuscode)
             if (statuscode.status == false && statuscode.code == 2) {
                 setloading(false)
-                callopenmodal("", "cannot inquery phone ConnectTimeoutError", "", "", "", "", 1, true);
+                callopenmodal("", "cannot modify phone ConnectTimeoutError", "", "", "", "", 1, true);
+            } else {
+                callopenmodal("", "cannot modify phone ConnectTimeoutError", "", "", "", "", 1, true);
+
             }
             console.log(error)
 
@@ -100,7 +103,7 @@ export default function Modifielddatetime() {
 
             if (productno == null) {
                 validmodify(true, "please select product name.", 1)
-                   return;
+                return;
             }
 
             if (dateexpire == null) {
@@ -117,14 +120,14 @@ export default function Modifielddatetime() {
                 // console.log(data.data.result) 
 
                 setmodifymodel(data.data.result)
-                validmodify(false , "" , 0);
+                validmodify(false, "", 0);
 
                 onqueryphone();
                 callopenmodal(data.data.result.Code[0], data.data.result.Description[0], data.data.result.IsSuccess[0], data.data.result.OrderRef[0], data.data.result.TransactionID[0], "Response success", 2, true);
 
             }
-  
-            validmodify(false , "" , 0);
+
+            validmodify(false, "", 0);
         } catch (error) {
             console.log(error)
             const statuscode = error.response.data;
@@ -132,6 +135,9 @@ export default function Modifielddatetime() {
             if (statuscode.status == false && statuscode.code == 2) {
 
                 callopenmodal(data.data.result.Code[0], data.data.result.Description[0], data.data.result.IsSuccess[0], data.data.result.OrderRef[0], data.data.result.TransactionID[0], "", 2, true);
+
+            } else {
+                callopenmodal("", "cannot modify phone ConnectTimeoutError", "", "", "", "", 1, true);
 
             }
         }
@@ -227,8 +233,8 @@ export default function Modifielddatetime() {
         setisbtnexpire(isvalid);
         setisproductno(productlb);
         setisproductvalue(isproductvalue) // isproductvalue == 2
-    
-    
+
+
     }
 
     useEffect(() => {
