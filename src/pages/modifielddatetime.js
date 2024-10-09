@@ -65,7 +65,7 @@ export default function Modifielddatetime() {
             }
             setloading(true);
             setisphonevalid(0);
-            const data = await axios.post("http://localhost:3000/api/inqueryphone", datas);
+            const data = await axios.post("http://172.28.27.50:3000/api/inqueryphone", datas);
             console.log(phone)
             console.log(data.data);
             if (data.status == 200) {
@@ -111,7 +111,7 @@ export default function Modifielddatetime() {
             const datas = { phone: phone, productno: productno, expire: dateexpire }
 
             // console.log(openmodals)
-            const data = await axios.post("http://localhost:3000/api/modifielddatetme", datas);
+            const data = await axios.post("http://172.28.27.50:3000/api/modifielddatetme", datas);
             console.log(data.data)
             if (data.status == 200) {
                 // console.log(data.data.result) 

@@ -45,7 +45,7 @@ export default function inquery() {
             clearloaddata(false , 0);
             const datas = { "phone": phones };
             // console.log(phone)
-            const data = await axios.post("http://localhost:3000/api/inqueryphone", datas);
+            const data = await axios.post("http://172.28.27.50:3000/api/inqueryphone", datas);
             // console.log(data)
             if (data.status == 200) {
                 setUsers(data.data.result);
