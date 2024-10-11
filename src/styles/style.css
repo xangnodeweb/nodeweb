@@ -618,7 +618,9 @@ div.lb-record.disable {
 .top-72 {
     top: 72%;
 }
-
+.top-9-px-l{
+    top: -9px;
+}
 .top-10-px {
     top: 10px;
 }
@@ -626,12 +628,17 @@ div.lb-record.disable {
 .top-12-px {
     top: 12px;
 }
-.top-9-px-l{
+.top-260-px{
+    top: 260px;
+}
+.top-9-px-l {
     top: -9px;
 }
+
 .top-10-px-l {
     top: -10px;
 }
+
 .top-11-px-l {
     top: -11px;
 }
@@ -667,9 +674,15 @@ div.lb-record.disable {
 .left-0 {
     left: 0;
 }
-.left-5-px{
+
+.left-3-px {
+    left: 3px;
+}
+
+.left-5-px {
     left: 5px;
 }
+
 .left-9 {
     left: 9%;
 }
@@ -725,9 +738,15 @@ div.lb-record.disable {
 .left-41 {
     left: 41%;
 }
+.left-3-px-l{
+    left: -3px;
+}
 
 .left-9-l {
     left: -9px;
+}
+.left-10-px-l {
+    left: -10px;
 }
 
 .left-11-px-l {
@@ -785,12 +804,16 @@ div.lb-record.disable {
 .right-14-px-l {
     right: -14px;
 }
-
+.right-15-px-l{
+    right: -15px;
+}
 
 .right-30 {
     right: 30%;
 }
-
+.right-35-px{
+    right: 35px;
+}
 .right-73-px {
     right: 73px;
 }
@@ -814,12 +837,15 @@ div.lb-record.disable {
 .bottom-5 {
     bottom: 5%;
 }
-.bottom-10{
+
+.bottom-10 {
     bottom: 10%;
 }
-.bottom-15{
+
+.bottom-15 {
     bottom: 15%;
 }
+
 .bottom-26 {
     bottom: 26%;
 }
@@ -831,6 +857,10 @@ div.lb-record.disable {
 .bottom-10-px {
     bottom: 10px;
 }
+.bottom-12-px-l{
+    bottom: -12px;
+}
+
 
 .bottom-4-l {
     bottom: -4px;
@@ -852,12 +882,14 @@ div.lb-record.disable {
 .bottom-11-l {
     bottom: -11px;
 }
-.bottom-13-px-l{
+
+.bottom-13-px-l {
     bottom: -13px;
 }
-.bottom-14-px-l{
 
- bottom: -14px;
+.bottom-14-px-l {
+
+    bottom: -14px;
 }
 
 .bottom-17-l {
@@ -1019,7 +1051,9 @@ input {
 .transform-16-l {
     transform: rotate(-16deg);
 }
-
+.transform-20-l{
+    transform: rotate(-20deg);
+}
 .transform-30-l {
     transform: rotate(-30deg);
 }
@@ -1032,9 +1066,10 @@ input {
     transform: rotate(-53deg);
 }
 
-.transform-55-l{
+.transform-55-l {
     transform: rotate(-55deg);
 }
+
 .transform-60-l {
     transform: rotate(-60deg);
 }
@@ -1047,12 +1082,18 @@ input {
     transform: rotate(-65deg);
 }
 
+.transform-67-l {
+    transform: rotate(-67deg);
+}
+
 .transform-70-l {
     transform: rotate(-70deg);
 }
-.tansform-20{
+
+.tansform-20 {
     transform: rotate(20deg);
 }
+
 .transform-24 {
     transform: rotate(24deg);
 }
@@ -1060,10 +1101,20 @@ input {
 .transform-30 {
     transform: rotate(30deg);
 }
-.transform-46{
+.transform-40{
+    transform: rotate(40deg);
+}
+.transform-45{
+    transform: rotate(45deg);
+}
+.transform-46 {
     transform: rotate(46deg);
 }
-.transform-67{
+.transform-60{
+    transform: rotate(60deg);
+}
+
+.transform-67 {
     transform: rotate(67deg);
 }
 

@@ -57,15 +57,38 @@ export default function Descriptionpage({ callpages }) {
                 </div>
                 <div className="w-70 text-center position-relative m-auto">
                     <img src="http://127.0.0.1:8080/image/inquery-main.png" className="w-100 h-500-px mt-3" />
-                    <div className="position-absolute   top-93-px left-33 position-relative" style={{}}>
-                        <span className="w-40-px h-40-px border-radius-50 bg-gray f-20-px d-flex align-items-center justify-content-center"> 1 </span>
+                    <div className="position-absolute top-93-px left-33">
+                        <div className="position-relative">
+                            <div className="" style={{}}>
+                                <span className="w-40-px h-40-px border-radius-50 bg-gray f-20-px d-flex align-items-center justify-content-center"> 1 </span>
+                            </div>
+                            <i className="fa fa-long-arrow-left position-absolute left-10-px-l bottom-0 transform-30-l"></i>
+                        </div>
                     </div>
-                    <div className="position-absolute left-11  top-33" style={{}}>
-                        <span className="w-40-px h-40-px bg-gray border-radius-50 f-20-px d-flex justify-content-center align-items-center "> 2 </span>
+
+                    <div className="position-absolute left-11  top-33">
+
+                        <div className="position-relative">
+                            <div className=" " style={{}}>
+                                <span className="w-40-px h-40-px bg-gray border-radius-50 f-20-px d-flex justify-content-center align-items-center "> 2 </span>
+                            </div>
+                            <i className="fa fa-long-arrow-right position-absolute top-0 right-10-px-l transform-20-l"> </i>
+                        </div>
                     </div>
-                    <div className="position-absolute right-0 top-0" style={{ top: "260px", right: "35px" }}>
-                        <span className="w-40-px h-40-px bg-gray border-radius-50 f-20-px d-flex justify-content-center align-items-center "> 3 </span>
+
+
+                    <div className="position-absolute top-260-px right-35-px">
+                        <div className="position-relative">
+                            <div className="" >
+                                <span className="w-40-px h-40-px bg-gray border-radius-50 f-20-px d-flex justify-content-center align-items-center "> 3 </span>
+                           
+                            <i className="fa fa-long-arrow-left position-absolute left-0 top-11-px-l transform-60"> </i>
+                            </div>
+                        </div>
+
                     </div>
+
+
                 </div>
                 <div className="w-100 d-flex flex-column">
                     <div className="d-flex mt-5">
@@ -324,17 +347,59 @@ export default function Descriptionpage({ callpages }) {
 
                         <img src="http://127.0.0.1:8080/image/addpackagelistphone-main.png" className="w-100 h-500-px" />
 
-                        <div className="w-40-px h-40-px border-radius-50 bg-gray position-absolute top-12 left-35 d-flex justify-content-center align-items-center">
-                            <span > 1 </span>
+                        <div className="position-absolute top-12 left-35">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray  d-flex justify-content-center align-items-center">
+                                    <span > 1 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left position-absolute bottom-12-px-l left-3-px transform-67-l"> </i>
+                            </div>
+
                         </div>
-                        <div className="w-40-px h-40-px border-radius-50 bg-gray position-absolute top-50 right-0  d-flex justify-content-center align-items-center">
-                            <span > 2 </span>
+
+                        <div className="position-absolute top-50 right-0">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray  d-flex justify-content-center align-items-center">
+                                    <span > 2 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left top-9-px-l left-3-px-l position-absolute transform-45"> </i>
+                            </div>
                         </div>
-                        <div className="w-40-px h-40-px border-radius-50 bg-gray position-absolute bottom-26 left-40  d-flex justify-content-center align-items-center">
-                            <span > 3 </span>
+
+                        <div className="position-absolute  bottom-26 left-40  ">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray d-flex justify-content-center align-items-center">
+                                    <span > 3 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left position-absolute top-0 left-11-px-l transform-40"> </i>
+                            </div>
                         </div>
-                        <div className="w-40-px h-40-px border-radius-50 bg-gray position-absolute bottom-5 left-30  d-flex justify-content-center align-items-center">
-                            <span > 4 </span>
+
+                        <div className="position-absolute  bottom-5 left-30">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray   d-flex justify-content-center align-items-center">
+                                    <span > 4 </span>
+
+                                    <i className="fa fa-long-arrow-left position-absolute top-11-px-l left-0 transform-60"> </i>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div className="w-100  d-flex flex-column px-5">
+                        <span className="f-20-px my-3"> - ແບບ file txt or xlsx </span>
+                        <div className="d-flex justify-content-center mb-3">
+                            <div className=" d-flex  flex-column  ">
+                                <img src="http://127.0.0.1:8080/image/file-txt-addpackage-main.png" className="h-300-px w-100 border-grey" />
+                                <span className="f-18-px m-auto pt-2"> ຟາຍ txt ຂໍ້ມູນໃນຟາຍ </span>
+                            </div>
+
+                            <div className=" d-flex  flex-column ml-5 ">
+                                <img src="http://127.0.0.1:8080/image/file-xlsx-addpackage-main.png" className="h-300-px w-100" />
+                                <span className="f-18-px m-auto pt-2"> ຟາຍ xlsx ຂໍ້ມູນໃນຟາຍ </span>
+                            </div>
                         </div>
                     </div>
 
@@ -342,11 +407,11 @@ export default function Descriptionpage({ callpages }) {
 
                         <div className=" d-flex flex-column w-355-px h-200-px  align-items-center">
                             <img src="http://127.0.0.1:8080/image/add-notfoundfile-main.png" className="h-300-px w-100" />
-                            <span>  ຟາຍທີ່ທ່ານເລືອກບໍ່ມີຂໍ້ມູນ  </span>
+                            <span className="f-18-px pt-2">  ຟາຍທີ່ທ່ານເລືອກບໍ່ມີຂໍ້ມູນ  </span>
                         </div>
                         <div className=" d-flex flex-column w-355-px h-200-px align-items-center ml-5">
                             <img src="http://127.0.0.1:8080/image/addpackage-success-main.png" className="h-300-px w-100" />
-                            <span>  add package ສຳເລັດ  </span>
+                            <span className="f-18-px pt-2">  add package ສຳເລັດ  </span>
                         </div>
                     </div>
                 </div>
