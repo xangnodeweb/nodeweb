@@ -77,7 +77,7 @@ li.css-1h4bzp1-MuiButtonBase-root-MuiMenuItem-root {
     line-height: 2;
 }
 
-.modal-success  {
+.modal-success {
     width: 600px;
     margin: auto;
 }
@@ -133,6 +133,24 @@ li.css-1h4bzp1-MuiButtonBase-root-MuiMenuItem-root {
     transition: all 0.3s ease;
 }
 
+.btnfile-none {
+    width: 115px;
+    /*   width 115 pxs */
+    height: 35px;
+    /*   width 40 pxs */
+    border-radius: 5px;
+    cursor: pointer;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding-left: 4px;
+    padding-right: 4px;
+    transition: all 0.3s ease;
+    background-color: rgba(221, 221, 221, 0.4705882353);
+}
+
 .transition-box-btn {
     transition: all 0.35s ease;
 }
@@ -161,15 +179,17 @@ li.css-1h4bzp1-MuiButtonBase-root-MuiMenuItem-root {
 }
 
 
-*{
- font-family: "Saysettha OT";
- font-family: "Nuanta";
+* {
+    font-family: "Saysettha OT";
+    font-family: "Nuanta";
 }
+
 @font-face {
-    font-family: "Saysettha OT" ;
+    font-family: "Saysettha OT";
     src: url(../../image/SaysetthaOT.ttf);
 }
+
 @font-face {
-    font-family: "Nuanta" ;
+    font-family: "Nuanta";
     src: url(../../image/Nuantas-Regular.ttf);
 }

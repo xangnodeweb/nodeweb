@@ -8,6 +8,7 @@ const fetch = require("node-fetch");
 const { json } = require("express");
 
 
+
 app.post("/inqueryphone", async (req, res) => {
     try {
         const body = req.body;
@@ -58,7 +59,7 @@ app.post("/inqueryphone", async (req, res) => {
             return res.json({ status: true, code: 0, message: "success", result: modelresponse });
         }).catch(err => {
             console.log(err)
-        
+
             const error = JSON.stringify(err)
             const errors = JSON.parse(error);
             console.log(JSON.parse(error))
@@ -68,11 +69,8 @@ app.post("/inqueryphone", async (req, res) => {
                     return res.status(400).json({ status: false, code: 2, message: "ConnectTimeoutError", result: [] })
                 }
             }
+            //     if (err["cause"].name == "ConnectTimeoutError") 
 
-            // if (err["errno"]) {
-            //     if (err["cause"].name == "ConnectTimeoutError") {
-            //        }
-            // }
 
             return res.status(400).json({ status: false, code: 1, message: "cannot inquery phone", result: [] });
         })
@@ -84,7 +82,7 @@ app.post("/inqueryphone", async (req, res) => {
     }
 });
 
-app.post("/modifielddatetme", async (req, res) => {
+app.post("/modifielddatetime", async (req, res) => {
     try {
         const body = req.body;
 
@@ -129,6 +127,13 @@ app.post("/modifielddatetme", async (req, res) => {
             return res.json({ status: true, code: 0, message: "success", result: modelresponse });
         }).catch(err => {
             console.log(err)
+            const error = JSON.stringify(err);
+            const errors = JSON.parse(error);
+            if (err) {
+                if (errors.code == "ETIMEDOUT") {
+                    return res.status(400).json({ status: false, code: 3, message: "cannot modify ConnectTimeoutError", result: null });
+                }
+            }
             return res.json({ status: false, code: 2, message: "cannot modify phone", result: null });
         })
     } catch (error) {
@@ -283,6 +288,11 @@ app.post("/inquerylistphone", async (req, res) => {
                     const headers = {
                         'Content-Type': 'text/xml;charset=utf-8'
                     }
+                    if (data.indexOf(item) == 1) {
+                        await sleep(5000);
+                    }
+
+                    //
                     let model = [];
                     let modelbody = []; // model response fetch ? body : not found body response
                     let modelresponse = []; // model response
@@ -341,13 +351,19 @@ app.post("/inquerylistphone", async (req, res) => {
                         });
                     }).catch(async err => {
 
-                        if (err["cause"]) {
-                            if (err["cause"].name == "ConnectTimeoutError") {
-                                responseerr.status = false;
+                        const error = JSON.stringify(err);
+                        const errors = JSON.parse(error)
+                        if (err) {
+                            if (errors.code == "ETIMEDOUT") {
+                                responseerr.status == false;
                                 responseerr.code = 2;
-                                responseerr.message = "cannot inquery phone ConnectTimeoutError"
+                                responseerr.message = "cannot inquery listphone ConnectTimeoutError"
                             }
                         }
+
+                        // if (err["cause"]) {
+                        //     if (err["cause"].name == "ConnectTimeoutError") {
+               
 
                         if (modelnotbody[0]) {
                             let errorphone = modelnotbody[0]['IsSuccess'][0] == 'false' && modelnotbody[0]['Code'][0] == "VSMP-06040707" ? modelnotbody[0]['Description'][0] : "phone number incorrent"

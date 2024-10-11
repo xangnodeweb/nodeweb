@@ -45,8 +45,6 @@ export default function Addpackagephone() {
     const valuephone = (e) => {
         try {
 
-            console.log(e.target.value);
-
             setphone(e.target.value)
             const format = /^[0-9\d]+$/
 
@@ -68,11 +66,11 @@ export default function Addpackagephone() {
     }
     const dateendvalue = (e) => {
         try {
-            console.log(e.$d);
+            // console.log(e.$d);
             const dataend = e.$d;
             const dateends = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Bangkok" }).format(dataend);
             setdateexpire(dateends);
-            console.log(dataend)
+    
 
         } catch (error) {
             console.log(error)
@@ -80,11 +78,10 @@ export default function Addpackagephone() {
     }
     const datrefillstopvalue = (e) => {
         try {
-            console.log(e.$d);
+            // console.log(e.$d);
             const datarefillstop = e.$d;
             const daterefillstops = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Bangkok" }).format(datarefillstop);
             setrefillstoptime(daterefillstops);
-            console.log(datarefillstop)
 
         } catch (error) {
             console.log(error)
@@ -92,7 +89,7 @@ export default function Addpackagephone() {
     }
     const countnamevalue = (e) => {
         try {
-            console.log(e.target.value);
+            // console.log(e.target.value);
             setcountername(e.target.value)
             setmsgs(0)
 
@@ -154,17 +151,19 @@ export default function Addpackagephone() {
             const datas = { "phone": phonenumber, "countername": countername, "datestart": datestart, "dateexpire": dateexpire, "refillstoptime": refillstoptime };
             // console.log(datas);
 
-            const data = await axios.post("http://172.28.27.50:3000/api/addpackage", datas);
+            const data = await axios.post("http://127.0.0.1:3000/api/addpackage", datas);
             if (data.status == 200) {
-                console.log(data.data);
-                console.log(data.data.result);
+                // console.log(data.data);
+                // console.log(data.data.result);
                 if (data.data.status == true) {
                     if (data.data.result[0].status == "true") {
-                        addpackageExportexcel({ data: data.data.result });
+                        if (data.data.result.length > 0) {
+                            addpackageExportexcel({ data: data.data.result });
+                        }
                         const datapackage = await getmodelpackage(data.data.result[0].Msisdn);
                         setdataaddpackage(datapackage);
                         calldialog("", "add package success", 1, 0, true);
-                        console.log(datapackage)
+                        // console.log(datapackage)
                     }
                 } else {
                     calldialog("", "cannot add package", 1, 0, true);
@@ -173,9 +172,9 @@ export default function Addpackagephone() {
                 validinput(false, 0);
             }
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             const statuscode = error.response.data;
-            console.log(statuscode)
+            // console.log(statuscode)
             if (statuscode.status == false && statuscode.code == 2) {
                 calldialog("", "cannot add package ConnectTimeoutError ", 1, 0, true);
             }
@@ -186,8 +185,8 @@ export default function Addpackagephone() {
         try {
 
             const dataphone = { phone: phones }
-            const data = await axios.post("http://172.28.27.50:3000/api/inqueryphone", dataphone);
-            console.log(data.data);
+            const data = await axios.post("http://127.0.0.1:3000/api/inqueryphone", dataphone);
+            // console.log(data.data);
             if (data.status == 200) {
                 // setdataaddpackage(data.data);
                 return data.data.result;
@@ -203,7 +202,7 @@ export default function Addpackagephone() {
     const callmodal = ({ status, delvalue }, e) => {
         try {
             setopenmsg(status);  // delvalue == clear
-            console.log(status, delvalue)
+            // console.log(status, delvalue)
             if (delvalue == 2) {
                 validinput(true, 4);
             }
@@ -218,7 +217,7 @@ export default function Addpackagephone() {
             ismsgs.message = message;
             ismsgs.btnlength = btnlength;
             ismsgs.btnconfirmexpire = btnconfirmexpire; // btnconfirmexpire == 1  btn valid true valid dateexpire
-            console.log(ismsgs)
+            // console.log(ismsgs)
             setopenmsg(isopenmodal);
 
         } catch (error) {
@@ -337,7 +336,7 @@ export default function Addpackagephone() {
                                         <td> {item.ProductNumber} </td>
                                         <td> {item.CounterName} </td>
                                         <td> {dateformat(item.StartTime)} </td>
-                                        <td> {dateformat(item.ExpiryTime) } </td>
+                                        <td> {dateformat(item.ExpiryTime)} </td>
                                         <td> {item.RefillStopTime} </td>
                                     </tr>
 

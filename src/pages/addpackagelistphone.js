@@ -52,12 +52,12 @@ export default function Addpackagelistphone() {
             setmodelfile([])
             render.onload = () => {
                 const datafilelist = render.result.split(/\r?\n/);
-                console.log(datafilelist)
+                // console.log(datafilelist)
 
                 let modeldata = [];
                 if (datafilelist.length == 1) {
                     const datafile = datafilelist[0] == '' ? null : datafilelist[0];
-                    console.log(datafile)
+                    // console.log(datafile)
                     if (datafile == null) {
                         // ismsgs.title = "";
                         // ismsgs.message = "file txt not found data";
@@ -67,7 +67,7 @@ export default function Addpackagelistphone() {
 
                         return;
                     } else {
-                       console.log(datafilelist[0].toString().split(","))
+                        // console.log(datafilelist[0].toString().split(","))
                         const datafileonerecord = datafilelist[0].toString().split(",");
                         modeldata.push({ phone: datafileonerecord[0], countername: datafileonerecord[1], starttime: datestart, expiretime: dateexpire, RefillStopTime: refillstoptime });
                         setmodelfile(modeldata)
@@ -104,7 +104,7 @@ export default function Addpackagelistphone() {
                     // for (var i = 0; i < filedata.length; i++) {
                     //     modeldata.push({ phone: filedata[i], countername: countername, starttime: datestart, expiretime: dateexpire, RefillStopTime: refillstoptime });
                     // }  
-                    console.log(modeldata);
+                    // console.log(modeldata);
                     setmodelfile(modeldata)
                 }
 
@@ -132,7 +132,7 @@ export default function Addpackagelistphone() {
             const file = e.target.files[0];
             const render = new FileReader();
 
-            console.log(file);
+            // console.log(file);
             clearmodelfile();
 
             render.onload = (event) => {
@@ -143,12 +143,12 @@ export default function Addpackagelistphone() {
                 // const sheetData = xlsx.utils.sheet_to_json(sheet);
 
                 const sheetData = xlsx.utils.sheet_to_txt(sheet);
-                console.log(sheetData)
+                // console.log(sheetData)
                 let models = [];
                 const model = JSON.stringify(sheetData);
-                console.log(model.split('\n'));
+                // console.log(model.split('\n'));
 
-                console.log(sheetData.toString().split('\n'));
+                // console.log(sheetData.toString().split('\n'));
 
                 const modeldata = sheetData.toString().split('\n');
                 if (modeldata.length > 0) {
@@ -156,7 +156,7 @@ export default function Addpackagelistphone() {
                     let counternameformat = ""  //  counter name Prepaid_Staff_5GB  value Prepaid_Staff_  ([0-9]{3}) > 3
                     let filestatus = false;
                     for (var i = 0; i < modeldata.length; i++) {
-                        console.log(modeldata[i]);
+                        // console.log(modeldata[i]);
 
                         if (modeldata[i] == "\t") {  // next data string not found data
                             continue;
@@ -183,7 +183,7 @@ export default function Addpackagelistphone() {
 
 
                     }
-                    console.log(filedata)
+                    // console.log(filedata)
                     setmodelfile(filedata)
                 }
                 // console.log(JSON.stringify(sheetData))
@@ -213,8 +213,7 @@ export default function Addpackagelistphone() {
                     validinput(false, 0);
                 }
             }
-            console.log("call modelfile");
-            console.log(modelfile)
+
             if (modelfile.length > 0) {
                 modelfile.forEach(item => { item.countername = item.countername, item.RefillStopTime = refillstoptime, item.starttime = datestarts, item.expiretime = dateexpire })
             }
@@ -225,14 +224,13 @@ export default function Addpackagelistphone() {
     }
     const dateendvalue = (e) => {
         try {
-            console.log(e.$d);
+            // console.log(e.$d);
             const dataend = e.$d;
             const dateends = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Bangkok" }).format(dataend);
             setdateexpire(dateends);
 
             const dateexpires = dateends.toString().replace(new RegExp("-", "g"), "");
             if (datestart != null) {
-                console.log({ "datestart": datestarts, "expire": dateexpires })
                 const datestarts = datestart.toString().replace(new RegExp("-", "g"), "");
                 if (parseInt(datestarts) > parseInt(dateexpires)) {
                     validinput(true, 4);
@@ -251,7 +249,7 @@ export default function Addpackagelistphone() {
 
     const daterefillstopvalue = (e) => {
         try {
-            console.log(e.$d);
+            // console.log(e.$d);
             const datarefillstop = e.$d;
             const daterefillstops = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Bangkok" }).format(datarefillstop);
             setrefillstoptime(daterefillstops);
@@ -282,11 +280,9 @@ export default function Addpackagelistphone() {
             // error ismsgs 1 please value || ismsg please enter next day  
             // date start 0 1 2 || date expire 0 3 4 || phone format or length phone 0 5 6 || refillstop 0 7 || countername 8
             if (modelfile.length == 0) {
-
                 calldialog("please select file", "file txt or xlsx not found data", 1, 0)
                 return;
             }
-            console.log("countname : " + countername)
 
             if (!datestart) {
                 // setiserr(true);
@@ -315,16 +311,20 @@ export default function Addpackagelistphone() {
                 calldialog("please check datestart and dateend", "please enter dateexpire greater than datestart", 1, 0)
                 return;
             }
-            console.log(modelfile)
             setiserr(false);
             setmsgs(0)
+            const namepackage = "Prepaid_Staff_";
+            const modelcountername = modelfile.filter(x => !x.countername.toString().toLowerCase().includes(namepackage.toLocaleLowerCase()));
+ 
+            if (modelcountername.length > 0) {
+                calldialog("cannot add package", `please check countername  phone : ${modelcountername[0].phone}`, 1, 0)
+                return;
 
-            const datas = { "phone": "", "countername": countername, "datestart": datestart, "dateexpire": dateexpire, "refillstoptime": refillstoptime }
-            console.log(datas);
+            }
 
-            const data = await axios.post("http://172.28.27.50:3000/api/addpackagelistphone", modelfile);
+            const data = await axios.post("http://127.0.0.1:3000/api/addpackagelistphone", modelfile);
             if (data.status == 200) {
-                console.log(data.data)
+                // console.log(data.data)
                 addpackageExportexcel({ data: data.data.result })
                 // setiserr(false);
                 // setmsgs(0)
@@ -334,9 +334,8 @@ export default function Addpackagelistphone() {
                 return;
             }
 
-
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             const statuscode = error.response.data;
             if (error) {
                 if (error.response) {
