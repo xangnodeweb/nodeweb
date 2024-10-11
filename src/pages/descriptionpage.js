@@ -84,18 +84,49 @@ export default function Descriptionpage({ callpages }) {
                     <div className="w-70 m-auto position-relative d-flex flex-column ">
                         <img src="http://127.0.0.1:8080/image/modify-main.png" className="w-100 h-500-px mt-5" />
 
-                        <div className="position-absolute left-34 top-16 w-40-px h-40-px bg-gray border-radius-50 d-flex justify-content-center align-items-center">
-                            <span> 1 </span>
+                        <div className="position-absolute left-34 top-16 ">
+                            <div className="position-relative">
+                                <div className=" w-40-px h-40-px bg-gray border-radius-50 d-flex justify-content-center align-items-center">
+                                    <span> 1 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left f-20-px position-absolute bottom-17-l left-4-l transform-61-l">  </i>
+                            </div>
                         </div>
-                        <div className="position-absolute right-0 top-33 w-40-px h-40-px bg-gray border-radius-50 d-flex justify-content-center align-items-center" style={{}}>
-                            <span> 2 </span>
+
+                        <div className="position-absolute right-0 top-33">
+                            <div className="position-relative">
+                                <div className="position-absolute right-10-px-l top-33 w-40-px h-40-px bg-gray border-radius-50 d-flex justify-content-center align-items-center" style={{}}>
+                                    <span> 2 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left f-20-px position-absolute top-0 left-46-px-l top-0 transform-24">  </i>
+
+                            </div>
+
                         </div>
-                        <div className="position-absolute left-35 top-41 w-40-px h-40-px bg-gray border-radius-50 d-flex justify-content-center align-items-center" style={{}}>
-                            <span> 3 </span>
+
+                        <div className="position-absolute top-41 left-35">
+                            <div className="position-relative">
+
+                                <div className=" w-40-px h-40-px bg-gray border-radius-50 d-flex justify-content-center align-items-center" style={{}}>
+                                    <span> 3 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left f-20-px position-absolute bottom-17-l left-2-px-l transform-53-l">  </i>
+                            </div>
                         </div>
-                        <div className="position-absolute left-40  bottom-35  w-40-px h-40-px bg-gray border-radius-50 d-flex justify-content-center align-items-center" style={{}}>
-                            <span> 4 </span>
+
+
+
+                        <div className="position-absolute left-38 bottom-35">
+                            <div className="position-relative">
+
+                                <div className="  w-40-px h-40-px bg-gray border-radius-50 d-flex justify-content-center align-items-center" style={{}}>
+                                    <span> 4 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left f-20-px position-absolute bottom-10-l left-11-px-l transform-35-l">  </i>
+
+                            </div>
                         </div>
+
                     </div>
                     <div className=" d-flex flex-column mt-5 mb-6 position-relative px-5 pt-5 mx-auto">
 
@@ -125,25 +156,68 @@ export default function Descriptionpage({ callpages }) {
                     </div>
                     <div className="w-70 m-auto position-relative pt-5">
                         <img src="http://127.0.0.1:8080/image/modifylistphone-main.png" className="w-100  h-500-px" />
-                        <div className="w-40-px h-40-px border-radius-50 bg-gray position-absolute top-18 left-32 d-flex justify-content-center align-items-center">
-                            <span className="f-20-px"> 1 </span>
-                        </div>
-                        <div className="w-40-px h-40-px border-radius-50 bg-gray position-absolute top-40 left-37 d-flex justify-content-center align-items-center">
-                            <span className="f-20-px"> 2 </span>
-                        </div>
-                        <div className="w-40-px h-40-px border-radius-50 bg-gray position-absolute top-13 right-30 d-flex justify-content-center align-items-center">
-                            <span className="f-20-px"> 3 </span>
-                        </div>
-                        <div className="w-40-px h-40-px border-radius-50 bg-gray position-absolute top-52 left-10 d-flex justify-content-center align-items-center">
-                            <span className="f-20-px"> 4 </span>
+
+                        <div className="top-18 left-32 position-absolute">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray d-flex justify-content-center align-items-center">
+                                    <span className="f-20-px"> 1 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left  position-absolute left-9-l bottom-4-l transform-16-l"> </i>
+
+                                <i className="fa fa-long-arrow-left transform-65-l position-absolute"> </i>
+
+
+                            </div>
                         </div>
 
-                        <div className="w-40-px h-40-px border-radius-50 bg-gray position-absolute top-64 left-32 d-flex justify-content-center align-items-center">
-                            <span className="f-20-px"> 5 </span>
+                        <div className="position-absolute top-40 left-37">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray  d-flex justify-content-center align-items-center">
+                                    <span className="f-20-px"> 2 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left position-absolute top-0 right-0 transform-145 right-11-l"> </i>
+                            </div>
                         </div>
-                        <div className="w-40-px h-40-px border-radius-50 bg-gray position-absolute  bottom-5 left-32 d-flex justify-content-center align-items-center">
-                            <span className="f-20-px"> 6 </span>
+
+                        <div className="position-absolute  top-14 right-30">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray   d-flex justify-content-center align-items-center">
+                                    <span className="f-20-px"> 3 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left position-absolute bottom-5-l left-8-l transform-30-l "> </i>
+                            </div>
                         </div>
+
+                        <div className="position-absolute top-52 left-10">
+                            <div className="position-relative ">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray d-flex justify-content-center align-items-center">
+                                    <span className="f-20-px"> 4 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-right position-absolute right-14-px-l bottom-10-px transform-9-l "> </i>
+                            </div>
+                        </div>
+
+                        <div className="position-absolute top-64 left-32">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray  d-flex justify-content-center align-items-center">
+                                    <span className="f-20-px"> 5 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left  top-0 left-11-px-l position-absolute transform-30"></i>
+                            </div>
+                        </div>
+
+                        <div className="position-absolute  bottom-5 left-32">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray  d-flex justify-content-center align-items-center">
+                                    <span className="f-20-px"> 6 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-right position-absolute right-10-px-l bottom-0 tansform-20"> </i>
+                            </div>
+                        </div>
+
+
+
+
                     </div>
                     <div className="w-100 my-3 d-flex flex-column position-relative px-5 ">
 
@@ -200,15 +274,36 @@ export default function Descriptionpage({ callpages }) {
                     <div className="w-70 m-auto position-relative pt-5">
 
                         <img src="http://127.0.0.1:8080/image/addpackagephone-main.png" className="w-100 h-500-px" />
-                        <div className="w-40-px h-40-px top-18 left-33  position-absolute border-radius-50 bg-gray d-flex justify-content-center align-items-center">
-                            <span> 1 </span>
+
+                        <div className=" top-18 left-33 position-absolute ">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px  border-radius-50 bg-gray d-flex justify-content-center align-items-center">
+                                    <span> 1 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left bottom-0 left-0 position-absolute bottom-13-px-l  transform-55-l left-5-px  ">  </i>
+                            </div>
                         </div>
-                        <div className="w-40-px h-40-px bottom-5 left-30 position-absolute border-radius-50 bg-gray d-flex justify-content-center align-items-center">
-                            <span> 2 </span>
+
+                        <div className="position-absolute  bottom-10 left-30 ">
+                            <div className="position-relative">
+
+                                <div className="w-40-px h-40-px position-absolute border-radius-50 bg-gray d-flex justify-content-center align-items-center">
+                                    <span> 2 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left  position-absolute top-11-px-l right-14-px-l transform-67">  </i>
+                            </div>
+
                         </div>
-                        <div className="w-40-px h-40-px top-64 right-0  position-absolute border-radius-50 bg-gray d-flex justify-content-center align-items-center">
-                            <span> 3 </span>
+
+                        <div className="position-absolute top-64 right-0 ">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px  border-radius-50 bg-gray d-flex justify-content-center align-items-center">
+                                    <span> 3 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left top-9-px-l left-4-l position-absolute transform-46"> </i>
+                            </div>
                         </div>
+
                     </div>
 
                 </div>
