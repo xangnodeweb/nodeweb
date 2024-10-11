@@ -5,6 +5,7 @@ const express = require("express")();
 const { bodyinquery, bodymodiefield, bodyaddpackage } = require("./modelbody");
 const { parseString } = require("xml2js");
 const fetch = require("node-fetch");
+const { json } = require("express");
 
 
 app.post("/inqueryphone", async (req, res) => {
@@ -57,11 +58,21 @@ app.post("/inqueryphone", async (req, res) => {
             return res.json({ status: true, code: 0, message: "success", result: modelresponse });
         }).catch(err => {
             console.log(err)
-            if (err["cause"]) {
-                if (err["cause"].name == "ConnectTimeoutError") {
+        
+            const error = JSON.stringify(err)
+            const errors = JSON.parse(error);
+            console.log(JSON.parse(error))
+            console.log(errors.code)
+            if (err) {
+                if (errors.code == "ETIMEDOUT") {
                     return res.status(400).json({ status: false, code: 2, message: "ConnectTimeoutError", result: [] })
                 }
             }
+
+            // if (err["errno"]) {
+            //     if (err["cause"].name == "ConnectTimeoutError") {
+            //        }
+            // }
 
             return res.status(400).json({ status: false, code: 1, message: "cannot inquery phone", result: [] });
         })

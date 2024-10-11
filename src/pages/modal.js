@@ -25,16 +25,32 @@ export default function Modelapp({ callmodal, openmodal, statuslb, }) {
                     <div className="w-100 mt-2 d-flex flex-column align-items-center ">
                         {
                             statuslb.optionbtn != 1 ?
-                                <div className="min-w-50 max-w-76 d-flex flex-column border-grey border-radius-5-px pl-3  mt-3 pt-3 pb-10 box-shadow pr-4" >
-                                    <span className="py-1"> IsSuccess : {statuslb.IsSuccess} </span>
-                                    <span className="py-1"> Code : {statuslb.Code} </span>
-                                    <span className="py-1 white-space-nowrap"> Description : {statuslb.Description} </span>
-                                    <span className="py-1"> OrderRef : {statuslb.Orderref} </span>
-                                    <span className="py-1"> TransactionID : {statuslb.TransactionID} </span>
-                                </div>
+                                <>
+                                    <div className="d-flex flex-column">
+                                        {
+                                            statuslb.IsSuccess == "true" ? <i className="fa fa-check-circle f-80-px m-auto color-success"></i>
+                                                : <i className="fa fa-times-circle f-80-px m-auto"></i>
+                                        }
+                                    </div>
+                                    <div className="min-w-50 max-w-76 d-flex flex-column border-grey border-radius-5-px pl-3  mt-3 pt-3 pb-10 box-shadow pr-4" >
+                                        {
+                                            statuslb.optionbtn != 1 ?
+                                                <>
+                                                    <span className="py-1 f-16-px"> IsSuccess : {statuslb.IsSuccess} </span>
+                                                    <span className="py-1 f-16-px"> PhoneNumber : {statuslb.phonenumber} </span>
+                                                    <span className="py-1 f-16-px"> productnumber : {statuslb.productnumber} </span>
+                                                    <span className="py-1 white-space-nowrap f-16-px"> DateExpire : {statuslb.dateexpire} </span>
+
+                                                </>
+                                                :
+                                                <span className="py-1 white-space-nowrap f-16-px">  {statuslb.Description} </span>
+
+                                        }
+
+                                    </div>
+                                </>
                                 :
                                 <div className="d-flex flex-column">
-
                                     <i className="fa fa-check-circle-o f-70-px m-auto">  </i>
                                     <span className="f-14-px mt-2">{statuslb.Description} </span>
                                 </div>
@@ -50,9 +66,10 @@ export default function Modelapp({ callmodal, openmodal, statuslb, }) {
                             <>    <Button onClick={(e) => callmodal({ status: false }, e)} appearance="primary">
                                 Ok
                             </Button>
-                                <Button onClick={(e) => callmodal({ status: false }, e)} appearance="subtle">
+                                {/* <Button onClick={(e) => callmodal({ status: false }, e)} appearance="subtle">
                                     Cancel
-                                </Button></>
+                                </Button> */}
+                            </>
                             :
                             <>
                                 <Button onClick={(e) => callmodal({ status: false }, e)} appearance="primary" className={statuslb.optionbtn == 1 ? "w-100" : ""}>

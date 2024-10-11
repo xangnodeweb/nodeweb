@@ -6,6 +6,12 @@ import TextField from "@mui/material/TextField";
 import Modelapp from "../pages/modal";
 import InputMask from "react-input-mask";
 
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { datevaluereplace, datenowreplace } from "../filemodule/dataformat"
+
 export default function Modifielddatetime() {
 
     const [users, setUsers] = useState([]);
@@ -26,11 +32,11 @@ export default function Modifielddatetime() {
     const [openmodals, setopenmodal] = useState(false);
     const [loading, setloading] = useState(false);
     const [datastatus, setdata] = useState({
-        "Code": "",
-        "Description": "",
+        "productnumber": "",
+        "phonenumber": "",
         "IsSuccess": false,
-        "Orderref": "",
-        "TransactionID": "",
+        "dateexpire": "",
+        "Description": "",
         "title": "",
         "optionbtn": 0
     });
@@ -58,14 +64,14 @@ export default function Modifielddatetime() {
                 return
             }
             if (!format.test(phonenumber)) { // format 856205xxxxxxx
-
                 inputvalid(true, 3);
                 isrefphone.current.focus();
                 return
             }
+
             setloading(true);
             setisphonevalid(0);
-            const data = await axios.post("http://172.28.27.50:3000/api/inqueryphone", datas);
+            const data = await axios.post("http://127.0.0.1:3000/api/inqueryphone", datas);
             console.log(phone)
             console.log(data.data);
             if (data.status == 200) {
@@ -80,15 +86,17 @@ export default function Modifielddatetime() {
 
             const statuscode = error.response.data;
             console.log(statuscode)
-            if (statuscode.status == false && statuscode.code == 2) {
-                setloading(false)
-                callopenmodal("", "cannot modify phone ConnectTimeoutError", "", "", "", "", 1, true);
-            } else {
-                callopenmodal("", "cannot modify phone ConnectTimeoutError", "", "", "", "", 1, true);
-
+            if (error) {
+                if (error.response) {
+                    if (statuscode.status == false && statuscode.code == 2) {
+                        setloading(false)
+                        callopenmodal("", "", "", "", "cannot modify phone ConnectTimeoutError", "", 1, true);
+                    } else {
+                        setloading(false);
+                        callopenmodal("", "", "", "", "cannot modify phonenumber", "", 1, true);
+                    }
+                }
             }
-            console.log(error)
-
         }
     }
     async function onupdateexpire() {
@@ -101,43 +109,64 @@ export default function Modifielddatetime() {
                 return;
             }
 
-            if (productno == null) {
+            if (productno == null || productno == '') {
                 validmodify(true, "please select product name.", 1)
                 return;
             }
-
+            console.log(dateexpire);
             if (dateexpire == null) {
                 validmodify(true, 'please select date.', 2)
                 return;
             }
 
-            const datas = { phone: phone, productno: productno, expire: dateexpire }
+            const dateexpires = dateexpire.toString().replace(new RegExp("-", "g"), "");
+            const datenow = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+            const datenowformat = datenow.toString().replace(new RegExp("-", "g"), "");
 
-            // console.log(openmodals)
-            const data = await axios.post("http://172.28.27.50:3000/api/modifielddatetme", datas);
+
+            if (parseInt(dateexpires) < parseInt(datenowformat)) {
+                validmodify(true, 'please select next day', 5)
+                return;
+            }
+            setloading(true);
+            const datas = { phone: phone, productno: productno, expire: dateexpire }
+            // console.log(datas)
+            validmodify(false, "", "", 0);
+
+            const data = await axios.post("http://127.0.0.1:3000/api/modifielddatetme", datas);
             console.log(data.data)
             if (data.status == 200) {
                 // console.log(data.data.result) 
 
                 setmodifymodel(data.data.result)
                 validmodify(false, "", 0);
-
                 onqueryphone();
-                callopenmodal(data.data.result.Code[0], data.data.result.Description[0], data.data.result.IsSuccess[0], data.data.result.OrderRef[0], data.data.result.TransactionID[0], "Response success", 2, true);
-
+                callopenmodal(datas.phone, datas.productno, data.data.result.IsSuccess[0], datas.expire, data.data.result.Description[0], "Response success", 0, true);
+                setloading(false);
             }
 
             validmodify(false, "", 0);
         } catch (error) {
             console.log(error)
-            const statuscode = error.response.data;
-            console.log(statuscode);
-            if (statuscode.status == false && statuscode.code == 2) {
+            if (error) {
+                if (error.response) {
+                    const statuscode = error.response.data;
+                    console.log(statuscode);
+                    setloading(false)
+                    if (statuscode.status == false && statuscode.code == 2) {
+                        console.log(statuscode.message);
 
-                callopenmodal(data.data.result.Code[0], data.data.result.Description[0], data.data.result.IsSuccess[0], data.data.result.OrderRef[0], data.data.result.TransactionID[0], "", 2, true);
-                return
+                        callopenmodal("", "", "false", "", statuscode.message, "", 2, true);
+
+                    } else {
+                        callopenmodal("", "", "", "", "cannot modify phone", "", 1, true);
+
+                    }
+                } else {
+
+                }
+                setloading(false);
             }
-            callopenmodal("", "cannot modify phone", "", "", "", "", 1, true);
 
         }
     }
@@ -178,7 +207,7 @@ export default function Modifielddatetime() {
 
             setUsers([]);
             setphone('');
-            setisbtn(false);
+            setisbtn(false); setdateexpire
             setisphonevalid(0);
             setproductno('');
             setdateexpire('')
@@ -213,16 +242,17 @@ export default function Modifielddatetime() {
         }
     }
 
-    const callopenmodal = (Code, Description, IsSuccess, Orderref, TransactionID, title, optionbtn, isopen) => {
+    const callopenmodal = (phonenumber, productnumber, IsSuccess, dateexpire, Description, title, optionbtn, isopen) => {
 
-        datastatus.Code = Code;
-        datastatus.Description = Description;
+        datastatus.phonenumber = phonenumber;
+        datastatus.productnumber = productnumber;
         datastatus.IsSuccess = IsSuccess;
-        datastatus.Orderref = Orderref;
-        datastatus.TransactionID = TransactionID;
+        datastatus.dateexpire = dateexpire;
+        datastatus.Description = Description;
         datastatus.title = title;
         datastatus.optionbtn = optionbtn;
         setopenmodal(isopen)
+
     }
     const inputvalid = (isvalid, inputerror) => {
         setisbtn(isvalid); // isvalid false inputerror 0
@@ -232,9 +262,25 @@ export default function Modifielddatetime() {
         setisbtnexpire(isvalid);
         setisproductno(productlb);
         setisproductvalue(isproductvalue) // isproductvalue == 2
-
-
     }
+
+    const dateexpirevalue = (e) => {
+        try {
+            const dates = e.$d;
+            const date = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(dates);
+            const dateexpires = datevaluereplace(dates); // value date select
+            const datenowreplaces = datenowreplace(); // yyyyMMdd
+            if (parseInt(dateexpires) < parseInt(datenowreplaces)) {
+                validmodify(true, 'please select next day.', 5)
+            } else {
+                validmodify(false, '', 0)
+            }
+            setdateexpire(date);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     useEffect(() => {
 
@@ -263,14 +309,19 @@ export default function Modifielddatetime() {
 
                     <TextField type="number" error={isbtnexpire && isproductnovalue == 1 ? true : false} value={productno} helperText={isbtnexpire && isproductnovalue == 1 ? isproductno : ""} disabled className={` mt-2`} />
                     <span className="mt-3"> dateexpire </span>
-                    <input type="date" onChange={(e) => setdateexpire(e.target.value)} className={`${isbtnexpire && isproductnovalue == 2 ? "border-red" : ""} mt-1`} />
-                    {isbtnexpire && isproductnovalue == 2 ? <span className="color-red"> please select datetime. </span> : ""}
+                    {/* <TextField type="date" onChange={(e) => setdateexpire(e.target.value)}   readOnly={true} error={isbtnexpire && isproductnovalue == 2 ? true : ""} helperText={isbtnexpire && isproductnovalue == 2 ? " please select datetime." : ""} /> */}
+                    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+                        <DemoContainer components={['DatePicker']}>
+                            <DatePicker format="DD/MM/YYYY" onChange={dateexpirevalue} renderInput={(param) => <TextField {...param} />} slotProps={{ textField: { helperText: isbtnexpire && isproductnovalue == 2 ? "please select dateExpire" : isbtnexpire && isproductnovalue == 5 ? "please select next day" : "" } }} />
+                        </DemoContainer>
+                    </LocalizationProvider>
+
                     <button className="mt-4" onClick={onupdateexpire}> modify </button>
 
                 </div>
             </div>
             <div className="w-70  pt-4 ">
-                <div className="w-100 h-300-px  overflow-y-scroll px-3 ">
+                <div className="w-100 h-500-px max-h-467-px  overflow-y-scroll px-3 ">
 
                     <table >
                         <thead>

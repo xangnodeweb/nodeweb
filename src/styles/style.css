@@ -264,6 +264,14 @@ div.lb-record.disable {
     max-height: 400px;
 }
 
+.max-h-467-px{
+    max-height: 467px;
+}
+
+.max-h-500-px{
+    max-height: 500px;
+}
+
 .d-flex {
     display: flex;
 }
@@ -786,7 +794,9 @@ div.lb-record.disable {
 .color-bg-default {
     color: #517fa4;
 }
-
+.color-success{
+    color: #0fb95f;
+}
 .cursor-pointer {
     cursor: pointer;
 }
@@ -826,6 +836,10 @@ div.lb-record.disable {
 
 .f-70-px {
     font-size: 70px;
+}
+
+.f-80-px{
+    font-size: 80px;
 }
 
 .f-weight-400 {

@@ -57,13 +57,13 @@ export default function Homemain() {
                                 <li>
                                     <a href="/modifielddatetime">
                                         <i className="fa fa-calendar"> </i>
-                                        <span > modifield datetime </span>
+                                        <span > modify datetime </span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="/Modifieldlistphone">
                                         <i className="fa fa-calendar-plus-o"> </i>
-                                        <span > modifield list datetime </span>
+                                        <span > modify list datetime </span>
                                     </a>
                                 </li>
                                 <li className="card-item-add">

@@ -45,7 +45,7 @@ export default function inquery() {
             clearloaddata(false , 0);
             const datas = { "phone": phones };
             // console.log(phone)
-            const data = await axios.post("http://172.28.27.50:3000/api/inqueryphone", datas);
+            const data = await axios.post("http://127.0.0.1:3000/api/inqueryphone", datas);
             // console.log(data)
             if (data.status == 200) {
                 setUsers(data.data.result);
@@ -58,16 +58,18 @@ export default function inquery() {
                 if (error.response) {
                     const statucode = error.response.data;
                     if (statucode.status == false && statucode.code == 2) {
+                        setloading(false);
                         callopenmodal("", "cannot inquery phone ConnectTimeoutError", 1);
                         return
                     }
                 }
+                setloading(false);
                 callopenmodal("", "cannot inquery phone ", 1);
             }
-
-            console.log(error)
+            setloading(false);
+        
         }
-        setloading(false);
+
     }
     // const changedvalue = (e) => {
     //     try {
@@ -131,7 +133,7 @@ export default function inquery() {
 
                     </div>
 
-                    <button className="mt-4 w-100" onClick={onqueryphone}> send </button>
+                    <button className="mt-4 w-100" onClick={onqueryphone}> search </button>
                     <button className="btn mt-4 w-100" onClick={cleardata}> cleardata </button>
                 </div>
 

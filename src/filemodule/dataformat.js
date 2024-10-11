@@ -30,8 +30,28 @@ const dateexport = () => {
     }
 }
 
+const datenowreplace = () => {
+    try {
+        const date = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+           const datenowreplace = date.toString().replace(new RegExp("-" , "g") , "");
+        return datenowreplace;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-const adddatemonth = () => {
+const datevaluereplace = (date) => {
+    try {
+        const dates = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+           const datenowreplace = dates.toString().replace(new RegExp("-" , "g") , "");
+        return datenowreplace;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+const adddatemonth = (date) => {
     try {
 
     } catch (error) {
@@ -43,4 +63,4 @@ const adddatemonth = () => {
 
 
 
-module.exports = { dateformat, datenow , dateexport }
+module.exports = { dateformat, datenow, dateexport,datenowreplace , datevaluereplace }
