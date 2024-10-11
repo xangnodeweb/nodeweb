@@ -166,7 +166,7 @@ export default function Modifieldlistphone() {
             console.log("select file ")
             console.log(filedata)
 
-            const data = await axios.post("http://127.0.0.1:3000/api/inquerylistphone", filedata);
+            const data = await axios.post("http://172.28.27.50:3000/api/inquerylistphone", filedata);
             console.log(data.data)
             if (data.status == 200) {
                 setmodellistfile(data.data);
@@ -242,7 +242,7 @@ export default function Modifieldlistphone() {
             //    /^85620[0-9]{8}/
             let modeldata = [];
          
-            const data = await axios.post("http://127.0.0.1:3000/api/modifieldlistdatetime", modellistmodified);
+            const data = await axios.post("http://172.28.27.50:3000/api/modifieldlistdatetime", modellistmodified);
             // console.log(data.data);
             if (data.status == 200) {
                 // console.log(data.data);
