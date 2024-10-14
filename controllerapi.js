@@ -244,11 +244,15 @@ app.post("/addpackage", async (req, res) => {
             return res.json(modelresponse);
         }).catch(err => {
             console.log(err)
-            if (err["cause"]) {
-                if (err["cause"].name == "ConnectTimeoutError") {
-                    return res.status(400).json({ status: false, code: 2, message: "ConnectTimeoutError", result: null })
+            const error = JSON.stringify(err);
+            const errors = JSON.parse(error);
+            if (err) {
+                if (errors.code == "ETIMEDOUT") {
+
+                    return res.status(400).json({ status: false, code: 2, message: "cannot add package ConnectTimeoutError", result: null });
                 }
             }
+            // if (err["cause"].name == "ConnectTimeoutError") {
         })
     } catch (error) {
         console.log(error)
@@ -288,9 +292,7 @@ app.post("/inquerylistphone", async (req, res) => {
                     const headers = {
                         'Content-Type': 'text/xml;charset=utf-8'
                     }
-                    if (data.indexOf(item) == 1) {
-                        await sleep(5000);
-                    }
+
 
                     //
                     let model = [];
@@ -308,45 +310,49 @@ app.post("/inquerylistphone", async (req, res) => {
                     }).then(responseText => {
 
                         const modeldata = responseText;
+
                         // console.log(modeldata)
+
                         parseString(modeldata, function (err, result) {
 
                             let datas = JSON.stringify(result);
                             const datass = JSON.parse(datas);
+
                             model.push(datass);
 
-                            // console.log(typeof datas);
-                            modelbody.push(model[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['CounterArray'][0]['CounterInfo'])
+                            modelbody.push(model[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['CounterArray'][0]['CounterInfo']) //
 
-                            // 
                             let datanobody = JSON.stringify(result);
                             let databodynodata = JSON.parse(datanobody);
                             modelnoresponsebody.push(databodynodata);
                             // console.log(modelnoresponsebody[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['OperationStatus'][0])
                             modelnotbody.push(modelnoresponsebody[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['OperationStatus'][0])
+                            // modelnotbody == model not found CounterInfo
 
                             if (modelbody.length > 0) {
+
                                 for (var ii = 0; ii < modelbody[0].length; ii++) {
                                     modelresponse.push({ "Msisdn": modelbody[0][ii]['Msisdn'][0], "ProductNumber": modelbody[0][ii]['ProductNumber'][0], "CounterName": modelbody[0][ii]['CounterName'][0], "StartTime": modelbody[0][ii]['StartTime'][0], "ExpiryTime": modelbody[0][ii]['ExpiryTime'][0], "NumChildCounter": modelbody[0][ii]['NumChildCounter'][0], "RefillStopTime": modelbody[0][ii]['RefillStopTime'][0]['$']['xsi:nil'] });
                                 }
+
                                 if (modelresponse.length > 0) {
                                     // const index = modelresponse.findIndex(x => x.CounterName == 'Prepaid_Staff_5GB');
                                     const modelindexstaff = modelresponse.filter(x => x.CounterName.toString().indexOf("Prepaid_Staff") != -1)
                                     console.log(modelindexstaff)
                                     if (modelindexstaff.length == 1) {
-                                        datamodel.push({ phone: modelindexstaff[0].Msisdn, ProductNumber: modelindexstaff[0].ProductNumber, status: true, CounterName: modelindexstaff[0].CounterName, description: "success", ExpiryTime: modelindexstaff[0].ExpiryTime, packagegroup: false });
+                                        datamodel.push({ phone: modelindexstaff[0].Msisdn, ProductNumber: modelindexstaff[0].ProductNumber, status: true, CounterName: modelindexstaff[0].CounterName, description: "success", ExpiryTime: modelindexstaff[0].ExpiryTime, packagegroup: false, code: 0 });
                                     } else if (modelindexstaff.length > 1) {
+
                                         for (var i = 0; i < modelindexstaff.length; i++) {
-                                            const data = { phone: modelindexstaff[i].Msisdn, ProductNumber: modelindexstaff[i].ProductNumber, status: true, CounterName: modelindexstaff[i].CounterName, description: "success", ExpiryTime: modelindexstaff[i].ExpiryTime, packagegroup: true }
+                                            const data = { phone: modelindexstaff[i].Msisdn, ProductNumber: modelindexstaff[i].ProductNumber, status: true, CounterName: modelindexstaff[i].CounterName, description: "success", ExpiryTime: modelindexstaff[i].ExpiryTime, packagegroup: true, code: 0 }
                                             datamodel.push(data)
                                         }
-                                    } else {
-                                        datamodel.push({ phone: data[i].toString(), ProductNumber: null, status: false, CounterName: 'Prepaid_Staff_5GB', description: "not found package Prepaid_Staff", ExpiryTime: null, packagegroup: false });
+
                                     }
                                 }
-                                // console.log(modelresponse)
+
                             } else {
-                                datamodel.push({ phone: item.phone.toString(), ProductNumber: null, status: false, CounterName: null, desription: "not found detail", ExpiryTime: "", packagegroup: false });
+                                datamodel.push({ phone: item.phone.toString(), ProductNumber: null, status: false, CounterName: null, desription: "not found detail", ExpiryTime: "", packagegroup: false, code: 0 });
                             }
                         });
                     }).catch(async err => {
@@ -358,31 +364,36 @@ app.post("/inquerylistphone", async (req, res) => {
                                 responseerr.status == false;
                                 responseerr.code = 2;
                                 responseerr.message = "cannot inquery listphone ConnectTimeoutError"
+                             
                             }
                         }
-
-                        // if (err["cause"]) {
                         //     if (err["cause"].name == "ConnectTimeoutError") {
-               
 
-                        if (modelnotbody[0]) {
-                            let errorphone = modelnotbody[0]['IsSuccess'][0] == 'false' && modelnotbody[0]['Code'][0] == "VSMP-06040707" ? modelnotbody[0]['Description'][0] : "phone number incorrent"
-                            datamodel.push({ phone: item.toString(), ProductNumber: null, status: false, CounterName: null, description: errorphone, ExpiryTime: "" });
-                        }
 
                     });
 
                     if (responseerr.status == false && responseerr.code == 2) {
-                        return res.status(400).json({ status: false, code: 2, message: responseerr.message })
+                        let errorphone = modelnotbody[0]['IsSuccess'][0] == 'false' && modelnotbody[0]['Code'][0] == "VSMP-06040707" ? modelnotbody[0]['Description'][0] : "phone number incorrent"
+                        datamodel.push({ phone: item.toString(), ProductNumber: null, status: false, CounterName: null, description: errorphone, ExpiryTime: "", packagegroup: false, code: 2 });
+                        break;
                     }
 
                 } else {
                     datamodel.push({ phone: item.toString(), ProductNumber: null, status: false, CounterName: null, description: "format phone number incorrent", ExpiryTime: "" });
                 }
             }
+            const modelindex = datamodel.filter(x => x.status == false && x.code == 2);
+
+            if (modelindex.length > 0) {
+                return res.status(400).json({ status: false, code: 2, message: "cannot inquery phone", result: datamodel });
+            } else {
+                return res.status(200).json({ status: true, code: 0, message: "inquery list phone success", result: datamodel });
+            }
+
+
         }
         // console.log(datamodel);
-        return res.json(datamodel)
+        return res.status(400).json({status :false , code : 1 , message : "cannot inquery list phone" , result : datamodel});
 
     } catch (error) {
         console.log(error);

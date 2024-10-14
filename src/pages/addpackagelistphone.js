@@ -39,7 +39,7 @@ export default function Addpackagelistphone() {
         btnlength: 0
     });
     const [btnchecks, setbtncheck] = useState(0);
-
+    const [loading, setloading] = useState(false);
     const btnopenfiletxt = async (e) => {
         try {
             const file = e.target.files[0];
@@ -315,21 +315,18 @@ export default function Addpackagelistphone() {
             setmsgs(0)
             const namepackage = "Prepaid_Staff_";
             const modelcountername = modelfile.filter(x => !x.countername.toString().toLowerCase().includes(namepackage.toLocaleLowerCase()));
- 
+
             if (modelcountername.length > 0) {
                 calldialog("cannot add package", `please check countername  phone : ${modelcountername[0].phone}`, 1, 0)
                 return;
 
             }
-
+            setloading(true);
             const data = await axios.post("http://127.0.0.1:3000/api/addpackagelistphone", modelfile);
             if (data.status == 200) {
-                // console.log(data.data)
                 addpackageExportexcel({ data: data.data.result })
-                // setiserr(false);
-                // setmsgs(0)
                 validinput(false, 0);
-
+                setloading(false);
                 calldialog("add package", "add package success", 1, 0)
                 return;
             }
@@ -344,14 +341,11 @@ export default function Addpackagelistphone() {
                             const modelsuccess = statuscode.result.filter(x => x.status == 'true');
                             if (modelsuccess.length > 0) {
                                 addpackageExportexcel({ data: modelsuccess });
-                                ismsgs.title = "please check data add package ";
-                                ismsgs.message = `add package  phone success : ${modelsuccess}  `;
-                                ismsgs.btnlength = 1;
-                                setopenmsg(true);
+                                calldialog("please check data add package ", `add package  phone success count : ${modelsuccess.length}`, 1, 1)
                                 return;
                             }
                         }
-                        ismsgs.title = "cannot add package";
+                        ismsgs.title = "cannot add package ";
                         ismsgs.message = statuscode.message;
                         ismsgs.btnlength = 1;
                         setopenmsg(true);
@@ -389,32 +383,32 @@ export default function Addpackagelistphone() {
             console.log(error)
         }
     }
-    const counternametd = () => {
-        try {
+    // const counternametd = () => {
+    //     try {
 
-            let countname = "";
-            if (countername == 0) {
-                countname = "disable package";
-            } else if (countername == 1) {
-                countname = "Prepaid_Staff_3GB";
-            } else if (countername == 2) {
-                countname = "Prepaid_Staff_5GB";
-            } else if (countername == 3) {
-                countname = "Prepaid_Staff_7GB";
-            } else if (countername == 4) {
-                countname = "Prepaid_Staff_10GB";
-            } else if (countername == 5) {
-                countname = "Prepaid_Staff_15GB";
-            } else if (countername == 6) {
-                countname = "Prepaid_Staff_25GB";
-            }
+    //         let countname = "";
+    //         if (countername == 0) {
+    //             countname = "disable package";
+    //         } else if (countername == 1) {
+    //             countname = "Prepaid_Staff_3GB";
+    //         } else if (countername == 2) {
+    //             countname = "Prepaid_Staff_5GB";
+    //         } else if (countername == 3) {
+    //             countname = "Prepaid_Staff_7GB";
+    //         } else if (countername == 4) {
+    //             countname = "Prepaid_Staff_10GB";
+    //         } else if (countername == 5) {
+    //             countname = "Prepaid_Staff_15GB";
+    //         } else if (countername == 6) {
+    //             countname = "Prepaid_Staff_25GB";
+    //         }
 
-            return countname;
-        } catch (error) {
-            console.log(error)
-        }
+    //         return countname;
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
 
-    }
+    // }
     const loaddatafile = (e) => {
         try {
             e.preventDefault();
@@ -435,12 +429,13 @@ export default function Addpackagelistphone() {
             console.log(error)
         }
     }
+
     const calldialog = (title, message, btnlength, btnconfirmlength) => {
         try {
             ismsgs.message = message;
             ismsgs.title = title;
             ismsgs.btnlength = btnlength;
-            ismsgs.btnconfirmlength = btnconfirmlength;
+
             setopenmsg(true);
 
         } catch (error) {
@@ -457,23 +452,6 @@ export default function Addpackagelistphone() {
         setmsgs(message);
     }
 
-    // const tdlist = () => {
-
-    //     if (modelfile.length > 0) {
-    //         return (
-    //             modelfile.map((item, index) =>
-
-    //                 <tr>
-    //                     <td>{item.phone}</td>
-    //                     <td>{counternametd()}</td>
-    //                     <td>{item.RefillStopTime}</td>
-    //                     <td>{item.starttime}</td>
-    //                     <td>{item.expiretime}</td>
-    //                 </tr>
-    //                 // <React.Fragment>    {/* </React.Fragment> */}
-    //             ))
-    //     }
-    // }
 
 
     useEffect(() => {
@@ -482,7 +460,7 @@ export default function Addpackagelistphone() {
 
 
     return (
-        <div className="w-100  d-flex bg-white">
+        <div className="w-100  d-flex bg-white position-relative">
 
             <div className="w-30 border-1-slid px-5 d-flex flex-column pt-4">
 
@@ -586,7 +564,6 @@ export default function Addpackagelistphone() {
                             />
                         </DemoContainer>
                     </LocalizationProvider>
-                    {/* {iserr && ismsg == 3 ? <> <span className="color-red"> please select date expiry </span></> : iserr && ismsg == 4 ? <> <span className="color-red"> please select next  date expiry </span></> : ""} */}
 
                     <button className="mt-4 " onClick={onaddpackage}> add package </button>
 
@@ -630,7 +607,15 @@ export default function Addpackagelistphone() {
                             }
                         </tbody>
                     </table>
-
+                    {
+                        modelfile.length == 0 ?
+                            <>
+                                <div className="text-center pt-3">
+                                    <span className="f-18-px"> no record </span>
+                                </div>
+                            </>
+                            : ""
+                    }
                 </div>
                 <div className="w-100 pt-2">
                     <span>  record data phone count : {modelfile.length}    </span>
@@ -638,6 +623,12 @@ export default function Addpackagelistphone() {
             </div>
 
             <ModalInfoapp callmodal={callmodal} opendialog={openmsg} statuslb={ismsgs} />
+            <div className={loading ? "div-loader bg-backdrop d-flex" : "display-none"}>
+                <div className="loader">
+
+                </div>
+
+            </div>
 
         </div>
 

@@ -41,6 +41,7 @@ export default function Addpackagephone() {
         btnlength: 0,
         btnconfirmexpire: 0
     });
+    const [loading, setloading] = useState(false);
 
     const valuephone = (e) => {
         try {
@@ -70,7 +71,7 @@ export default function Addpackagephone() {
             const dataend = e.$d;
             const dateends = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Bangkok" }).format(dataend);
             setdateexpire(dateends);
-    
+
 
         } catch (error) {
             console.log(error)
@@ -150,10 +151,9 @@ export default function Addpackagephone() {
             validinput(false, 0);
             const datas = { "phone": phonenumber, "countername": countername, "datestart": datestart, "dateexpire": dateexpire, "refillstoptime": refillstoptime };
             // console.log(datas);
-
+            setloading(true);
             const data = await axios.post("http://127.0.0.1:3000/api/addpackage", datas);
             if (data.status == 200) {
-                // console.log(data.data);
                 // console.log(data.data.result);
                 if (data.data.status == true) {
                     if (data.data.result[0].status == "true") {
@@ -162,22 +162,32 @@ export default function Addpackagephone() {
                         }
                         const datapackage = await getmodelpackage(data.data.result[0].Msisdn);
                         setdataaddpackage(datapackage);
+                        setloading(false);
                         calldialog("", "add package success", 1, 0, true);
-                        // console.log(datapackage)
                     }
-                } else {
-                    calldialog("", "cannot add package", 1, 0, true);
 
+                } else {
+                    setloading(false);
+                    calldialog("", "cannot add package", 1, 0, true);
                 }
                 validinput(false, 0);
             }
         } catch (error) {
             // console.log(error)
-            const statuscode = error.response.data;
-            // console.log(statuscode)
-            if (statuscode.status == false && statuscode.code == 2) {
-                calldialog("", "cannot add package ConnectTimeoutError ", 1, 0, true);
+            if (error) {
+                if (error.response) {
+                    const statuscode = error.response.data;
+
+                    if (statuscode.status == false && statuscode.code == 2) {
+                        setloading(false)
+                        calldialog("", "cannot add package ConnectTimeoutError ", 1, 0, true);
+                    } else {
+                        setloading(false)
+                        calldialog("", "cannot add package ", 1, 0, true);
+                    }
+                }
             }
+            setloading(false)
         }
     }
 
@@ -235,7 +245,7 @@ export default function Addpackagephone() {
     }, [])
 
     return (
-        <div className="w-100  d-flex bg-white">
+        <div className="w-100  d-flex bg-white position-relative">
             <div className="w-30 border-1- px-5 d-flex flex-column pt-4">
 
                 <div className="w-100 box-shadow  px-3 py-5 d-flex flex-column">
@@ -339,12 +349,8 @@ export default function Addpackagephone() {
                                         <td> {dateformat(item.ExpiryTime)} </td>
                                         <td> {item.RefillStopTime} </td>
                                     </tr>
-
                                 )
-
                             }
-
-
                         </tbody>
                     </table>
 
@@ -355,9 +361,12 @@ export default function Addpackagephone() {
             </div>
 
             <ModalInfoapp callmodal={callmodal} opendialog={openmsg} statuslb={ismsgs} />
+            <div className={`  ${loading ? "div-loader bg-backdrop flex" : "display-none"}`}>
+                <div className="loader">
 
+                </div>
+            </div>
         </div>
-
     )
 }
 

@@ -137,7 +137,7 @@ export default function Modifielddatetime() {
             // console.log(datas)
             validmodify(false, "", "", 0);
 
-            const data = await axios.post("http://127.0.0.1:3000/api/modifielddatetimes", datas);
+            const data = await axios.post("http://127.0.0.1:3000/api/modifielddatetime", datas);
             console.log(data.data)
             if (data.status == 200) {
                 // console.log(data.data.result) 

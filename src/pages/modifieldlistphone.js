@@ -169,9 +169,9 @@ export default function Modifieldlistphone() {
             const data = await axios.post("http://127.0.0.1:3000/api/inquerylistphone", filedata);
             console.log(data.data)
             if (data.status == 200) {
-                setmodellistfile(data.data);
+                setmodellistfile(data.data.result);
                 console.log(data.data.result)
-                setmodelnullpackage(data.data);
+                setmodelnullpackage(data.data.result);
                 setloading(false);
                 setbtnclick(0);
             }
