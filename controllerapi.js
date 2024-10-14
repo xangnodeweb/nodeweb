@@ -320,16 +320,17 @@ app.post("/inquerylistphone", async (req, res) => {
 
                             model.push(datass);
 
-                            modelbody.push(model[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['CounterArray'][0]['CounterInfo']) //
+                            modelbody.push(model[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['CounterArray'][0]['CounterInfo']); //
 
                             let datanobody = JSON.stringify(result);
                             let databodynodata = JSON.parse(datanobody);
                             modelnoresponsebody.push(databodynodata);
                             // console.log(modelnoresponsebody[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['OperationStatus'][0])
-                            modelnotbody.push(modelnoresponsebody[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['OperationStatus'][0])
+                            modelnotbody.push(modelnoresponsebody[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['OperationStatus'][0]);
                             // modelnotbody == model not found CounterInfo
 
-                            if (modelbody.length > 0) {
+
+                            if (modelbody[0].length > 0) {
 
                                 for (var ii = 0; ii < modelbody[0].length; ii++) {
                                     modelresponse.push({ "Msisdn": modelbody[0][ii]['Msisdn'][0], "ProductNumber": modelbody[0][ii]['ProductNumber'][0], "CounterName": modelbody[0][ii]['CounterName'][0], "StartTime": modelbody[0][ii]['StartTime'][0], "ExpiryTime": modelbody[0][ii]['ExpiryTime'][0], "NumChildCounter": modelbody[0][ii]['NumChildCounter'][0], "RefillStopTime": modelbody[0][ii]['RefillStopTime'][0]['$']['xsi:nil'] });
@@ -348,6 +349,8 @@ app.post("/inquerylistphone", async (req, res) => {
                                             datamodel.push(data)
                                         }
 
+                                    } else {
+                                        datamodel.push({ phone: item.toString(), ProductNumber: null, status: false, CounterName: null, description: "not found package", ExpiryTime: null, packagegroup: false, code: 0 });
                                     }
                                 }
 
@@ -356,7 +359,7 @@ app.post("/inquerylistphone", async (req, res) => {
                             }
                         });
                     }).catch(async err => {
-
+                        console.log(err)
                         const error = JSON.stringify(err);
                         const errors = JSON.parse(error)
                         if (err) {
@@ -364,17 +367,15 @@ app.post("/inquerylistphone", async (req, res) => {
                                 responseerr.status == false;
                                 responseerr.code = 2;
                                 responseerr.message = "cannot inquery listphone ConnectTimeoutError"
-                             
+
                             }
                         }
-                        //     if (err["cause"].name == "ConnectTimeoutError") {
-
 
                     });
 
                     if (responseerr.status == false && responseerr.code == 2) {
-                        let errorphone = modelnotbody[0]['IsSuccess'][0] == 'false' && modelnotbody[0]['Code'][0] == "VSMP-06040707" ? modelnotbody[0]['Description'][0] : "phone number incorrent"
-                        datamodel.push({ phone: item.toString(), ProductNumber: null, status: false, CounterName: null, description: errorphone, ExpiryTime: "", packagegroup: false, code: 2 });
+                        // let errorphone = modelnotbody[0]['IsSuccess'][0] == 'false' && modelnotbody[0]['Code'][0] == "VSMP-06040707" ? modelnotbody[0]['Description'][0] : "phone number incorrent"
+                        datamodel.push({ phone: item.toString(), ProductNumber: null, status: false, CounterName: null, description: "", ExpiryTime: "", packagegroup: false, code: 2, message: "cannot inquery phone ConnectTimeoutError" });
                         break;
                     }
 
@@ -383,9 +384,9 @@ app.post("/inquerylistphone", async (req, res) => {
                 }
             }
             const modelindex = datamodel.filter(x => x.status == false && x.code == 2);
-
+            console.log(datamodel)
             if (modelindex.length > 0) {
-                return res.status(400).json({ status: false, code: 2, message: "cannot inquery phone", result: datamodel });
+                return res.status(400).json({ status: false, code: 2, message: "cannot inquery listphone ConnectTimeoutError", result: datamodel });
             } else {
                 return res.status(200).json({ status: true, code: 0, message: "inquery list phone success", result: datamodel });
             }
@@ -393,7 +394,7 @@ app.post("/inquerylistphone", async (req, res) => {
 
         }
         // console.log(datamodel);
-        return res.status(400).json({status :false , code : 1 , message : "cannot inquery list phone" , result : datamodel});
+        return res.status(400).json({ status: false, code: 1, message: "cannot inquery list phone", result: datamodel });
 
     } catch (error) {
         console.log(error);
@@ -425,6 +426,11 @@ app.post("/modifieldlistdatetime", async (req, res) => {
                         continue;
 
                         // modelresponse.push({ status: modelresponsetext[0].IsSuccess[0], code: modelresponsetext[0].Code[0], TransactionID: modelresponsetext[0].TransactionID[0], description: modelresponsetext[0].Description[0], orderRef: modelresponsetext[0].OrderRef[0], message: "", Msisdn: phone, ProductNumber: productno, ExpiryTime: expire });
+                    }
+
+                    if (i == 1) {
+ 
+                         await sleep(10000);
                     }
 
                     let bodyrequest = bodymodiefield(phone, productno, expire);
@@ -466,12 +472,18 @@ app.post("/modifieldlistdatetime", async (req, res) => {
                         //    console.log(modelresponsetext);
                     }).catch(err => {
                         console.log(err);
-                        if (err["cause"]) {
-                            if (err["cause"].name == "ConnectTimeoutError") {
-                                modelresponsetext = { status: false, code: 2, TransactionID: null, description: null, orderRef: null, message: "error_ConnectTimeoutError", Msisdn: phone, ProductNumber: productno, ExpiryTime: expire }
-                                // modelresponsetext.push();
+
+
+                        const error = JSON.stringify(err)
+                        const errors = JSON.parse(error);
+                        if (err) {
+                            if (errors.code == "ETIMEDOUT") {
+                                modelresponsetext = { status: false, code: 2, TransactionID: null, description: null, orderRef: null, message: "cannot modify phone ConnectTimeoutError", Msisdn: phone, ProductNumber: productno, ExpiryTime: expire }
+
                             }
+
                         }
+                        //     if (err["cause"].name == "ConnectTimeoutError") {
                     });
 
                     console.log(modelresponsetext);

@@ -179,10 +179,16 @@ export default function Modifieldlistphone() {
             setloading(false);
         } catch (error) {
             console.log(error)
-            let message = error.response ? error.response.data : "";
-            setloading(false)
-            if (message.status == false && message.code != 0) {
-                callopenmodal("cannot read file data", message.message, 1, true);
+            if (error) {
+                if (error.response) {
+                    let message = error.response ? error.response.data : "";
+                    setloading(false)
+                    if (message.status == false && message.code != 0) {
+                        callopenmodal("cannot read file data", message.message, 1, true);
+                    }else{
+                        callopenmodal("","cannot inquery list phone", 1, true);
+                    }
+                }
             }
         }
     }
@@ -212,7 +218,7 @@ export default function Modifieldlistphone() {
 
             setmodellistmodified([]);
             let model = [];
-       
+
             const modelfilecheck = modellistfile.filter(x => x.ProductNumber == null);
             console.log(modelfilecheck)
             if (modelfilecheck.length != 0) {
@@ -241,7 +247,7 @@ export default function Modifieldlistphone() {
             console.log(modellistmodified)
             //    /^85620[0-9]{8}/
             let modeldata = [];
-         
+
             const data = await axios.post("http://127.0.0.1:3000/api/modifieldlistdatetime", modellistmodified);
             // console.log(data.data);
             if (data.status == 200) {
@@ -480,7 +486,7 @@ export default function Modifieldlistphone() {
                                             <td className={`${item.packagegroup ? "bg-default-td" : ""}`}> {item.phone} </td>
                                             <td> {item.ProductNumber == null ? "not found data" : item.ProductNumber} </td>
                                             <td className={`${item.packagegroup ? "bg-default-td" : ""}`}> {item.CounterName == null ? "not found data" : item.CounterName} </td>
-                                            <td> {dateformat(item.ExpiryTime) == null ? "not found data" : dateformat(item.ExpiryTime)}</td>
+                                            <td> {item.ExpiryTime == null ? "not found data" : dateformat(item.ExpiryTime)}</td>
                                             <td> {item.status ? item.status.toString() : "false"} </td>
                                             {/* <td> {item.description} </td> */}
                                         </tr>
@@ -521,7 +527,7 @@ export default function Modifieldlistphone() {
 
                                                 <td className={!item.status ? "bg-grey-default" : ""}> {item.Msisdn} </td>
                                                 <td className={!item.status ? "bg-grey-default" : ""}> {item.ProductNumber == null ? "not found data" : item.ProductNumber} </td>
-                                                <td className={!item.status ? "bg-grey-default" : ""}> {item.ExpiryTime} </td>
+                                                <td className={!item.status ? "bg-grey-default" : ""}> {item.ExpiryTime == null ? "not found data" : item.ExpiryTime} </td>
                                                 <td className={!item.status ? "bg-grey-default" : ""}> {item.TransactionID == null ? "not found data" : item.ProductNumber} </td>
                                                 {/* <td> {item.description} </td> */}
                                                 <td className={!item.status ? "bg-grey-default" : ""}> {item.status.toString()} </td>
