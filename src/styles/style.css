@@ -323,7 +323,7 @@ div.lb-record.disable {
     border: 1px solid #efe5e5;
 }
 
-.border-white{
+.border-white {
     border: 1px solid #FFFFFF;
 }
 
@@ -834,12 +834,20 @@ div.lb-record.disable {
     right: 30%;
 }
 
+.right-20-px {
+    right: 20px;
+}
+
 .right-35-px {
     right: 35px;
 }
 
 .right-73-px {
     right: 73px;
+}
+
+.right-250-px {
+    right: 250px;
 }
 
 .left-266-px {
@@ -870,12 +878,32 @@ div.lb-record.disable {
     bottom: 15%;
 }
 
+.bottom-24 {
+    bottom: 24%;
+}
+
 .bottom-26 {
     bottom: 26%;
 }
 
 .bottom-35 {
     bottom: 35%;
+}
+
+.bottom-42 {
+    bottom: 42%;
+
+
+}
+
+
+
+.bottom-44 {
+    bottom: 44%;
+}
+
+.bottom-49 {
+    bottom: 49%;
 }
 
 .bottom-10-px {
@@ -919,6 +947,10 @@ div.lb-record.disable {
 
 .bottom-17-l {
     bottom: -17px;
+}
+
+.bottom-178-px {
+    bottom: 178px;
 }
 
 .bottom-19-px-l {
@@ -1068,7 +1100,9 @@ input {
     padding-top: 6px;
 }
 
-
+.transform-5-l{
+    transform: rotate(-5deg);
+}
 .transform-9-l {
     transform: rotate(-9deg);
 }
@@ -1117,6 +1151,14 @@ input {
     transform: rotate(-70deg);
 }
 
+.transform-80-l {
+    transform: rotate(-80deg);
+}
+
+.transform-90-l {
+    transform: rotate(-90deg);
+}
+
 .tansform-20 {
     transform: rotate(20deg);
 }
@@ -1139,6 +1181,14 @@ input {
 
 .transform-46 {
     transform: rotate(46deg);
+}
+
+.transform-50 {
+    transform: rotate(50deg);
+}
+
+.transform-55 {
+    transform: rotate(55deg);
 }
 
 .transform-60 {
