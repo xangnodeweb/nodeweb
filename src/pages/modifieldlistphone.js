@@ -605,7 +605,7 @@ export default function Modifieldlistphone() {
                         </div>
                         {/* <span> detail data modify count : {modelstatusmodified.length} </span> */}
                         {/* <Excelexport data={modelstatusmodified} date={datenow()} /> */}
-                        <button onClick={() => Exportexcels({ data: modelstatusmodified })} className="w-115-px "> export </button>
+                        {/* <button onClick={() => Exportexcels({ data: modelstatusmodified })} className="w-115-px "> export </button> */}
 
                     </div>
                 </div>
