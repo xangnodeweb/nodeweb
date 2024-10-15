@@ -152,7 +152,7 @@ export default function Addpackagephone() {
             const datas = { "phone": phonenumber, "countername": countername, "datestart": datestart, "dateexpire": dateexpire, "refillstoptime": refillstoptime };
             // console.log(datas);
             setloading(true);
-            const data = await axios.post("http://172.28.27.50:3000/api/addpackage", datas);
+            const data = await axios.post("http://127.0.0.1:3000/api/addpackage", datas);
             if (data.status == 200) {
                 // console.log(data.data.result);
                 if (data.data.status == true) {
@@ -195,7 +195,7 @@ export default function Addpackagephone() {
         try {
 
             const dataphone = { phone: phones }
-            const data = await axios.post("http://172.28.27.50:3000/api/inqueryphone", dataphone);
+            const data = await axios.post("http://127.0.0.1:3000/api/inqueryphone", dataphone);
             // console.log(data.data);
             if (data.status == 200) {
                 // setdataaddpackage(data.data);

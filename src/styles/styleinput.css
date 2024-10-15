@@ -165,6 +165,10 @@ li.css-1h4bzp1-MuiButtonBase-root-MuiMenuItem-root {
     align-items: center;
 
 }
+.btn {
+    padding: 8px ;
+    border-radius: 3px;
+}
 
 .loader {
 

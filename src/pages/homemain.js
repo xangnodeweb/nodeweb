@@ -42,7 +42,7 @@ export default function Homemain() {
                         <div className="main-slidebar">
                             <div className="icon-menu iconmenu  w-100 bg-white  d-flex">
                                 <span> soap data phonenumber </span>
-                                <i className="fa fa-chevron-left"></i>
+                                <i className="fa fa-chevron-left color-white border-t-l-radius-15-px  border-b-l-radius-15-px bg-default"></i>
                             </div>
 
                             <div className="nav-link">

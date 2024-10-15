@@ -43,7 +43,7 @@ export default function Descriptionpage({ callpages }) {
                 </div>
 
                 <div className="w-100 text-center">
-                    <img src="http://172.28.27.50:8080/image/main.png" className="w-70 h-500-px" />
+                    <img src="http://127.0.0.1:8080/image/main.png" className="w-70 h-500-px" />
                 </div>
 
                 <div className="pl-3 mt-5">
@@ -56,7 +56,7 @@ export default function Descriptionpage({ callpages }) {
                     {/* <span className="f-14-px" > 3/ select list phone package  </span>          */}        <span className="f-18-px" > 3/ ສະແດງຂໍ້ມູນ package ທີ່ຂອງເບີທີ່ຄົ້ນຫາ   </span>
                 </div>
                 <div className="w-70 text-center position-relative m-auto">
-                    <img src="http://172.28.27.50:8080/image/inquery-main.png" className="w-100 h-500-px mt-3" />
+                    <img src="http://127.0.0.1:8080/image/inquery-main.png" className="w-100 h-500-px mt-3" />
                     <div className="position-absolute top-93-px left-33">
                         <div className="position-relative">
                             <div className="" style={{}}>
@@ -105,7 +105,7 @@ export default function Descriptionpage({ callpages }) {
                         <span className="f-18-px"> 5/ ຖ້າອັບເດດ modify expireTime success ອັບເດດຂໍ້ມູນສຳເລັດ ຈະມີຂໍ້ຄວາມສະແດງ ຕາມຮູບ ເລກ 5  </span>
                     </div>
                     <div className="w-70 m-auto position-relative d-flex flex-column ">
-                        <img src="http://172.28.27.50:8080/image/modify-main.png" className="w-100 h-500-px mt-5" />
+                        <img src="http://127.0.0.1:8080/image/modify-main.png" className="w-100 h-500-px mt-5" />
 
                         <div className="position-absolute left-34 top-16 ">
                             <div className="position-relative">
@@ -153,7 +153,7 @@ export default function Descriptionpage({ callpages }) {
                     </div>
                     <div className=" d-flex flex-column mt-5 mb-6 position-relative px-5 pt-5 mx-auto">
 
-                        <img src="http://172.28.27.50:8080/image/addpackage-success-main.png" className="w-400-px h-200-px mt-5" />
+                        <img src="http://127.0.0.1:8080/image/addpackage-success-main.png" className="w-400-px h-200-px mt-5" />
                         <div className="w-40-px h-40-px bg-default border-radius-50 d-flex justify-content-center align-items-center position-absolute left-0 top-0" >
                             <span> 5 </span>
                         </div>
@@ -178,7 +178,7 @@ export default function Descriptionpage({ callpages }) {
 
                     </div>
                     <div className="w-70 m-auto position-relative pt-5">
-                        <img src="http://172.28.27.50:8080/image/modifylistphone-main.png" className="w-100  h-500-px" />
+                        <img src="http://127.0.0.1:8080/image/modifylistphone-main.png" className="w-100  h-500-px" />
 
                         <div className="top-18 left-32 position-absolute">
                             <div className="position-relative">
@@ -251,12 +251,12 @@ export default function Descriptionpage({ callpages }) {
                         <div className="w-100  position-relative d-flex justify-content-center">
 
                             <div className="d-flex flex-column align-items-center border-grey">
-                                <img src="http://172.28.27.50:8080/image/file-txt-modify-main.png" className="w-355-px h-220-px" />
+                                <img src="http://127.0.0.1:8080/image/file-txt-modify-main.png" className="w-355-px h-220-px" />
                                 <span className="f-16-px">  ປະເພດຟາຍ file txt </span>
                             </div>
 
                             <div className="d-flex flex-column align-items-center border-grey ml-7">
-                                <img src="http://172.28.27.50:8080/image/file-xlsx-modify-main.png" className="w-355-px h-220-px" />
+                                <img src="http://127.0.0.1:8080/image/file-xlsx-modify-main.png" className="w-355-px h-220-px" />
                                 <span className="f-16-px">  ປະເພດຟາຍ file xlsx </span>
                             </div>
 
@@ -264,16 +264,16 @@ export default function Descriptionpage({ callpages }) {
                     </div>
                     <div className="w-100 my-3 d-flex position-relative px-5 justify-content-center">
                         <div className="d-flex flex-column align-items-center">
-                            <img src="http://172.28.27.50:8080/image/dialog-typefile-main.png" className="w-355-px h-220-px" />
+                            <img src="http://127.0.0.1:8080/image/dialog-typefile-main.png" className="w-355-px h-220-px" />
                             <span className="f-16-px">  ກະລຸນາເລືອກຟາຍໃຫ້ຖືກປະເພດ </span>
                         </div>
 
                         <div className="d-flex flex-column align-items-center ml-5 ">
-                            <img src="http://172.28.27.50:8080/image/file-notfound-data-main.png" className="w-355-px h-220-px" />
+                            <img src="http://127.0.0.1:8080/image/file-notfound-data-main.png" className="w-355-px h-220-px" />
                             <span className="f-16-px">  ຟາຍທີ່ທ່ານເລືອກ ບໍ່ມີຂໍ້ມູນ </span>
                         </div>
                         <div className="d-flex flex-column align-items-center ml-5 ">
-                            <img src="http://172.28.27.50:8080/image/file-notfound-data-main.png" className="w-355-px h-220-px" />
+                            <img src="http://127.0.0.1:8080/image/file-notfound-data-main.png" className="w-355-px h-220-px" />
                             <span className="f-16-px">  ອັບເດດຂໍ້ມູນສຳເລັດ </span>
                         </div>
                     </div>
@@ -296,7 +296,7 @@ export default function Descriptionpage({ callpages }) {
 
                     <div className="w-70 m-auto position-relative pt-5">
 
-                        <img src="http://172.28.27.50:8080/image/addpackagephone-main.png" className="w-100 h-500-px" />
+                        <img src="http://127.0.0.1:8080/image/addpackagephone-main.png" className="w-100 h-500-px" />
 
                         <div className=" top-18 left-33 position-absolute ">
                             <div className="position-relative">
@@ -345,7 +345,7 @@ export default function Descriptionpage({ callpages }) {
 
                     <div className="w-70 position-relative m-auto pt-5">
 
-                        <img src="http://172.28.27.50:8080/image/addpackagelistphone-main.png" className="w-100 h-500-px" />
+                        <img src="http://127.0.0.1:8080/image/addpackagelistphone-main.png" className="w-100 h-500-px" />
 
                         <div className="position-absolute top-12 left-35">
                             <div className="position-relative">
@@ -392,12 +392,12 @@ export default function Descriptionpage({ callpages }) {
                         <span className="f-20-px my-3"> - ແບບ file txt or xlsx </span>
                         <div className="d-flex justify-content-center mb-3">
                             <div className=" d-flex  flex-column  ">
-                                <img src="http://172.28.27.50:8080/image/file-txt-addpackage-main.png" className="h-300-px w-100 border-grey" />
+                                <img src="http://127.0.0.1:8080/image/file-txt-addpackage-main.png" className="h-300-px w-100 border-grey" />
                                 <span className="f-18-px m-auto pt-2"> ຟາຍ txt ຂໍ້ມູນໃນຟາຍ </span>
                             </div>
 
                             <div className=" d-flex  flex-column ml-5 ">
-                                <img src="http://172.28.27.50:8080/image/file-xlsx-addpackage-main.png" className="h-300-px w-100" />
+                                <img src="http://127.0.0.1:8080/image/file-xlsx-addpackage-main.png" className="h-300-px w-100" />
                                 <span className="f-18-px m-auto pt-2"> ຟາຍ xlsx ຂໍ້ມູນໃນຟາຍ </span>
                             </div>
                         </div>
@@ -406,11 +406,11 @@ export default function Descriptionpage({ callpages }) {
                     <div className="w-100 py-3 d-flex justify-content-center mt-5 mb-3">
 
                         <div className=" d-flex flex-column w-355-px h-200-px  align-items-center">
-                            <img src="http://172.28.27.50:8080/image/add-notfoundfile-main.png" className="h-300-px w-100" />
+                            <img src="http://127.0.0.1:8080/image/add-notfoundfile-main.png" className="h-300-px w-100" />
                             <span className="f-18-px pt-2">  ຟາຍທີ່ທ່ານເລືອກບໍ່ມີຂໍ້ມູນ  </span>
                         </div>
                         <div className=" d-flex flex-column w-355-px h-200-px align-items-center ml-5">
-                            <img src="http://172.28.27.50:8080/image/addpackage-success-main.png" className="h-300-px w-100" />
+                            <img src="http://127.0.0.1:8080/image/addpackage-success-main.png" className="h-300-px w-100" />
                             <span className="f-18-px pt-2">  add package ສຳເລັດ  </span>
                         </div>
                     </div>
@@ -422,7 +422,7 @@ export default function Descriptionpage({ callpages }) {
                     <div className="w-100 d-flex pt-4 mt-2 pb-3">
 
                         <div className="d-flex flex-column">
-                            <img src="http://172.28.27.50:8080/image/inquery-timeout-main.png" className="w-355-px h-200-px m-auto  pb-1" />
+                            <img src="http://127.0.0.1:8080/image/inquery-timeout-main.png" className="w-355-px h-200-px m-auto  pb-1" />
                             <span className="m-auto">  ການແຈ້ງເຕືອນທີ່ເປັນຂໍ້ຄວາມ ConnectTimeoutError ແມ່ນລະບົບບໍ່ສາມາດເຊື່ອມຕໍ່ໄດ້  </span>
                         </div>
                     </div>

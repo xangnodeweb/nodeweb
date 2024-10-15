@@ -285,21 +285,18 @@ export default function Addpackagelistphone() {
             }
 
             if (!datestart) {
-                // setiserr(true);
-                // setmsgs(1);
+          
                 validinput(true, 1);
                 return;
             }
             if (!dateexpire) {
-                // setiserr(true);
-                // setmsgs(3)
+          
                 validinput(true, 3);
                 return;
             }
 
             if (!refillstoptime) {
-                // setiserr(true);
-                // setmsgs(7)
+      
                 validinput(true, 7);
                 return;
             }
@@ -322,8 +319,9 @@ export default function Addpackagelistphone() {
 
             }
             setloading(true);
-            const data = await axios.post("http://172.28.27.50:3000/api/addpackagelistphone", modelfile);
+            const data = await axios.post("http://127.0.0.1:3000/api/addpackagelistphone", modelfile);
             if (data.status == 200) {
+                
                 addpackageExportexcel({ data: data.data.result })
                 validinput(false, 0);
                 setloading(false);
@@ -383,32 +381,7 @@ export default function Addpackagelistphone() {
             console.log(error)
         }
     }
-    // const counternametd = () => {
-    //     try {
-
-    //         let countname = "";
-    //         if (countername == 0) {
-    //             countname = "disable package";
-    //         } else if (countername == 1) {
-    //             countname = "Prepaid_Staff_3GB";
-    //         } else if (countername == 2) {
-    //             countname = "Prepaid_Staff_5GB";
-    //         } else if (countername == 3) {
-    //             countname = "Prepaid_Staff_7GB";
-    //         } else if (countername == 4) {
-    //             countname = "Prepaid_Staff_10GB";
-    //         } else if (countername == 5) {
-    //             countname = "Prepaid_Staff_15GB";
-    //         } else if (countername == 6) {
-    //             countname = "Prepaid_Staff_25GB";
-    //         }
-
-    //         return countname;
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-
-    // }
+  
     const loaddatafile = (e) => {
         try {
             e.preventDefault();

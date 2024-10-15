@@ -27,6 +27,9 @@ export default function Modifieldlistphone() {
 
     const [modelnullpackage, setmodelnullpackage] = useState([]);
 
+    const [modelmodify, setmodelmodify] = useState([]);
+    const [modelmodifys, setmodelmodifys] = useState([]);
+
     const [loading, setloading] = useState(false);
 
     const [datemodifield, setdatemodifield] = useState(null);
@@ -38,6 +41,7 @@ export default function Modifieldlistphone() {
     });
     const [openmodal, setmodal] = useState(false);
     const [btnclick, setbtnclick] = useState(0)
+    const [btnmodify, setbtnmodify] = useState(0)
     const showfile = (e) => {
         if (btncheck != 1) return;
         const file = e.target.files[0];
@@ -163,10 +167,10 @@ export default function Modifieldlistphone() {
             }
 
 
-            console.log("select file ")
+
             console.log(filedata)
 
-            const data = await axios.post("http://172.28.27.50:3000/api/inquerylistphone", filedata);
+            const data = await axios.post("http://127.0.0.1:3000/api/inquerylistphone", filedata);
             console.log(data.data)
             if (data.status == 200) {
                 setmodellistfile(data.data.result);
@@ -185,8 +189,8 @@ export default function Modifieldlistphone() {
                     setloading(false)
                     if (message.status == false && message.code != 0) {
                         callopenmodal("cannot read file data", message.message, 1, true);
-                    }else{
-                        callopenmodal("","cannot inquery list phone", 1, true);
+                    } else {
+                        callopenmodal("", "cannot inquery list phone", 1, true);
                     }
                 }
             }
@@ -219,13 +223,13 @@ export default function Modifieldlistphone() {
             setmodellistmodified([]);
             let model = [];
 
-            const modelfilecheck = modellistfile.filter(x => x.ProductNumber == null);
-            console.log(modelfilecheck)
-            if (modelfilecheck.length != 0) {
-                callopenmodal("cannot modify package data", `please check phone ${modelfilecheck[0].phone} not found  productnumber`, 1, true);
-                setloading(false);
-                return
-            }
+            // const modelfilecheck = modellistfile.filter(x => x.ProductNumber == null);
+            // console.log(modelfilecheck)
+            // if (modelfilecheck.length != 0) {
+            //     callopenmodal("cannot modify package data", `please check phone ${modelfilecheck[0].phone} not found  productnumber`, 1, true);
+            //     setloading(false);
+            //     return
+            // }
 
             console.log(modellistfile);
             if (modellistfile.length > 0) {
@@ -248,15 +252,20 @@ export default function Modifieldlistphone() {
             //    /^85620[0-9]{8}/
             let modeldata = [];
 
-            const data = await axios.post("http://172.28.27.50:3000/api/modifieldlistdatetime", modellistmodified);
+            const data = await axios.post("http://127.0.0.1:3000/api/modifieldlistdatetime", modellistmodified);
             // console.log(data.data);
             if (data.status == 200) {
-                // console.log(data.data);
+                // console.log(data. data);
                 setmodelstatusmodified(data.data.result);
+
+                setmodelmodify(data.data.result);
+
+
                 console.log(data.data)
                 if (data.data.result.length == 0) {
                     return;
                 }
+
                 Exportexcels({ data: data.data.result })  // download file
                 callopenmodal("", "modify data phone success", 1, true);
             }
@@ -270,10 +279,25 @@ export default function Modifieldlistphone() {
                     const statuscode = error.response.data;
                     if (statuscode.status == false && statuscode.code == 2) {
                         const data = error.response.data.result;
+                        if (data.length > 0) {
+                            const modelsuccess = data.filter(x => x.status == 'true');
+                            if (modelsuccess.length > 0) {
+                                setloading(false);
+                                Exportexcels({ data: modelsuccess })  // download file
+                                setmodelstatusmodified(data);
+                                setmodelmodify(data);
+                                callopenmodal("please check data file", "modify data phone Timeout", 1, true);
+                            } else {
+                                callopenmodal("cannot read file data", `${data.length > 0 ? data[0].message : "cannot modify ConnectTimeoutError"}`, 1, true);
+                                setloading(false);
+                            }
 
-                        callopenmodal("cannot read file data", `${data.length > 0 ? data[0].message : "cannot modify ConnectTimeoutError"}`, 1, true);
-                        setloading(false);
+                        }
+                        // callopenmodal("cannot read file data", `${data.length > 0 ? data[0].message : "cannot modify ConnectTimeoutError"}`, 1, true);
+                        // setloading(false);
                     }
+                } else {
+
                 }
             }
 
@@ -373,12 +397,36 @@ export default function Modifieldlistphone() {
                 console.log(modellistfile)
                 setbtnclick(2)
             }
-
         }
-
-
-
     }
+    const btnmodifymodel = (btnvalue) => {
+        try {
+
+
+            console.log(btnvalue);
+
+            if (btnvalue == 0) {
+                setbtnmodify(btnvalue);
+                setmodelstatusmodified(modelmodify);
+            } else if (btnvalue == 1) {
+                if (modelmodify.length > 0) {
+                    setbtnmodify(btnvalue);
+                    const modelsuccess = modelmodify.filter(x => x.status == 'true');
+                    setmodelstatusmodified(modelsuccess);
+                }
+            } else if (btnvalue == 2) {
+                if (modelmodify.length > 0) {
+                    setbtnmodify(btnvalue);
+                    const modelmodifyfailed = modelmodify.filter(x => x.status != 'true');
+                    setmodelstatusmodified(modelmodifyfailed);
+                }
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const clearmodeldata = () => {
         setmodellistfile([]);
         setmodelnullpackage([]);
@@ -503,8 +551,21 @@ export default function Modifieldlistphone() {
                         </> : ""
                         }
                     </div>
-                    <span className="pt-2 pl-2"> file dataphone count : {modellistfile.length} </span>
-                    <span className="f-14-px  pl-2"> Detail modify </span>
+                    <span className="pt-2 f-14-px"> file dataphone count : {modellistfile.length} </span>
+                    <span className="f-14-px  "> Detail modify </span>
+                    <div className="d-flex justify-space-between py-3">
+                        <div className="d-flex">
+                            <button className={`btn ${btnmodify == 0 ? "bg-default color-white" : "bg-default-btn"}`} value={0} onClick={() => btnmodifymodel(0)} > modify all </button>
+                            <button className={`btn mx-2 ${btnmodify == 1 ? "bg-default color-white" : "bg-default-btn"}`} value={1} onClick={() => btnmodifymodel(1)}> modify success </button>
+                            <button className={`btn ${btnmodify == 2 ? "bg-default color-white" : "bg-default-btn"}`} value={2} onClick={() => btnmodifymodel(2)}> modify failed </button>
+                        </div>
+
+                        <div>
+                            <button className="btn" onClick={() => Exportexcels({ data: modelstatusmodified })}>  download </button>
+
+                        </div>
+
+                    </div>
                     <div className="w-100 d-flex flex-column">
                         <div className="min-h-300-px max-h-300-px overflow-y-scroll">
                             <table className="table position-sticky top-0 left-0">
@@ -537,7 +598,10 @@ export default function Modifieldlistphone() {
 
                                 </tbody>
                             </table>
+                            <div className="text-center pt-3">
+                                <span className="f-16-px"> no record </span>
 
+                            </div>
                         </div>
                         {/* <span> detail data modify count : {modelstatusmodified.length} </span> */}
                         {/* <Excelexport data={modelstatusmodified} date={datenow()} /> */}

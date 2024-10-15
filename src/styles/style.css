@@ -294,6 +294,11 @@ div.lb-record.disable {
     justify-content: space-around;
 }
 
+.justify-space-between {
+
+    justify-content: space-between;
+}
+
 .flex-column {
     flex-direction: column;
 }
@@ -450,6 +455,12 @@ div.lb-record.disable {
 
 .m-auto {
     margin: auto;
+}
+
+.mx-2 {
+    margin-left: 8px;
+    margin-right: 8px;
+
 }
 
 .mx-auto {
@@ -618,9 +629,11 @@ div.lb-record.disable {
 .top-72 {
     top: 72%;
 }
-.top-9-px-l{
+
+.top-9-px-l {
     top: -9px;
 }
+
 .top-10-px {
     top: 10px;
 }
@@ -628,9 +641,11 @@ div.lb-record.disable {
 .top-12-px {
     top: 12px;
 }
-.top-260-px{
+
+.top-260-px {
     top: 260px;
 }
+
 .top-9-px-l {
     top: -9px;
 }
@@ -738,13 +753,15 @@ div.lb-record.disable {
 .left-41 {
     left: 41%;
 }
-.left-3-px-l{
+
+.left-3-px-l {
     left: -3px;
 }
 
 .left-9-l {
     left: -9px;
 }
+
 .left-10-px-l {
     left: -10px;
 }
@@ -804,16 +821,19 @@ div.lb-record.disable {
 .right-14-px-l {
     right: -14px;
 }
-.right-15-px-l{
+
+.right-15-px-l {
     right: -15px;
 }
 
 .right-30 {
     right: 30%;
 }
-.right-35-px{
+
+.right-35-px {
     right: 35px;
 }
+
 .right-73-px {
     right: 73px;
 }
@@ -857,7 +877,8 @@ div.lb-record.disable {
 .bottom-10-px {
     bottom: 10px;
 }
-.bottom-12-px-l{
+
+.bottom-12-px-l {
     bottom: -12px;
 }
 
@@ -1051,9 +1072,11 @@ input {
 .transform-16-l {
     transform: rotate(-16deg);
 }
-.transform-20-l{
+
+.transform-20-l {
     transform: rotate(-20deg);
 }
+
 .transform-30-l {
     transform: rotate(-30deg);
 }
@@ -1101,16 +1124,20 @@ input {
 .transform-30 {
     transform: rotate(30deg);
 }
-.transform-40{
+
+.transform-40 {
     transform: rotate(40deg);
 }
-.transform-45{
+
+.transform-45 {
     transform: rotate(45deg);
 }
+
 .transform-46 {
     transform: rotate(46deg);
 }
-.transform-60{
+
+.transform-60 {
     transform: rotate(60deg);
 }
 
@@ -1120,4 +1147,13 @@ input {
 
 .transform-145 {
     transform: rotate(145deg);
+}
+
+.border-t-l-radius-15-px {
+    border-top-left-radius: 15px;
+
+}
+
+.border-b-r-radius-15-px {
+    border-bottom-left-radius: 15px;
 }
