@@ -597,6 +597,9 @@ div.lb-record.disable {
 .top-18 {
     top: 18%;
 }
+.top-30{
+    top: 30%;
+}
 
 .top-33 {
     top: 33%;
@@ -633,7 +636,9 @@ div.lb-record.disable {
 .top-72 {
     top: 72%;
 }
-
+.top-8-px-l {
+    top: -8px;
+}
 .top-9-px-l {
     top: -9px;
 }
@@ -749,6 +754,9 @@ div.lb-record.disable {
 .left-38 {
     left: 38%;
 }
+.left-39{
+    left: 39%;
+}
 
 .left-40 {
     left: 40%;
@@ -833,7 +841,9 @@ div.lb-record.disable {
 .right-30 {
     right: 30%;
 }
-
+.right-35 {
+    right: 35%;
+}
 .right-20-px {
     right: 20px;
 }
@@ -878,6 +888,9 @@ div.lb-record.disable {
     bottom: 15%;
 }
 
+.bottom-23{
+    bottom: 23%;
+}
 .bottom-24 {
     bottom: 24%;
 }
@@ -1102,6 +1115,9 @@ input {
 
 .transform-5-l{
     transform: rotate(-5deg);
+}
+.transform-8-l{
+    transform: rotate(-8deg);
 }
 .transform-9-l {
     transform: rotate(-9deg);

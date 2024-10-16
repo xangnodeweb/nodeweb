@@ -38,7 +38,10 @@ export default function Descriptionpage({ callpages }) {
                         <span className="f-18-px"> 5/ page add package listphone ແບບ file </span>
                         &nbsp;  <span className="f-18-px"> ອັບເດດຂໍ້ມູນ date expire ແບບ user </span>
                     </div>
-
+                    <div className="d-flex">
+                        <span className="f-18-px"> 6/ description ລາຍລະອຽດການໃຊ້ soap query phone </span>
+                       
+                    </div>
 
                 </div>
 
@@ -173,8 +176,8 @@ export default function Descriptionpage({ callpages }) {
                         <span className="f-18-px"> 2/ ກົດປຸ່ມ load file data ເພື່ອໂຫຼດຂໍ້ມູນຈາກຟາຍ  </span>
                         <span className="f-18-px"> 3/ ສະແດງຂໍ້ມູນ ສາມາດກົດປຸ່ມເລືອກ ແບບ ສະແດງຂໍ້ມູນ : ຂໍ້ມູນທັງໝົດ , ຂໍ້ມູນບໍ່ມີ package ແລະ ຂໍ້ມູນມີ package </span>
                         <span className="f-18-px"> 4/ ເລືອກວັນທີ date expire ທີ່ຕ້ອງການອັບເດດ  </span>
-                        <span className="f-18-px"> 5/ ກົດປຸ່ມອັບເດດ ເພື່ອອັບເດດຂໍ້ມູນ ຖ້າອັບເດດ ສຳເລັດຈະ download ຟາຍ xlsx ຖ້າສຳເລັດ ກະລຸນາກວດເບິ່ງວ່າ ມີຂໍ້ມູນໃນຟາຍ  status ເປັນ false ແມ່ນຂໍ້ມູນທີ່ modify ບໍ່ສຳເລັດ ແລະ ຖ້າເປັນ status true ແມ່ນສຳເລັດ   </span>
-                        <span className="f-18-px"> 6/ ເລືອກເບິ່ງຂໍ້ມູນອັບເດດ ຂໍ້ມູນທັງໝົດ , ຂໍ້ອັບເດດສຳເລັດ ແລະ ຂໍ້ອັບເດດບໍ່ສຳເລັດ  </span>
+                        <span className="f-18-px"> 5/ ກົດປຸ່ມອັບເດດ modify datetime ເພື່ອອັບເດດຂໍ້ມູນ ຖ້າອັບເດດ ສຳເລັດຈະ download ຟາຍ xlsx ຖ້າສຳເລັດ ກະລຸນາກວດເບິ່ງວ່າ ມີຂໍ້ມູນໃນຟາຍ  status ເປັນ false ແມ່ນຂໍ້ມູນທີ່ modify ບໍ່ສຳເລັດ ແລະ ຖ້າເປັນ status true ແມ່ນສຳເລັດ   </span>
+                        <span className="f-18-px"> 6/ ສະແດງຂໍ້ມູນອັບເດດ ປຸ່ມເລືອກເບິ່ງຂໍ້ມູນອັບເດດ ຂໍ້ມູນທັງໝົດ , ຂໍ້ມູນອັບເດດສຳເລັດ ແລະ ຂໍ້ມູນອັບເດດບໍ່ສຳເລັດ  </span>
                         <span className="f-18-px"> 7/ ສາມາດກົດປຸ່ມ download ເພື່ອດາວໂຫຼດຟາຍທີ່ອັບເດດ  </span>
                     </div>
                     <div className="w-70 m-auto position-relative pt-5">
@@ -198,11 +201,11 @@ export default function Descriptionpage({ callpages }) {
                                 <div className="w-40-px h-40-px border-radius-50 bg-gray  d-flex justify-content-center align-items-center">
                                     <span className="f-20-px"> 2 </span>
                                 </div>
-                                <i className="fa fa-long-arrow-left position-absolute top-0 right-0 transform-145 right-11-l"> </i>
+                                <i className="fa fa-long-arrow-left position-absolute top-8-px-l left-0 transform-30 "> </i>
                             </div>
                         </div>
 
-                        <div className="position-absolute  top-14 right-30">
+                        <div className="position-absolute  top-14 right-35">
                             <div className="position-relative">
                                 <div className="w-40-px h-40-px border-radius-50 bg-gray   d-flex justify-content-center align-items-center">
                                     <span className="f-20-px"> 3 </span>
@@ -216,7 +219,7 @@ export default function Descriptionpage({ callpages }) {
                                 <div className="w-40-px h-40-px border-radius-50 bg-gray d-flex justify-content-center align-items-center">
                                     <span className="f-20-px"> 4 </span>
                                 </div>
-                                <i className="fa fa-long-arrow-right position-absolute right-14-px-l bottom-10-px transform-9-l "> </i>
+                                <i className="fa fa-long-arrow-right position-absolute top-0 right-10-px-l transform-9-l "> </i>
                             </div>
                         </div>
 
@@ -225,7 +228,7 @@ export default function Descriptionpage({ callpages }) {
                                 <div className="w-40-px h-40-px border-radius-50 bg-gray  d-flex justify-content-center align-items-center">
                                     <span className="f-20-px"> 5 </span>
                                 </div>
-                                <i className="fa fa-long-arrow-left  top-0 left-11-px-l position-absolute transform-30"></i>
+                                <i className="fa fa-long-arrow-left  top-0 left-11-px-l position-absolute transform-55"></i>
                             </div>
                         </div>
 
@@ -280,7 +283,7 @@ export default function Descriptionpage({ callpages }) {
                             <span className="f-16-px">  ຟາຍທີ່ທ່ານເລືອກ ບໍ່ມີຂໍ້ມູນ </span>
                         </div>
                         <div className="d-flex flex-column align-items-center ml-5 ">
-                            <img src="http://172.28.27.50:8080/image/file-notfound-data-main.png" className="w-355-px h-220-px" />
+                            <img src="http://172.28.27.50:8080/image/modify-success.main.png" className="w-355-px h-220-px" />
                             <span className="f-16-px">  ອັບເດດຂໍ້ມູນສຳເລັດ </span>
                         </div>
                     </div>
@@ -297,7 +300,7 @@ export default function Descriptionpage({ callpages }) {
                         <span className="f-18-px"> 1/ ປ້ອນຂໍ້ມູນ ເບີໂທ , ເລືອກ package , ເລືອກວັນທີ່ເລີ່ມຕົ້ນ , ເລືອກວັນທີ່ໝົດອາຍຸ , ເລືອກມື້ RefillStopTime ຖ້າປ້ອນຂໍ້ມູນຄົບ ໃຫ້ກົດປຸ່ມ add package </span>
 
                         <span className="f-18-px"> 2/ ກົດປຸ່ມ add package ເພື່ອຕື່ມ pagekage ເບີທີ່ປ້ອນ ຖ້າສຳເລັດຈະມີ ຟາຍ download xlsx ກະລຸນາເປີດຟາຍເພື່ອກວດເບິ່ງ ການຕື່ມ pagekage  </span>
-                        <span className="f-18-px"> 3/ ສະແດງລາຍການ package ຂອງເບີທີ່ຕື່ມ</span>
+                        <span className="f-18-px"> 3/ ສະແດງລາຍການ package ຂອງເບີທີ່ຕື່ມ add package </span>
 
                     </div>
 
@@ -314,7 +317,7 @@ export default function Descriptionpage({ callpages }) {
                             </div>
                         </div>
 
-                        <div className="position-absolute  bottom-10 left-30 ">
+                        <div className="position-absolute  bottom-23 left-30 ">
                             <div className="position-relative">
 
                                 <div className="w-40-px h-40-px position-absolute border-radius-50 bg-gray d-flex justify-content-center align-items-center">
@@ -345,7 +348,7 @@ export default function Descriptionpage({ callpages }) {
                         <span className="f-20-px f-weight-900">  5/ add package listphone ຕື່ມ package ແບບຟາຍ file txt ແລະ file xlsx </span>
 
                         <span className="f-18-px"> 1/  ກະລຸນາເລືອກແບບຟາຍທີ່ຕ້ອງການ ແລ້ວເລືອກປຸ່ມ file open txt  ແລະ file open xlsx ເພື່ອເລືອກປະເພດຟາຍ  ຄລິກເລືອກ ຟາຍ txt ແລະ ຟາຍ xlsx ເລືອກໄດ້ 2 ແບບ ເລືອກຟາຍແລ້ວກົດ load file data ເພື່ອໂຫຼດ ດາຕ້າ ຈາກຟາຍ </span>
-                        <span className="f-18-px"> 2/  ຫຼັງຈາກ ກົດປຸ່ມ load file data ຖ້າສຳເລັດ ຈະມີຂໍ້ມູນສະແດງ ຂໍ້ມູນເບີ ແລະ ຊື່ package ທີ່ ເລກ 2    </span>
+                        <span className="f-18-px"> 2/  ຫຼັງຈາກ ກົດປຸ່ມ load file data ຖ້າສຳເລັດ ຈະມີຂໍ້ມູນສະແດງ ຂໍ້ມູນເບີ ແລະ ຊື່ package ທີ່ຮູບເລກ 2    </span>
                         <span className="f-18-px">  3/ ເລືອກປ້ອນ ວັນທີ່ເລິ່ມຕົ້ນ datestart  , ເລືອກວັນທີ່ໝົດອາຍຸ dateexpire , ເລືອກມື້ date RillStopTime ປ້ອນຄົບແລ້ວ ກົດປຸ່ມ add package ເພື່ອ add package data </span>
                         <span className="f-18-px"> 4/ ຫຼັງຈາກ ກົດ add package ຖ້າສຳເລັດ ຈະໄດ້ຟາຍ xlsx ເປີດຟາຍເພື່ອກວດເບິ່ງວ່າ ເບີໃດທີ່ add package ສຳເລັດ ຫຼື ບໍ່ສຳເລັດ ຖ້າບໍ່ສຳເລັດ status  ຈະເປັນ false ຖ້າສຳເລັດ ຈະເປັນ true </span>
                     </div>
@@ -364,7 +367,7 @@ export default function Descriptionpage({ callpages }) {
 
                         </div>
 
-                        <div className="position-absolute top-50 right-0">
+                        <div className="position-absolute top-30 right-0">
                             <div className="position-relative">
                                 <div className="w-40-px h-40-px border-radius-50 bg-gray  d-flex justify-content-center align-items-center">
                                     <span > 2 </span>
@@ -373,7 +376,7 @@ export default function Descriptionpage({ callpages }) {
                             </div>
                         </div>
 
-                        <div className="position-absolute  bottom-26 left-40  ">
+                        <div className="position-absolute  bottom-26 left-39  ">
                             <div className="position-relative">
                                 <div className="w-40-px h-40-px border-radius-50 bg-gray d-flex justify-content-center align-items-center">
                                     <span > 3 </span>
@@ -382,7 +385,7 @@ export default function Descriptionpage({ callpages }) {
                             </div>
                         </div>
 
-                        <div className="position-absolute  bottom-5 left-30">
+                        <div className="position-absolute  bottom-10 left-30">
                             <div className="position-relative">
                                 <div className="w-40-px h-40-px border-radius-50 bg-gray   d-flex justify-content-center align-items-center">
                                     <span > 4 </span>

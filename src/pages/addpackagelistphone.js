@@ -59,18 +59,24 @@ export default function Addpackagelistphone() {
                     const datafile = datafilelist[0] == '' ? null : datafilelist[0];
                     // console.log(datafile)
                     if (datafile == null) {
-                        // ismsgs.title = "";
-                        // ismsgs.message = "file txt not found data";
-                        // ismsgs.btnlength = 1;
-                        // setopenmsg(true);
+
                         calldialog("please check file", "file txt not found data", 1, 0)
 
                         return;
                     } else {
-                        // console.log(datafilelist[0].toString().split(","))
+
+
                         const datafileonerecord = datafilelist[0].toString().split(",");
-                        modeldata.push({ phone: datafileonerecord[0], countername: datafileonerecord[1], starttime: datestart, expiretime: dateexpire, RefillStopTime: refillstoptime });
-                        setmodelfile(modeldata)
+                        console.log(datafileonerecord)
+                        if (datafileonerecord.length > 1) {
+                            modeldata.push({ phone: datafileonerecord[0], countername: datafileonerecord[1], starttime: datestart, expiretime: dateexpire, RefillStopTime: refillstoptime });
+                            setmodelfile(modeldata)
+                        }else{
+                            
+                            calldialog("please check file", "please check data file phone and package name", 1, 0)
+                            return
+                        }
+        
                     }
                 } else {
 
@@ -285,18 +291,18 @@ export default function Addpackagelistphone() {
             }
 
             if (!datestart) {
-          
+
                 validinput(true, 1);
                 return;
             }
             if (!dateexpire) {
-          
+
                 validinput(true, 3);
                 return;
             }
 
             if (!refillstoptime) {
-      
+
                 validinput(true, 7);
                 return;
             }
@@ -321,7 +327,7 @@ export default function Addpackagelistphone() {
             setloading(true);
             const data = await axios.post("http://172.28.27.50:3000/api/addpackagelistphone", modelfile);
             if (data.status == 200) {
-                
+
                 addpackageExportexcel({ data: data.data.result })
                 validinput(false, 0);
                 setloading(false);
@@ -381,7 +387,7 @@ export default function Addpackagelistphone() {
             console.log(error)
         }
     }
-  
+
     const loaddatafile = (e) => {
         try {
             e.preventDefault();

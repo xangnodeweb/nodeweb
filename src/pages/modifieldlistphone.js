@@ -165,9 +165,6 @@ export default function Modifieldlistphone() {
                 clearmodeldata();
                 return;
             }
-
-
-
             console.log(filedata)
 
             const data = await axios.post("http://172.28.27.50:3000/api/inquerylistphone", filedata);
@@ -502,7 +499,7 @@ export default function Modifieldlistphone() {
                             </DemoContainer>
                         </LocalizationProvider>
                         {isdate ? <><span className="color-red"> please select date modify </span> </> : ""}
-                        <button onClick={onmodifielddate} className="mt-3 border-radius-3-px " > modified datetime  </button>
+                        <button onClick={onmodifielddate} className="mt-3 border-radius-3-px " > modify datetime  </button>
                     </div>
 
 
