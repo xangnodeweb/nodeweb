@@ -85,7 +85,7 @@ export default function Homemain() {
                                     setpage(true)
                                 }}>
                                     <a >
-                                        <i className="fa fa-calendar"> </i>
+                                        <i className="fa fa-text-o"> </i>
                                         <span > description page </span>
                                     </a>
                                 </li>
