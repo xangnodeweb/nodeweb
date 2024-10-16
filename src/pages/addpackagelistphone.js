@@ -228,6 +228,8 @@ export default function Addpackagelistphone() {
             console.log(error)
         }
     }
+
+
     const dateendvalue = (e) => {
         try {
             // console.log(e.$d);
@@ -248,6 +250,7 @@ export default function Addpackagelistphone() {
             }
             console.log(dateends)
 
+            validinput(false, 0);
         } catch (error) {
             console.log(error)
         }
