@@ -13,7 +13,6 @@ import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import { MenuItem } from "@mui/material";
-import { redirectDocument } from "react-router-dom";
 import ModalInfoapp from "../filemodule/modalinfo";
 
 import FormControl from "@mui/material/FormControl"
@@ -47,7 +46,7 @@ export default function Addpackagephone() {
         try {
 
             setphone(e.target.value)
-            const format = /^[0-9\d]+$/
+            // const format = /^[0-9\d]+$/
 
         } catch (error) {
             console.log(error)
@@ -60,7 +59,7 @@ export default function Addpackagephone() {
             const date = e.$d;
             const datestarts = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Bangkok" }).format(date);
             setdatestart(datestarts)
-            console.log(datestarts);
+            // console.log(datestarts);
         } catch (error) {
             console.log(error)
         }
@@ -108,7 +107,7 @@ export default function Addpackagephone() {
             if (phonenumber.length < 13) {
                 validinput(true, 6);
 
-                console.log({ "message": 6, "status": true })
+                // console.log({ "message": 6, "status": true })
                 return;
 
             }
@@ -204,8 +203,8 @@ export default function Addpackagephone() {
             }
             return [];
         } catch (error) {
-            return [];
             console.log(error)
+            return [];
         }
     }
 

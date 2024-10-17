@@ -238,6 +238,7 @@ export default function Descriptionpage({ callpages }) {
                                     <span className="f-20-px"> 6 </span>
                                 </div>
                                 <i className="fa fa-long-arrow-left position-absolute  bottom-0  left-11-px-l transform-5-l"> </i>
+                                <i className="fa fa-long-arrow-right position-absolute  bottom-14-px-l  left-12-px transform-90"> </i>
                             </div>
                         </div>
                         <div className="position-absolute  bottom-24 right-15-px-l">

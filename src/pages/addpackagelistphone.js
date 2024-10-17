@@ -14,8 +14,6 @@ import Select from "@mui/material/Select";
 import { MenuItem } from "@mui/material";
 import ModalInfoapp from "../filemodule/modalinfo";
 import * as xlsx from "xlsx";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
 import { addpackageExportexcel } from "../filemodule/xlsxload";
 export default function Addpackagelistphone() {
 
@@ -45,8 +43,8 @@ export default function Addpackagelistphone() {
             const file = e.target.files[0];
             const render = new FileReader();
             if (e.size == 0) {
-                console.log(e.size == 0 ? "name 0 " : "")
-                console.log(e.target.files[0])
+                // console.log(e.size == 0 ? "name 0 " : "")
+                // console.log(e.target.files[0])
                 return;
             }
             setmodelfile([])
@@ -67,7 +65,7 @@ export default function Addpackagelistphone() {
 
 
                         const datafileonerecord = datafilelist[0].toString().split(",");
-                        console.log(datafileonerecord)
+                        // console.log(datafileonerecord)
                         if (datafileonerecord.length > 1) {
                             modeldata.push({ phone: datafileonerecord[0], countername: datafileonerecord[1], starttime: datestart, expiretime: dateexpire, RefillStopTime: refillstoptime });
                             setmodelfile(modeldata)
@@ -94,9 +92,8 @@ export default function Addpackagelistphone() {
                             }
                             const phones = modelphone[0];
                             const counternames = modelphone[1];
-
-                            console.log(modelphone);
-                            console.log(phones, counternames);
+                            // console.log(modelphone);
+                            // console.log(phones, counternames);
 
                             filedata.push({ phone: phones, countername: modelphone[1], starttime: datestart, expiretime: dateexpire, RefillStopTime: refillstoptime });
                         }
@@ -137,7 +134,6 @@ export default function Addpackagelistphone() {
 
             const file = e.target.files[0];
             const render = new FileReader();
-
             // console.log(file);
             clearmodelfile();
 
@@ -186,13 +182,9 @@ export default function Addpackagelistphone() {
                         const counternames = data[1];
 
                         filedata.push({ phone: phones, countername: counternames, starttime: datestart, expiretime: dateexpire, RefillStopTime: refillstoptime });
-
-
                     }
-                    // console.log(filedata)
                     setmodelfile(filedata)
                 }
-                // console.log(JSON.stringify(sheetData))
 
             }
 
@@ -248,7 +240,6 @@ export default function Addpackagelistphone() {
             if (modelfile.length > 0) {
                 modelfile.forEach(item => { item.countername = item.countername, item.RefillStopTime = refillstoptime, item.starttime = datestart, item.expiretime = dateends })
             }
-            console.log(dateends)
 
             validinput(false, 0);
         } catch (error) {
@@ -274,7 +265,6 @@ export default function Addpackagelistphone() {
         try {
 
             setcountername(e.target.value)
-            console.log("countername : " + e.target.value);
             if (modelfile.length > 0) {
                 modelfile.forEach(item => { phone: item.phone, item.countername = countername, item.RefillStopTime = refillstoptime, item.starttime = datestart, item.expiretime = dateexpire })
             }
@@ -339,7 +329,7 @@ export default function Addpackagelistphone() {
             }
 
         } catch (error) {
-            // console.log(error)
+            console.log(error)
             const statuscode = error.response.data;
             if (error) {
                 if (error.response) {
@@ -394,7 +384,7 @@ export default function Addpackagelistphone() {
     const loaddatafile = (e) => {
         try {
             e.preventDefault();
-            console.log(modelfile)
+            // console.log(modelfile)
             console.log("file data length : " + modelfile.length)
             if (modelfile.length == 0) {
 

@@ -10,7 +10,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DatePicker } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { datevaluereplace, datenowreplace } from "../filemodule/dataformat"
+import { datevaluereplace, datenowreplace , datetimeformat } from "../filemodule/dataformat"
 
 export default function Modifielddatetime() {
 
@@ -96,8 +96,8 @@ export default function Modifielddatetime() {
                         callopenmodal("", "", "", "", "cannot modify phonenumber", "", 1, true);
                     }
                 }
-            }else{
-            
+            } else {
+
                 callopenmodal("", "", "", "", "cannot modify phonenumber", "", 1, true);
             }
             setloading(false);
@@ -232,9 +232,14 @@ export default function Modifielddatetime() {
     const dateformat = (date) => {
         try {
 
-            const dates = new Date(date);
-            const formartdate = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(new Date(date));
-            const dateformat = formartdate.toString().replace(new RegExp(",", "g"), "")
+            // const dates = new Date(date);
+            // const formartdate = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(new Date(date));
+            // const dateformat = formartdate.toString().replace(new RegExp(",", "g"), "");
+         
+            const formatdates = new Intl.DateTimeFormat("en-gb", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(date));
+            const formattimes = new Intl.DateTimeFormat("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Bangkok" }).format(new Date(date));
+            const dateformat = formatdates + " " + formattimes;
+
             return dateformat;
 
 
@@ -264,7 +269,7 @@ export default function Modifielddatetime() {
         setisproductno(productlb);
         setisproductvalue(isproductvalue) // isproductvalue == 2
     }
-
+   
     const dateexpirevalue = (e) => {
         try {
             const dates = e.$d;
@@ -344,8 +349,8 @@ export default function Modifielddatetime() {
                                         <td> {item.ProductNumber} </td>
                                         <td> {item.CounterName} </td>
                                         <td>{item.RefillStopTime}</td>
-                                        <td>{dateformat(item.StartTime)}</td>
-                                        <td>{dateformat(item.ExpiryTime)}</td>
+                                        <td>{datetimeformat(item.StartTime)}</td>
+                                        <td>{datetimeformat(item.ExpiryTime)}</td>
                                         < td className="px-2">
                                             <button className="px-2 h-30-px" onClick={() => productvalue(item.ProductNumber, item.CounterName)}> select </button>
                                         </td>

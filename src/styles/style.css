@@ -706,6 +706,9 @@ div.lb-record.disable {
 .left-5-px {
     left: 5px;
 }
+.left-12-px{
+    left: 12px;
+}
 
 .left-9 {
     left: 9%;
@@ -1213,6 +1216,10 @@ input {
 
 .transform-67 {
     transform: rotate(67deg);
+}
+
+.transform-90{
+    transform: rotate(90deg);
 }
 
 .transform-145 {

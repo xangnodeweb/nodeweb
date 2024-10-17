@@ -3,15 +3,13 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import * as xlsx from "xlsx"
 import ModalInfoapp from "../filemodule/modalinfo";
-import { datenow } from "../filemodule/dataformat";
+import { datenow, datetimeformat } from "../filemodule/dataformat";
 import { Excelexport, Exportexcels } from "../filemodule/xlsxload";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import TextField from "@mui/material/TextField";
-import { redirectDocument } from "react-router-dom";
-import { contains } from "rsuite/esm/DOMHelper";
 const exceljs = require("exceljs")
 export default function Modifieldlistphone() {
 
@@ -22,7 +20,7 @@ export default function Modifieldlistphone() {
     const [btncheck, setbtncheck] = useState(0)
     const [modellistfile, setmodellistfile] = useState([]); // model data select list
 
-    const [modellistmodified, setmodellistmodified] = useState([]) // model data modifield
+    const [modellistmodified, setmodellistmodified] = useState([]) // model data modifield 
     const [modelstatusmodified, setmodelstatusmodified] = useState([]) // model data modifield response
 
     const [modelnullpackage, setmodelnullpackage] = useState([]);
@@ -40,8 +38,10 @@ export default function Modifieldlistphone() {
         btnlength: 0
     });
     const [openmodal, setmodal] = useState(false);
-    const [btnclick, setbtnclick] = useState(0)
-    const [btnmodify, setbtnmodify] = useState(0)
+    const [btnclick, setbtnclick] = useState(0);
+    const [btnmodify, setbtnmodify] = useState(0);
+    const [isdatevalid, setisdatevalid] = useState(0);
+
     const showfile = (e) => {
         if (btncheck != 1) return;
         const file = e.target.files[0];
@@ -69,7 +69,7 @@ export default function Modifieldlistphone() {
         }
 
         if (file.name.toString().substr(file.name.toString().length - 3) != "txt") {
-            console.log(`type file : ${file.name.toString().substr(file.name.toString().length - 3)}`);
+            // console.log(`type file : ${file.name.toString().substr(file.name.toString().length - 3)}`);
             setfiledata([]);
             callopenmodal("please check file", "please enter value file type .txt", 1, true);
             return;
@@ -81,12 +81,10 @@ export default function Modifieldlistphone() {
             if (btncheck != 2) return;
             const file = e.target.files[0];
             const reader = new FileReader();
-            console.log(file)
+            // console.log(file)
             clearmodeldata();
 
             reader.onload = (event) => {
-
-
                 const workbook = xlsx.read(event.target.result, { type: "binary" });
                 const sheetName = workbook.SheetNames[0];
                 const sheet = workbook.Sheets[sheetName];
@@ -96,8 +94,8 @@ export default function Modifieldlistphone() {
                 if (sheetData.toString().length < 13) { // not found data phone
                     return;
                 }
-                const datamodel = JSON.stringify(sheetData);
-                console.log(sheetData)
+
+                // console.log(sheetData)
                 setfiledata([]);
 
                 const sheetDatas = sheetData.toString().split("\n") // data type array
@@ -112,20 +110,20 @@ export default function Modifieldlistphone() {
                     if (modelphones.length == 0) {
 
                         modelphones.push(modelsheet[i].toString());
-                        console.log(modelsheet[i].toString())
-                        console.log("model phone : 1");
-                        console.log(modelphones);
+                        // console.log(modelsheet[i].toString())
+                        // console.log("model phone : 1");
+                        // console.log(modelphones);
                     } else {
 
-                        console.log(modelsheet[i].toString())
+                        // console.log(modelsheet[i].toString())
                         var index = modelphones.findIndex(x => x.toString() == modelsheet[i].toString());
 
-                        console.log("model phone : 1");
+                        // console.log("model phone : 1");
                         if (index != -1) {
                             continue;
                         }
                         modelphones.push(modelsheet[i].toString());
-                        console.log(modelphones);
+                        // console.log(modelphones);
                     }
                 }
                 modelphone.push(...modelsheet);
@@ -134,7 +132,7 @@ export default function Modifieldlistphone() {
                 }
 
                 setfiledata(modelphone)
-                console.log("sheetdata  " + sheetData.length)
+
 
             };
             const nameslice = file.name.toString().indexOf(".");
@@ -157,21 +155,18 @@ export default function Modifieldlistphone() {
     const btnfile = async () => {
         try {
             setloading(true);
-            console.log(filedata)
+            // console.log(filedata)
             if (filedata.length == 0) {
-                console.log("data : " + filedata.length);
                 callopenmodal("please select file", "not found file data txt or xlsx please check file", 1, true);
                 setloading(false);
                 clearmodeldata();
                 return;
             }
-            console.log(filedata)
 
             const data = await axios.post("http://172.28.27.50:3000/api/inquerylistphone", filedata);
-            console.log(data.data)
+            // console.log(data.data)
             if (data.status == 200) {
                 setmodellistfile(data.data.result);
-                console.log(data.data.result)
                 setmodelnullpackage(data.data.result);
                 setloading(false);
                 setbtnclick(0);
@@ -198,14 +193,16 @@ export default function Modifieldlistphone() {
         try {
 
             if (datemodifield == null) {
-                console.log("please check value date");
+                // console.log("please check value date");
                 setisdate(true);
+                setisdatevalid(1);
                 setloading(false);
                 return;
             }
             if (datemodifield == '') {
-                console.log("please check value date")
+                // console.log("please check value date")
                 setisdate(true);
+                setisdatevalid(1);
                 setloading(false);
                 return;
             }
@@ -218,8 +215,6 @@ export default function Modifieldlistphone() {
             setloading(true);
 
             setmodellistmodified([]);
-            let model = [];
-
             // const modelfilecheck = modellistfile.filter(x => x.ProductNumber == null);
             // console.log(modelfilecheck)
             // if (modelfilecheck.length != 0) {
@@ -228,11 +223,9 @@ export default function Modifieldlistphone() {
             //     return
             // }
 
-            console.log(modellistfile);
+
             if (modellistfile.length > 0) {
                 for (var i = 0; i < modellistfile.length; i++) {
-                    console.log(modellistfile[i])
-
                     const datas = { "phone": modellistfile[i].phone, "ProductNumber": modellistfile[i].ProductNumber, "datetime": datemodifield }
                     modellistmodified.push(datas);
                 }
@@ -245,7 +238,6 @@ export default function Modifieldlistphone() {
                 return;
             }
 
-            console.log(modellistmodified)
             //    /^85620[0-9]{8}/
             let modeldata = [];
 
@@ -254,11 +246,7 @@ export default function Modifieldlistphone() {
             if (data.status == 200) {
                 // console.log(data. data);
                 setmodelstatusmodified(data.data.result);
-
                 setmodelmodify(data.data.result);
-
-
-                console.log(data.data)
                 if (data.data.result.length == 0) {
                     return;
                 }
@@ -266,8 +254,6 @@ export default function Modifieldlistphone() {
                 Exportexcels({ data: data.data.result })  // download file
                 callopenmodal("", "modify data phone success", 1, true);
             }
-
-
             setloading(false)
         } catch (error) {
             console.log(error)
@@ -297,8 +283,6 @@ export default function Modifieldlistphone() {
 
                 }
             }
-
-            console.log(error.response.data);
             setloading(false);
         }
 
@@ -319,7 +303,7 @@ export default function Modifieldlistphone() {
 
     const btncheckbox = (e) => { // checkbox type file
         try {
-            console.log("value : " + e.target.value)
+            // console.log("value : " + e.target.value)
             setfiledata([])
             setbtncheck(e.target.value);
             clearmodeldata();
@@ -331,34 +315,23 @@ export default function Modifieldlistphone() {
     const datevalue = (e) => {
         try {
             setisdate(false);
-            // setdatemodifield(e.target.value);
-            console.log(e.$d)
+            // console.log(e.$d)
             const dates = e.$d;
             const date = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(dates);
-            console.log(date.toString().replace(new RegExp("-", "g"), ""));
             const dateselect = date.toString().replace(new RegExp("-", "g"), "");
             const datenow = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Bangkok" }).format(new Date());
-
             const datenows = datenow.toString().replace(new RegExp("-", "g"), "");
             if (parseInt(dateselect) < parseInt(datenows)) {
+                setisdate(true);
+                setisdatevalid(2);
                 callopenmodal("please next Date modifiy", "please select day next Datenow", 1, true);
                 return;
             }
-            console.log({ "dateselect": dateselect, "datenow": datenows })
-            console.log(date);
+            // console.log({ "dateselect": dateselect, "datenow": datenows })
             setdatemodifield(date);
 
         } catch (error) {
             console.log(error)
-        }
-    }
-    const dateformat = (date) => {
-        try {
-            const formatdate = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(new Date(date));
-            const dateformats = formatdate.toString().replace(new RegExp(",", "g"), "")
-            return dateformats;
-        } catch (error) {
-            // console.log(error)
         }
     }
 
@@ -377,7 +350,7 @@ export default function Modifieldlistphone() {
                     }
                 }
                 setmodellistfile(model);
-                console.log(modellistfile)
+                // console.log(modellistfile)
                 setbtnclick(1)
             }
         } else if (btnvalue == 2) {
@@ -391,17 +364,13 @@ export default function Modifieldlistphone() {
                     }
                 }
                 setmodellistfile(models);
-                console.log(modellistfile)
+                // console.log(modellistfile)
                 setbtnclick(2)
             }
         }
     }
     const btnmodifymodel = (btnvalue) => {
         try {
-
-
-            console.log(btnvalue);
-
             if (btnvalue == 0) {
                 setbtnmodify(btnvalue);
                 setmodelstatusmodified(modelmodify);
@@ -495,10 +464,10 @@ export default function Modifieldlistphone() {
                         <span className="mb-1">  date modifield </span>
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
                             <DemoContainer components={['DatePicker']}>
-                                <DatePicker format="DD/MM/YYYY" onChange={datevalue} renderInput={(param) => <TextField  {...param} />} />
+                                <DatePicker format="DD/MM/YYYY" onChange={datevalue} renderInput={(param) => <TextField  {...param} />} slotProps={{ textField: { helperText: isdate && isdatevalid == 1 ? "please selecrt date modify" : isdate && isdatevalid == 2 ? "please next date modify" : "" } }} />
                             </DemoContainer>
                         </LocalizationProvider>
-                        {isdate ? <><span className="color-red"> please select date modify </span> </> : ""}
+                        {/* {isdate ? <><span className="color-red"> please select date modify </span> </> : ""} */}
                         <button onClick={onmodifielddate} className="mt-3 border-radius-3-px " > modify datetime  </button>
                     </div>
 
@@ -531,7 +500,7 @@ export default function Modifieldlistphone() {
                                             <td className={`${item.packagegroup ? "bg-default-td" : ""}`}> {item.phone} </td>
                                             <td> {item.ProductNumber == null ? "not found data" : item.ProductNumber} </td>
                                             <td className={`${item.packagegroup ? "bg-default-td" : ""}`}> {item.CounterName == null ? "not found data" : item.CounterName} </td>
-                                            <td> {item.ExpiryTime == null ? "not found data" : dateformat(item.ExpiryTime)}</td>
+                                            <td> {item.ExpiryTime == null ? "not found data" : datetimeformat(item.ExpiryTime)}</td>
                                             <td> {item.status ? item.status.toString() : "false"} </td>
                                             {/* <td> {item.description} </td> */}
                                         </tr>
@@ -585,7 +554,7 @@ export default function Modifieldlistphone() {
 
                                                 <td className={!item.status ? "bg-grey-default" : ""}> {item.Msisdn} </td>
                                                 <td className={!item.status ? "bg-grey-default" : ""}> {item.ProductNumber == null ? "not found data" : item.ProductNumber} </td>
-                                                <td className={!item.status ? "bg-grey-default" : ""}> {item.ExpiryTime == null ? "not found data" : item.ExpiryTime} </td>
+                                                <td className={!item.status ? "bg-grey-default" : ""}> {item.ExpiryTime == null ? "not found data" : datetimeformat(item.ExpiryTime)} </td>
                                                 <td className={!item.status ? "bg-grey-default" : ""}> {item.TransactionID == null ? "not found data" : item.ProductNumber} </td>
                                                 {/* <td> {item.description} </td> */}
                                                 <td className={!item.status ? "bg-grey-default" : ""}> {item.status.toString()} </td>

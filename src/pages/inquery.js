@@ -4,7 +4,7 @@ import axios from "axios";
 
 import InputMask from "react-input-mask";
 import TextField from "@mui/material/TextField";
-import { dateformat } from "../filemodule/dataformat";
+import { dateformat , datetimeformat } from "../filemodule/dataformat";
 import ModalInfoapp from "../filemodule/modalinfo";
 export default function inquery() {
 
@@ -160,8 +160,8 @@ export default function inquery() {
                                         <td> {item.ProductNumber} </td>
                                         <td> {item.CounterName} </td>
                                         <td>{item.RefillStopTime}</td>
-                                        <td>{dateformat(item.StartTime)}</td>
-                                        <td>{dateformat(item.ExpiryTime)}</td>
+                                        <td>{datetimeformat(item.StartTime)}</td>
+                                        <td>{datetimeformat(item.ExpiryTime)}</td>
                                     </tr>
                                 )
                             }
