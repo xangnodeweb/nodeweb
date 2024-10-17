@@ -147,11 +147,12 @@ export default function Addpackagephone() {
                 validinput(true, 7);
                 return;
             }
-
+       
             validinput(false, 0);
             const datas = { "phone": phonenumber, "countername": countername, "datestart": datestart, "dateexpire": dateexpire, "refillstoptime": refillstoptime };
             // console.log(datas);
             setloading(true);
+       
             const data = await axios.post("http://172.28.27.50:3000/api/addpackage", datas);
             if (data.status == 200) {
                 // console.log(data.data.result);

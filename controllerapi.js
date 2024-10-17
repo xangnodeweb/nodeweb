@@ -33,17 +33,15 @@ app.post("/inqueryphone", async (req, res) => {
 
             // console.log(responseText)
             const modeldata = responseText
-            console.log(modeldata)
+            // console.log(modeldata)
             parseString(modeldata, function (err, result) {
                 let datas = JSON.stringify(result);
                 const datass = JSON.parse(datas);
-
 
                 model.push(datass);
 
                 // console.log(typeof datas);// 
                 // console.log(model[0]['soap:Envelope']['soap:Body']) // 
-                // modelbody.push(model[0]['soap:Envelope']['soap:Body'])
                 modelbody.push(model[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['CounterArray'][0]['CounterInfo'])
                 // console.log(modelbody[0].length)
                 if (modelbody.length > 0) {
@@ -64,12 +62,10 @@ app.post("/inqueryphone", async (req, res) => {
 
             if (err) {
                 if (errors.code == "ETIMEDOUT") {
-                    return res.status(400).json({ status: false, code: 2, message: "ConnectTimeoutError", result: [] })
+                    return res.status(400).json({ status: false, code: 2, message: "ConnectTimeoutError", result: [] });
                 }
             }
             //     if (err["cause"].name == "ConnectTimeoutError") 
-
-
             return res.status(400).json({ status: false, code: 1, message: "cannot inquery phone", result: [] });
         })
 
@@ -93,7 +89,7 @@ app.post("/modifielddatetime", async (req, res) => {
             'Content-Type': 'text/xml;charset=utf-8'
         }
         if (!bodys) {
-            return res.status(400).json({ status: false, code: 2, message: "please check body modifielddatetime ", result: null })
+            return res.status(400).json({ status: false, code: 2, message: "please check body modifielddatetime ", result: null });
         }
 
         let model = [];
@@ -109,7 +105,7 @@ app.post("/modifielddatetime", async (req, res) => {
 
             // console.log(responseText)
             const modeldata = responseText
-            // console.log(modeldata)
+
             parseString(modeldata, function (err, result) {
                 let datas = JSON.stringify(result);
                 const datass = JSON.parse(datas);
@@ -197,8 +193,8 @@ app.post("/addpackage", async (req, res) => {
 
 
                 modelbody.push(datass['soap:Envelope']['soap:Body']);
-                const modeldatasuccess = datass['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['OperationStatus'][0];
-                const counterresponsepackage = datass['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['CounterArray'][0]['CounterInfo'];
+                const modeldatasuccess = datass['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['OperationStatus'][0]; // operation status
+                const counterresponsepackage = datass['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['CounterArray'][0]['CounterInfo']; // counterinfo data
 
                 // console.log(modeldatasuccess);
                 // console.log(counterresponsepackage);
@@ -206,7 +202,7 @@ app.post("/addpackage", async (req, res) => {
 
                 if (modeldatasuccess.IsSuccess[0] == 'true') {
                     let modelInfo = [];
-                    // modelbody.push(data);
+
                     if (counterresponsepackage.length > 0) {
                         for (var i = 0; i < counterresponsepackage.length; i++) {
 
@@ -236,20 +232,24 @@ app.post("/addpackage", async (req, res) => {
                     // console.log(data);
                 }
             });
-
-            return res.json(modelresponse);
+            if (modelresponse.status = true) {
+                return res.status(200).json(modelresponse);
+            } else {
+                return res.status(400).json(modelresponse);
+            }
         }).catch(err => {
             console.log(err)
             const error = JSON.stringify(err);
             const errors = JSON.parse(error);
             if (err) {
                 if (errors.code == "ETIMEDOUT") {
-
                     return res.status(400).json({ status: false, code: 2, message: "cannot add package ConnectTimeoutError", result: null });
                 }
             }
             // if (err["cause"].name == "ConnectTimeoutError") {
         })
+
+        return res.status(400).json({ status: false, code: 1, message: "cannot add pacakge", result: null });
     } catch (error) {
         console.log(error)
         return res.status(400).json({ status: false, code: 1, message: "cannot add package", result: null })
@@ -288,8 +288,6 @@ app.post("/inquerylistphone", async (req, res) => {
                     const headers = {
                         'Content-Type': 'text/xml;charset=utf-8'
                     }
-
-
                     //
                     let model = [];
                     let modelbody = []; // model response fetch ? body : not found body response
@@ -318,23 +316,24 @@ app.post("/inquerylistphone", async (req, res) => {
 
                             modelbody.push(model[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['CounterArray'][0]['CounterInfo']); //
 
+
                             let datanobody = JSON.stringify(result);
-                            let databodynodata = JSON.parse(datanobody);
+                            let databodynodata = JSON.parse(datanobody); // model list package phone
                             modelnoresponsebody.push(databodynodata);
 
-                            modelnotbody.push(modelnoresponsebody[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['OperationStatus'][0]);
+                            modelnotbody.push(modelnoresponsebody[0]['soap:Envelope']['soap:Body'][0]['inquiryCounterResponse'][0]['inquiryCounterResult'][0]['OperationStatus'][0]); // default response cannot  inquery phone 
                             // modelnotbody == model not found CounterInfo
 
 
                             if (modelbody[0].length > 0) {
-
+                                // model inquery phone success 
                                 for (var ii = 0; ii < modelbody[0].length; ii++) {
                                     modelresponse.push({ "Msisdn": modelbody[0][ii]['Msisdn'][0], "ProductNumber": modelbody[0][ii]['ProductNumber'][0], "CounterName": modelbody[0][ii]['CounterName'][0], "StartTime": modelbody[0][ii]['StartTime'][0], "ExpiryTime": modelbody[0][ii]['ExpiryTime'][0], "NumChildCounter": modelbody[0][ii]['NumChildCounter'][0], "RefillStopTime": modelbody[0][ii]['RefillStopTime'][0]['$']['xsi:nil'] });
                                 }
 
                                 if (modelresponse.length > 0) {
                                     // const index = modelresponse.findIndex(x => x.CounterName == 'Prepaid_Staff_5GB');
-                                    const modelindexstaff = modelresponse.filter(x => x.CounterName.toString().indexOf("Prepaid_Staff") != -1)
+                                    const modelindexstaff = modelresponse.filter(x => x.CounterName.toString().indexOf("Prepaid_Staff") != -1) // list package phone > 1 package
 
                                     if (modelindexstaff.length == 1) {
                                         datamodel.push({ phone: modelindexstaff[0].Msisdn, ProductNumber: modelindexstaff[0].ProductNumber, status: true, CounterName: modelindexstaff[0].CounterName, description: "success", ExpiryTime: modelindexstaff[0].ExpiryTime, packagegroup: false, code: 0 });
@@ -351,7 +350,7 @@ app.post("/inquerylistphone", async (req, res) => {
                                 }
 
                             } else {
-                                datamodel.push({ phone: item.phone.toString(), ProductNumber: null, status: false, CounterName: null, desription: "not found detail", ExpiryTime: "", packagegroup: false, code: 0 });
+                                datamodel.push({ phone: item.phone.toString(), ProductNumber: null, status: false, CounterName: null, desription: "not found detail", ExpiryTime: null, packagegroup: false, code: 0 });
                             }
                         });
                     }).catch(async err => {
@@ -363,14 +362,12 @@ app.post("/inquerylistphone", async (req, res) => {
                                 responseerr.status == false;
                                 responseerr.code = 2;
                                 responseerr.message = "cannot inquery listphone ConnectTimeoutError"
-
                             }
                         }
-
                     });
 
                     if (responseerr.status == false && responseerr.code == 2) {
-                        datamodel.push({ phone: item.toString(), ProductNumber: null, status: false, CounterName: null, description: "", ExpiryTime: "", packagegroup: false, code: 2, message: "cannot inquery phone ConnectTimeoutError" });
+                        datamodel.push({ phone: item.toString(), ProductNumber: null, status: false, CounterName: null, description: "", ExpiryTime: null, packagegroup: false, code: 2, message: "cannot inquery phone ConnectTimeoutError" });
                         break;
                     }
 
@@ -405,7 +402,6 @@ app.post("/modifieldlistdatetime", async (req, res) => {
         let model = [];
         let modelresponse = [];
 
-
         if (body != null) {
             if (body.length > 0) {
 
@@ -415,22 +411,16 @@ app.post("/modifieldlistdatetime", async (req, res) => {
                     const productno = body[i].ProductNumber;
                     const expire = body[i].datetime;
 
-
-
                     if (body[i].ProductNumber == null) {
                         modelresponse.push({ status: false, code: 1, message: "not found package productnumber", Msisdn: phone, ProductNumber: productno, ExpiryTime: expire, TransactionID: null, description: null, orderRef: null })
                         continue;
-
                     }
-
 
                     let bodyrequest = bodymodiefield(phone, productno, expire);
                     if (bodyrequest == null) {
                         modelresponse.push({ status: false, code: 1, message: "please check body modifydatetime ", Msisdn: phone, ProductNumber: productno, ExpiryTime: expire, TransactionID: null, description: null, orderRef: null })
 
                     }
-
-
 
                     const headers = {
                         'Content-Type': 'text/xml;charset=utf-8'
@@ -449,7 +439,7 @@ app.post("/modifieldlistdatetime", async (req, res) => {
                     }).then(responseText => {
 
                         const modeldata = responseText;
-                        console.log(modeldata)
+                        // console.log(modeldata)
                         parseString(modeldata, function (err, result) {
                             let datas = JSON.stringify(result);
                             const datass = JSON.parse(datas);
@@ -463,21 +453,21 @@ app.post("/modifieldlistdatetime", async (req, res) => {
                     }).catch(err => {
                         console.log(err);
 
-
                         const error = JSON.stringify(err)
                         const errors = JSON.parse(error);
                         if (err) {
                             if (errors.code == "ETIMEDOUT") {
                                 modelresponsetext = { status: false, code: 2, TransactionID: null, description: null, orderRef: null, message: "cannot modify phone ConnectTimeoutError", Msisdn: phone, ProductNumber: productno, ExpiryTime: expire }
-
+                            } else {
+                                modelresponsetext = { status: false, code: 0, TransactionID: null, description: null, orderRef: null, message: "cannot modify phone", Msisdn: phone, ProductNumber: productno, ExpiryTime: expire }
                             }
 
                         }
                         //     if (err["cause"].name == "ConnectTimeoutError") {
                     });
-
+                    // modelresponsetext  model responsetext 
                     if (!modelresponsetext.status) {
-
+                        // modelresponsetext status == false && modelresponsetext code 2 // fetch timeout
                         if (modelresponsetext.status == false && modelresponsetext.code == 2) {
                             modelresponse.push(modelresponsetext);
                             break;
@@ -485,14 +475,11 @@ app.post("/modifieldlistdatetime", async (req, res) => {
 
                         if (modelresponsetext.IsSuccess[0] == 'true') {
                             modelresponse.push({ status: modelresponsetext.IsSuccess[0], code: modelresponsetext.Code[0], TransactionID: modelresponsetext.TransactionID[0], description: modelresponsetext.Description[0], orderRef: modelresponsetext.OrderRef[0], message: "success", Msisdn: phone, ProductNumber: productno, ExpiryTime: expire });
-
                         }
                     } else {
 
-
                         if (modelresponsetext.IsSuccess[0] == 'true') {
                             modelresponse.push({ status: modelresponsetext.IsSuccess[0], code: modelresponsetext.Code[0], TransactionID: modelresponsetext.TransactionID[0], description: modelresponsetext.Description[0], orderRef: modelresponsetext.OrderRef[0], message: "success", Msisdn: phone, ProductNumber: productno, ExpiryTime: expire });
-
                         } else {
                             modelresponse.push({ status: modelresponsetext.IsSuccess[0], code: modelresponsetext.Code[0], TransactionID: modelresponsetext.TransactionID[0], description: modelresponsetext.Description[0], orderRef: modelresponsetext.OrderRef[0], message: "", Msisdn: phone, ProductNumber: productno, ExpiryTime: expire });
                         }
@@ -502,16 +489,14 @@ app.post("/modifieldlistdatetime", async (req, res) => {
                 if (modelresponse.length > 0) {
                     const indextimeout = modelresponse.filter(x => x.status == false && x.code == 2);
                     if (indextimeout.length == 0) {
-                        return res.status(200).json({ status: true, code: 0, message: "", result: modelresponse });
+                        return res.status(200).json({ status: true, code: 0, message: "success", result: modelresponse });
                     } else {
-                        return res.status(400).json({ status: false, code: 2, message: "", result: modelresponse });
+                        return res.status(400).json({ status: false, code: 2, message: "cannot modify dateexpire", result: modelresponse });
                     }
                 }
             }
         }
-
         return res.status(400).json({ status: false, code: 1, message: "cannot modify dateexpire", result: [] });
-
 
     } catch (error) {
         console.log(error)
@@ -535,16 +520,16 @@ app.post("/addpackagelistphone", async (req, res) => {
                 // countername = body[i].countername == 1 ? "Prepaid_Staff_3GB" : body[i].countername == 2 ? "Prepaid_Staff_5GB" : body[i].countername == 3 ? "Prepaid_Staff_7GB" : body[i].countername == 4 ? "Prepaid_Staff_10GB" : body[i].countername == 5 ? "Prepaid_Staff_15GB" : body[i].countername == 6 ? "Prepaid_Staff_20GB" : ""
 
                 if (countername == "") {
-                    const data = { status: false, Code: 1, Msisdn: phone, ProductNumber: null, CounterName: countername, StartTime: null, ExpiryTime: null, message: "not found countername" }
-                    console.log(data)
+                    const data = { status: false, code: 1, Msisdn: phone, ProductNumber: null, CounterName: countername, StartTime: null, ExpiryTime: null, message: "not found countername" }
+                    // console.log(data)
                     modelres.push(data)
 
                     continue
                 };
-      
+
 
                 const bodyadd = await bodyaddpackage(phone, countername, starttime, expiretime, refillstoptime);
-                console.log(bodyadd)
+                // console.log(bodyadd)
 
                 if (bodyadd == null) {
                     return res.status(400).json({ status: false, code: 1, message: "please check body data" });
@@ -554,8 +539,7 @@ app.post("/addpackagelistphone", async (req, res) => {
                     'Content-Type': 'text/xml;charset=utf-8'
                 }
                 let model = [];
-
-                let modelbody = [];
+                // let modelbody = [];
 
                 await fetch("http://10.0.10.35/vsmpltc/web/services/amfwebservice.asmx", {
                     method: "POST",
@@ -566,7 +550,7 @@ app.post("/addpackagelistphone", async (req, res) => {
                 }).then(responseText => {
 
                     const modeldata = responseText;
-                    console.log(modeldata)
+                    // console.log(modeldata)
                     parseString(modeldata, function (err, result) {
 
                         let data = JSON.stringify(result);
@@ -580,13 +564,11 @@ app.post("/addpackagelistphone", async (req, res) => {
                             let modelcounterarra = model[0]['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['CounterArray'][0]['CounterInfo'][0];
 
                             // statusmodel   modelcounterarra
-                            const data = { status: statusmodel.IsSuccess[0], Code: statusmodel.Code[0], Msisdn: modelcounterarra.Msisdn[0], ProductNumber: modelcounterarra.ProductNumber[0], CounterName: modelcounterarra.CounterName[0], StartTime: modelcounterarra.StartTime[0], ExpiryTime: modelcounterarra.ExpiryTime[0], message: "success" }
-
-
-                            modelres.push(data)
+                            const data = { status: statusmodel.IsSuccess[0], code: statusmodel.Code[0], Msisdn: modelcounterarra.Msisdn[0], ProductNumber: modelcounterarra.ProductNumber[0], CounterName: modelcounterarra.CounterName[0], StartTime: modelcounterarra.StartTime[0], ExpiryTime: modelcounterarra.ExpiryTime[0], message: "success" }
+                            modelres.push(data);
 
                         } else { // fetch response failed add package status false
-                            const data = { status: statusmodel.IsSuccess[0], Code: statusmodel.Code[0], Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", message: statusmodel.Description[0] }
+                            const data = { status: statusmodel.IsSuccess[0], code: statusmodel.Code[0], Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", message: statusmodel.Description[0] }
                             modelres.push(data);
                         }
 
@@ -610,7 +592,6 @@ app.post("/addpackagelistphone", async (req, res) => {
 
                         }
                     }
-                    console.log(error)
                 })
             }
             if (modelres.length > 0) {
@@ -619,7 +600,6 @@ app.post("/addpackagelistphone", async (req, res) => {
                     return res.status(400).json({ status: false, code: 2, message: "cannot add package ConnectTimeoutError", result: modelres })
                 }
             }
-
             return res.status(200).json({ status: true, code: 0, message: "success", result: modelres })
         }
 
