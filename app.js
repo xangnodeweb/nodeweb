@@ -5,6 +5,8 @@ const app = express();
 
 const cors = require("cors");
 const apirouter = require("./controllerapi");
+const apichangerouter = require("./controllerchangeapi");
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +19,7 @@ app.get("/*", (req, res) => {
     res.sendFile(path.join(__dirname + "/dist/index.html"))
 });
 app.use("/api", apirouter);
-
+app.use("/apichangemain" , apichangerouter);
 // app.use("/image" , express.static(path.join(__dirname , "image")))
 
 app.listen(PORT, () => {

@@ -77,6 +77,10 @@ li.css-1h4bzp1-MuiButtonBase-root-MuiMenuItem-root {
     line-height: 2;
 }
 
+div.css-1nrlq1o-MuiFormControl-root{
+    width: 100%;
+}
+
 .modal-success {
     width: 600px;
     margin: auto;
@@ -133,11 +137,11 @@ li.css-1h4bzp1-MuiButtonBase-root-MuiMenuItem-root {
     transition: all 0.3s ease;
 }
 
-.btnfile-none {
+.btnfile-none {  
     width: 115px;
-    /*   width 115 pxs */
+    /*   width 115 px */
     height: 35px;
-    /*   width 40 pxs */
+    /*   width 40 px */
     border-radius: 5px;
     cursor: pointer;
     color: #000000;
@@ -169,7 +173,20 @@ li.css-1h4bzp1-MuiButtonBase-root-MuiMenuItem-root {
     padding: 8px ;
     border-radius: 3px;
 }
+.border-left{
+    border-right: 4px solid #DDDDDD; 
+    height: 100%;
+}
 
+.border-left-success{
+    border-right: 4px solid #517fa4; 
+    height: 100%;
+}
+
+.border-left-red{
+    border-right: 4px solid #F00; 
+    height: 100%;
+}
 .loader {
 
     margin: auto;

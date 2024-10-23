@@ -2,10 +2,10 @@
 const app = require("express").Router();
 const express = require("express")();
 
-const { bodyinquery, bodymodiefield, bodyaddpackage } = require("./modelbody");
+const { bodyinquery, bodymodiefield, bodyaddpackage, changemaxdate, changemainoffering } = require("./modelbody");
 const { parseString } = require("xml2js");
 const fetch = require("node-fetch");
-const { json } = require("express");
+
 
 
 
@@ -256,7 +256,6 @@ app.post("/addpackage", async (req, res) => {
     }
 
 })
-
 
 
 // data list file

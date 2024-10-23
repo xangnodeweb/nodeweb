@@ -7,6 +7,7 @@ import Modifieldlistphone from "./modifieldlistphone";
 import Addpackagephone from "./addpackagephone";
 import Addpackagelistphone from "./addpackagelistphone";
 import Descriptionpage from "./descriptionpage";
+import ChangMaxDate from "./changmaxdate";
 export default function Homemain() {
 
 
@@ -41,7 +42,7 @@ export default function Homemain() {
 
                         <div className="main-slidebar">
                             <div className="icon-menu iconmenu  w-100 bg-white  d-flex">
-                                <span className="m-auto"> soap query phone {/*soap data phonenumber*/} </span> 
+                                <span className="m-auto"> soap query phone {/*soap data phonenumber*/} </span>
 
                                 <i className="fa fa-chevron-left color-white border-t-l-radius-15-px  border-b-l-radius-15-px bg-default border-white"></i>
                             </div>
@@ -80,6 +81,12 @@ export default function Homemain() {
                                         <li> <a href="/Addpackagelistphone"> add package listphone</a> </li>
                                     </ul>
                                 </li>
+                                <li>
+                                    <a href="/changemaxdate">
+                                        <i className="fa fa-calendar"> </i>
+                                        <span > changemax date </span>
+                                    </a>
+                                </li>
                                 <li onClick={() => {
                                     console.log("page");
                                     setpage(true)
@@ -106,6 +113,7 @@ export default function Homemain() {
                                     <Route path="/Addpackagephone" element={<Addpackagephone />} />
                                     <Route path="/Addpackagelistphone" element={<Addpackagelistphone />} />
                                     <Route path="/Descriptionpage" element={<Descriptionpage />} />
+                                    <Route path="/changemaxdate" element={<ChangMaxDate />} />
                                 </Routes>
                             </BrowserRouter>
 

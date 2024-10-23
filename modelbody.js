@@ -1,8 +1,8 @@
 
 exports.bodyinquery = async (phone) => {
-    try {
+   try {
 
-        const bodys = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://vsmp.ais.co.th/webservices/">
+      const bodys = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://vsmp.ais.co.th/webservices/">
     <soapenv:Header/>
     <soapenv:Body>
        <web:inquiryCounter>
@@ -19,19 +19,19 @@ exports.bodyinquery = async (phone) => {
        </web:inquiryCounter>
     </soapenv:Body>
  </soapenv:Envelope>`;
-        return bodys
+      return bodys
 
-    } catch (error) {
-        console.log(error)
-    }
+   } catch (error) {
+      console.log(error)
+   }
 
 }
 
 
 exports.bodymodiefield = (phone, productno, expire) => {
-    try {
+   try {
 
-        const bodys = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:web="http://vsmp.ais.co.th/webservices/">
+      const bodys = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:web="http://vsmp.ais.co.th/webservices/">
    <soap:Header/>
    <soap:Body>
       <web:modifyCounter>
@@ -58,19 +58,19 @@ exports.bodymodiefield = (phone, productno, expire) => {
       </web:modifyCounter>
    </soap:Body>
 </soap:Envelope>`
-        {/* <web:ExpiryTime>2024-10-30T23:59:59.0700000+07:00</web:ExpiryTime> */ }
+      {/* <web:ExpiryTime>2024-10-30T23:59:59.0700000+07:00</web:ExpiryTime> */ }
 
 
-        return bodys;
-    } catch (error) {
-        console.log(error)
-    }
+      return bodys;
+   } catch (error) {
+      console.log(error)
+   }
 
 }
 
-exports.bodyaddpackage = async (phone, countername, starttime, expiretime , refillstoptime) => {
-    try {
-        const body = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://vsmp.ais.co.th/webservices/">
+exports.bodyaddpackage = async (phone, countername, starttime, expiretime, refillstoptime) => {
+   try {
+      const body = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://vsmp.ais.co.th/webservices/">
    <soapenv:Header/>
    <soapenv:Body>
       <web:AddCounter>
@@ -98,10 +98,154 @@ exports.bodyaddpackage = async (phone, countername, starttime, expiretime , refi
    </soapenv:Body>
 </soapenv:Envelope>`
 
-        return body;
+      return body;
 
-    } catch (error) {
-        console.log(error)
-    }
+   } catch (error) {
+      console.log(error)
+   }
+
+}
+
+exports.changemainoffering = async (phone, offeringold, offeringnew) => {
+   try {
+
+      const dates = `"${"yyyyMMddHHmmss"}"`
+      const datess = `(new java.text.SimpleDateFormat(${dates}`
+
+      const messageone = ")).format(new Date())}"
+      // ${=(new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())}${=(int)(Math.random()*1000)}
+      const message = "${=(int)(Math.random()*1000)}"
+      const datadateformat = "${=" + datess + "" + messageone + message
+      // console.log(datadateformat)
+      const data = `<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bcs="http://www.huawei.com/bme/cbsinterface/bcservices" xmlns:cbs="http://www.huawei.com/bme/cbsinterface/cbscommon" xmlns:bcc="http://www.huawei.com/bme/cbsinterface/bccommon">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <bcs:ChangeSubOfferingRequestMsg>
+         <RequestHeader>
+            <cbs:Version>1</cbs:Version>
+            <cbs:BusinessCode>ChangeSubOffering</cbs:BusinessCode>
+            <cbs:MessageSeq>${datadateformat}</cbs:MessageSeq>
+            <cbs:AccessSecurity>
+               <cbs:LoginSystemCode>APIGEEAPI</cbs:LoginSystemCode>
+               <cbs:Password>cdVOUWF+57KsMd57vH8D3H+ykq4CbeLtc8wCapSScPhjazQDDuTrFUP4sDBpyX+q</cbs:Password>
+            </cbs:AccessSecurity>
+         </RequestHeader>
+         <ChangeSubOfferingRequest>
+           <bcs:SubAccessCode>
+                <bcc:PrimaryIdentity>${phone}</bcc:PrimaryIdentity>
+             </bcs:SubAccessCode>
+           <bcs:PrimaryOffering>
+               <bcs:OldPrimaryOffering>
+                  <bcc:OfferingID>${offeringold}</bcc:OfferingID>
+               </bcs:OldPrimaryOffering>
+               <bcs:NewPrimaryOffering>
+                  <bcc:OfferingKey>
+                     <bcc:OfferingID>${offeringnew}</bcc:OfferingID>
+                  </bcc:OfferingKey>
+               </bcs:NewPrimaryOffering>
+               <bcs:EffectiveTime>
+                  <bcc:Mode>I</bcc:Mode>
+               </bcs:EffectiveTime>
+            </bcs:PrimaryOffering>
+         </ChangeSubOfferingRequest>
+      </bcs:ChangeSubOfferingRequestMsg>
+   </soapenv:Body>
+</soapenv:Envelope>`;
+
+      return data;
+
+   } catch (error) {
+      console.log(error)
+   }
+}
+
+exports.changemaxdate = (phone, balancevalue, dayvalue) => {
+   try {
+
+      const dates = `"${"yyyyMMddHHmmss"}"`
+      const datess = `(new java.text.SimpleDateFormat(${dates}`
+      const messageone = ")).format(new Date())}"
+      const message = "${=(int)(Math.random()*1000)}"
+      const datadateformat = "${=" + datess + "" + messageone + message
+      // ${=(new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())}${=(int)(Math.random()*1000)}
+      const data = `<?xml version="1.0" encoding="UTF-8"?>                                                                                                                                                                                                                             
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bcs="http://www.huawei.com/bme/cbsinterface/bcservices" xmlns:cbs="http://www.huawei.com/bme/cbsinterface/cbscommon" xmlns:bcc="http://www.huawei.com/bme/cbsinterface/bccommon">
+   <soapenv:Header/>                                                                                                                                                                                                                                               
+   <soapenv:Body>                                                                                                                                                                                                                                                  
+      <bcs:ChangeSubInfoRequestMsg>                                                                                                                                                                                                                                
+         <RequestHeader>                                                                                                                                                                                                                                           
+            <cbs:Version>1</cbs:Version>                                                                                                                                                                                                                           
+            <cbs:BusinessCode>ChangeSubInfo</cbs:BusinessCode>                                                                                                                                                                                                     
+            <cbs:MessageSeq>${datadateformat}</cbs:MessageSeq>                                                                                                                
+            <cbs:AccessSecurity>                                                                                                                                                                                                                                   
+               <cbs:LoginSystemCode>APIGEEAPI</cbs:LoginSystemCode>                                                                                                                                                                                                
+               <cbs:Password>cdVOUWF+57KsMd57vH8D3H+ykq4CbeLtc8wCapSScPhjazQDDuTrFUP4sDBpyX+q</cbs:Password>                                                                                                                                                       
+            </cbs:AccessSecurity>                                                                                                                                                                                                                                  
+         </RequestHeader>                                                                                                                                                                                                                                          
+         <ChangeSubInfoRequest>                                                                                                                                                                                                                                    
+            <bcs:SubAccessCode>                                                                                                                                                                                                                                    
+              <bcc:PrimaryIdentity>${phone}</bcc:PrimaryIdentity>                                                                                                                                                                                                
+            </bcs:SubAccessCode>                                                                                                                                                                                                                                   
+            <bcs:SubBasicInfo>                                                                                                                                                                                                                                     
+              <bcc:SubProperty>                                                                                                                                                                                                                                    
+                  <bcc:Code>C_SUB_MAX_BALANCE</bcc:Code>                                                                                                                                                                                                           
+                  <bcc:Value>${balancevalue}</bcc:Value>                                                                                                                                                                                                                          
+               </bcc:SubProperty>                                                                                                                                                                                                                                  
+               <bcc:SubProperty>                                                                                                                                                                                                                                   
+                  <bcc:Code>C_SUB_MAX_VALIDITY</bcc:Code>                                                                                                                                                                                                          
+                  <bcc:Value>${dayvalue}</bcc:Value>                                                                                                                                                                                                                       
+               </bcc:SubProperty>                                                                                                                                                                                                                                  
+            </bcs:SubBasicInfo>                                                                                                                                                                                                                                    
+         </ChangeSubInfoRequest>                                                                                                                                                                                                                                   
+      </bcs:ChangeSubInfoRequestMsg>                                                                                                                                                                                                                               
+   </soapenv:Body>                                                                                                                                                                                                                                                 
+</soapenv:Envelope>`;
+
+      return data;
+
+   } catch (error) {
+      console.log(error)
+   }
+}
+
+exports.bodysetvalidity = (phone, validityincrement) => {
+   try {
+      const dates = `"${"yyyyMMddHHmmss"}"`
+      const datess = `(new java.text.SimpleDateFormat(${dates}`
+      const messageone = ")).format(new Date())}"
+      const message = "${=(int)(Math.random()*1000)}"
+      const datadateformat = "${=" + datess + "" + messageone + message;
+
+      const data = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bcs="http://www.huawei.com/bme/cbsinterface/bcservices" xmlns:cbs="http://www.huawei.com/bme/cbsinterface/cbscommon" xmlns:bcc="http://www.huawei.com/bme/cbsinterface/bccommon">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <bcs:ChangeSubValidityRequestMsg>
+        <RequestHeader>
+            <cbs:Version>1</cbs:Version>
+            <cbs:BusinessCode>ChangeSubValidity</cbs:BusinessCode>
+            <cbs:MessageSeq>${datadateformat}</cbs:MessageSeq>
+            <cbs:AccessSecurity>
+               <cbs:LoginSystemCode>APIGEEAPI</cbs:LoginSystemCode>
+               <cbs:Password>cdVOUWF+57KsMd57vH8D3H+ykq4CbeLtc8wCapSScPhjazQDDuTrFUP4sDBpyX+q</cbs:Password>             
+            </cbs:AccessSecurity>       
+         </RequestHeader>
+         <ChangeSubValidityRequest>
+            <bcs:SubAccessCode>           
+               <bcc:PrimaryIdentity>${phone}</bcc:PrimaryIdentity>
+            </bcs:SubAccessCode>
+            <bcs:OpType>2</bcs:OpType>
+            <bcs:ValidityIncrement>${validityincrement}</bcs:ValidityIncrement>
+         </ChangeSubValidityRequest>
+      </bcs:ChangeSubValidityRequestMsg>
+   </soapenv:Body>
+</soapenv:Envelope>`
+
+      return data;
+
+   } catch (error) {
+      console.log(error)
+   }
+
 
 }
