@@ -12,6 +12,7 @@ import FormControl from "@mui/material/FormControl";
 
 import Modalchangeadddate from "../filemodule/modalchangadddate";
 
+import { changeexporttoset } from "../filemodule/xlsxload";
 
 export default function ChangMaxDate() {
 
@@ -27,7 +28,7 @@ export default function ChangMaxDate() {
     const [modelchangemaxday, setmodelchangemaxday] = useState([]); // 
     const [validitydate, setvaliditydate] = useState(null); // valie setvalidity
 
-    const [valuechangemaxday, setvaluechangemaxday] = useState(0); // value change maxday
+    const [valuechangemaxday, setvaluechangemaxday] = useState(null); // value change maxday
 
 
     const [modelsetvalidity, setmodelsetvalidity] = useState([]);
@@ -55,6 +56,7 @@ export default function ChangMaxDate() {
 
 
     const [iseditlineone, setiseditlineone] = useState(false);
+    const [loading, setloading] = useState(false);
 
     const ismaxday = React.createRef();
     const isvalidity = React.createRef();
@@ -120,11 +122,14 @@ export default function ChangMaxDate() {
 
         try {
             console.log(modelfile)
-
+            setloading(true)
             if (modelfile.length == 0) {
                 // setopenmodal(true);
                 // openmsg.lbmsg = "please select file txt";
                 // openmsg.openbutton = 1;
+
+                seterror(true);
+                setmsgvalid(1);
 
                 openmodalsuccess(true, 1, "please select file txt", "");
 
@@ -132,8 +137,17 @@ export default function ChangMaxDate() {
                 seterrormsg(true);
                 setlinenum(1);
                 setmsgvalids(1);
+                setloading(false);
                 return;
             }
+
+            const modelindex = modelfile.findIndex(x => x.oldoffering == '')
+            if (modelindex != -1) {
+                openmodalsuccess(true, 1, "please select primary offering", "");
+
+                return;
+            }
+
 
             const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemainoffering", modelfile);
             console.log(data.data);
@@ -163,14 +177,17 @@ export default function ChangMaxDate() {
                     }
                     setmodelchangemaxdate(model);
                 }
+                setloading(false);
             }
+
         } catch (error) {
             console.log(error)
+            setloading(false);
         }
     }
     async function onaddchangmaxdate() {
         try {
-
+            setloading(true);
             if (modelchangemaxdate.length == 0) {
                 seterrormsg(true);
                 setlinenum(2);
@@ -178,11 +195,12 @@ export default function ChangMaxDate() {
 
                 openmodalsuccess(true, 1, "not found data changemainoffering", "");
                 // seteditlineone(1)
-
+                setloading(false);
                 return;
             }
             console.log(modelchangemaxdate)
             const modelindex = modelchangemaxdate.filter(x => x.datevalue == 0);
+            console.log(modelindex)
             if (modelindex > 0) {
                 seterror(true);
                 setmsgvalid(3);
@@ -192,7 +210,7 @@ export default function ChangMaxDate() {
                 setmsgvalids(2);
                 openmodalsuccess(true, 1, "please check value day geater date 0 ", "");
 
-
+                setloading(false);
                 // seteditlineone(1);
                 return;
             }
@@ -216,6 +234,7 @@ export default function ChangMaxDate() {
                 seterror(false);
                 setmsgvalid(0);
                 openmodalsuccess(true, 1, "changemaxday success", "");
+                setloading(false);
             }
 
         } catch (error) {
@@ -224,13 +243,13 @@ export default function ChangMaxDate() {
             setlinenum(2);
             setmsgvalids(2);
 
-
+            setloading(false);
         }
     }
 
     async function onsetvalidity() {
         try {
-
+            setloading(true);
             if (validitydate == null) {
                 seterrormsg(true);
                 setlinenum(3);
@@ -238,6 +257,7 @@ export default function ChangMaxDate() {
 
                 seteditlinetwo(0);
                 console.log("please check validity date value")
+                setloading(false);
                 return;
             }
             if (validitydate == "0") {
@@ -247,6 +267,7 @@ export default function ChangMaxDate() {
 
                 seteditlinetwo(0);
                 console.log("please check validity date value")
+                setloading(false);
                 return;
             }
 
@@ -257,12 +278,14 @@ export default function ChangMaxDate() {
 
                 seteditlinetwo(0);
                 console.log("please check data chang max day data you not found data success")
+                setloading(false);
                 return;
             }
             console.log(modelchangemaxday)
 
             const modelindex = ismodelsetvalidity.findIndex(x => parseInt(x.validitydate) <= 0);
             if (modelindex.length > 0) {
+                setloading(false);
                 return;
             }
 
@@ -286,10 +309,14 @@ export default function ChangMaxDate() {
 
                 seterror(false);
                 setmsgvalid(0);
+                setloading(false);
+
+                changeexporttoset({ modeloffer: modelsubscriber, modelchangemax: modelchangemaxday, modelsetvalidity: data.data.result });
             }
 
         } catch (error) {
             console.log(error)
+            setloading(false);
         }
 
     }
@@ -397,20 +424,6 @@ export default function ChangMaxDate() {
             console.log(modelchangemaxdate)
             console.log(status, openbutton)
             console.log(valuechangemaxday)
-
-            if (parseInt(valuechangemaxday) == 0) {
-                setmsgvalid(3);
-                seterror(true);
-                ismaxday.current.focus();
-                return;
-            }
-            if (valuechangemaxday == "") {
-                setmsgvalid(3);
-                seterror(true);
-                ismaxday.current.focus();
-                return;
-            }
-
             if (modelchangemaxdate.length == 0) {
                 setopenmodal(status);
                 openmsg.lbmsg = "please load data file and check data Changemain offering";
@@ -429,13 +442,49 @@ export default function ChangMaxDate() {
                 seteditlineone(0);
                 return;
             }
+            if (parseInt(valuechangemaxday) == 0) {
+                setmsgvalid(3);
+                seterror(true);
 
+                seterrormsg(true);
+                setlinenum(2);
+                setmsgvalids(2);
+                ismaxday.current.focus();
+                return;
+            }
+            if (valuechangemaxday == "") {
+                setmsgvalid(3);
+                seterror(true);
+
+                ismaxday.current.focus();
+                seterrormsg(true);
+                setlinenum(2);
+                setmsgvalids(2);
+                return;
+            }
+            if (valuechangemaxday == null) {
+                setmsgvalid(3);
+                seterror(true);
+                ismaxday.current.focus();
+                seterrormsg(true);
+                setlinenum(2);
+                setmsgvalids(2);
+                return;
+            }
+
+            if (parseInt(valuechangemaxday) != 0) {
+                modelchangemaxdate.forEach(x => { x.phone = x.phone, x.balance = x.balance, x.datevalue = valuechangemaxday });
+
+            }
             const modeldatavalues = modelchangemaxdate.findIndex(x => x.datevalue == 0);
             if (modeldatavalues != -1) {
+
+
                 seterrormsg(true);
                 setlinenum(2);
                 setmsgvalids(2);
 
+                openmodalsuccess(true, 1, "", "");
                 seteditlineone(0);
                 return;
             }
@@ -464,17 +513,26 @@ export default function ChangMaxDate() {
                 setmsgvalid(4);
                 isvalidity.current.focus();
 
+                // seterrormsg(true);
+                // setlinenum(3);
+                // setmsgvalids(3);
                 return;
             }
             if (validitydate == '' || validitydate == 0) {
                 seterror(true);
                 setmsgvalid(4);
+
                 isvalidity.current.focus();
 
                 return;
             }
             if (modelchangemaxday.length == 0) {
 
+                seterrormsg(true);
+                setlinenum(2);
+                setmsgvalids(2);
+
+                openmodalsuccess(true, 1, "not found data changemaxday please check data ", "")
                 return;
             }
             let model = [];
@@ -509,6 +567,16 @@ export default function ChangMaxDate() {
 
             if (linenumber == 0) {
                 seteditline(btnvalue);
+
+                setmodelsetvalidity([]);
+                setmodelchangemaxday([]);
+                setmodelsubscriber([]);
+                setvaliditydate('');
+                setvaluechangemaxday('');
+                seterrormsg(false);
+                setlinenum(0);
+                setmsgvalids(0);
+                setbtncheckoption(0);
 
             } else if (linenumber == 1) {
 
@@ -570,6 +638,7 @@ export default function ChangMaxDate() {
 
     const loaddataeditmodel = () => {
         try {
+
             console.log(validitydate == 0)
             console.log(modelchangemaxdate.length == 0)
             console.log(modelchangemaxdate)
@@ -650,7 +719,7 @@ export default function ChangMaxDate() {
 
     return (
 
-        <div className="w-100 position-relative d-flex  h-100-vh flex-column pb-5">
+        <div className="w-100 position-relative d-flex flex-column pb-5 ">
 
 
             <div className="w-100 border-1-solid d-flex  h-300-px p-3">
@@ -774,7 +843,7 @@ export default function ChangMaxDate() {
             <div className="w-100 d-flex px-3">
                 <div className="w-35 d-flex flex-column p-3 box-shadow h-160-px my-3">
                     <span className="pb-1"> change max day value  </span>
-                    <Phonenumber placeholder="365" onChange={(e) => valuevalidity(e)} error={error && msgvalid == 3 ? true : false} helperText={error && msgvalid == 3 ? "please enter value day" : ""} inputRef={ismaxday} readOnly={editlineone == 1 ? true : false} />
+                    <Phonenumber placeholder="365" onChange={(e) => valuevalidity(e)} value={valuechangemaxday} error={error && msgvalid == 3 ? true : false} helperText={error && msgvalid == 3 ? "please enter value day" : ""} inputRef={ismaxday} readOnly={editlineone == 1 ? true : false} />
 
                     {
                         editlineone == 0 && iseditlineone == false ?
@@ -798,9 +867,13 @@ export default function ChangMaxDate() {
                     </div>
                 </div>
                 <div className="w-100 border-1-  my-3 ">
+                    <div>
+                        <span> detail changemaxday </span>
+                    </div>
                     <div className="d-flex flex-column">
 
                         <div className="w-100 h-300-px border-1-solid overflow-hidden overflow-y-scroll">
+
                             <table>
                                 <thead>
                                     <tr>
@@ -865,7 +938,11 @@ export default function ChangMaxDate() {
                     </div>
 
                 </div>
+
                 <div className="w-100 h-300-px border-1-solid overflow-hidden overflow-y-scroll ">
+                    <div>
+                        <span> detail setvalidity data </span>
+                    </div>
                     <table>
                         <thead>
                             <tr>
@@ -907,6 +984,17 @@ export default function ChangMaxDate() {
             <div className="w-100 position-absolute left-0 top-0">
                 <Modalchangeadddate callmodal={callmodal} opendialog={openmodal} openbutton={openmsg} modelchangemax={modelchangemaxdate} modelsetvalidity={ismodelsetvalidity} />
             </div>
+
+
+            <div className={`${loading ? "d-flex" : "display-none"} position-absolute left-0 top-0 w-100 h-100 bg-backdrop  d-flex justify-content-center align-items-center`}>
+                <div className="loader">
+
+                </div>
+
+            </div>
+
+
+
         </div >
     )
 

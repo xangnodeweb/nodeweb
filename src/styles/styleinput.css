@@ -87,6 +87,8 @@ div.css-1nrlq1o-MuiFormControl-root{
 }
 
 
+
+
 .btnfile {
     width: 115px;
     height: 35px;
@@ -175,17 +177,17 @@ div.css-1nrlq1o-MuiFormControl-root{
 }
 .border-left{
     border-right: 4px solid #DDDDDD; 
-    height: 100%;
+    height: 110%;
 }
 
 .border-left-success{
     border-right: 4px solid #517fa4; 
-    height: 100%;
+    height: 110%;
 }
 
 .border-left-red{
     border-right: 4px solid #F00; 
-    height: 100%;
+    height: 110%;
 }
 .loader {
 

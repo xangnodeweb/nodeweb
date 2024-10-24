@@ -210,7 +210,7 @@ export const Exportexcels = async ({ data }) => { // modifield
             return;
         }
         const datenows = dateexport();
-        
+
         const worksheet = new exceljs.Workbook();
         const sheet = worksheet.addWorksheet("My Sheet");
 
@@ -229,15 +229,15 @@ export const Exportexcels = async ({ data }) => { // modifield
         }
 
         worksheetrow.mergeCells('D2', 'F2');
-        worksheetrow.getRow(2).font ={
-            name : 'Cambria',
-            size : 11
+        worksheetrow.getRow(2).font = {
+            name: 'Cambria',
+            size: 11
         }
         sheet.getCell('D2').alignment = {
-            horizontal : "right",
-            vertical : "middle"
+            horizontal: "right",
+            vertical: "middle"
         }
-      
+
 
         sheet.getCell('D2').value = `date export : ${datenows}`;
 
@@ -399,7 +399,7 @@ export const addpackageExportexcel = async ({ data }) => {
         sheet.getCell("G3").value = "status" // status phone data
 
         worksheetrow.getCell('A1', 'G2').font = {
-          name : "Cambria"
+            name: "Cambria"
         };
 
         sheet.columns = [
@@ -507,4 +507,215 @@ export const addpackageExportexcel = async ({ data }) => {
     } catch (error) {
         console.log(error)
     }
+}
+
+
+
+
+export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity }) => {
+    try {
+
+
+        modeloffer = [
+            {
+                phone: "2058177781",
+                resultCode: 0,
+                oldoffering: "3000001",
+                newoffering: "1814607249",
+                resultdesc: "operation success",
+                status: true
+            },
+            {
+                phone: "2052843575",
+                resultCode: 0,
+                oldoffering: "3000001",
+                newoffering: "1814607249",
+                resultdesc: "operation success",
+                status: true
+            },
+            {
+                phone: "2057757757",
+                resultCode: 0,
+                oldoffering: "3000001",
+                newoffering: "1814607249",
+                resultdesc: "error",
+                status: false
+            }
+        ]
+
+        modelchangemax = [
+            {
+                phone: "2058177781",
+                code: 0,
+                message: "success",
+                status: false,
+                datevalue: 5
+            }, {
+                phone: "2057757757",
+                code: 0,
+                message: "success",
+                status: false,
+                datevalue: 5
+            },
+            {
+                phone: "2052843575",
+                code: 0,
+                message: "success",
+                status: false,
+                datevalue: 5
+            }
+
+        ]
+        modelsetvalidity = [
+            {
+                phone: "2058177781",
+                resultdesc: "success",
+                status: true,
+                validityincrement: 5
+            }, {
+                phone: "2057757757",
+                resultdesc: "error",
+                status: false,
+                validityincrement: 4
+            }, {
+                phone: "2052843575",
+                resultdesc: "error",
+                status: false,
+                validityincrement: 4
+            }
+        ]
+
+        console.log(modeloffer);
+        console.log(modelchangemax);
+        console.log(modelsetvalidity);
+
+
+        const worksheet = new exceljs.Workbook();
+        const sheet = worksheet.addWorksheet("My Sheet");
+
+        const worksheetrow = worksheet.getWorksheet(1);
+        worksheetrow.mergeCells('A1', 'F2');
+        // worksheetrow.getRow(1).height = 20;
+        worksheetrow.getCell('A1', 'F2').fill = {
+            bgColor: "BDC0BE"
+        };
+        // sheet.getCell(1).value = "report modifield data";
+        sheet.getCell("A1").value = "report changemainoffering";
+        sheet.getCell("A3").value = "phone"; // no 
+        sheet.getCell("B3").value = "resultCode"; // no 
+        sheet.getCell("C3").value = "oldoffering"; // no 
+        sheet.getCell("D3").value = "newoffering"; // no 
+        sheet.getCell("E3").value = "resultdesc"; // no 
+        sheet.getCell("F3").value = "status"; // no 
+
+        worksheetrow.getCell('A1', 'F2').font = {
+            name: "Cambria"
+        };
+
+        sheet.columns = [
+            {
+                key: "phone",
+                width: 10
+            },
+            {
+                key: "resultCode",
+                width: 20
+            },
+            {
+                key: "oldoffering",
+                width: 15
+            },
+            {
+                key: "newoffering",
+                width: 20
+            },
+            {
+                key: "resultdesc",
+                width: 35
+            },
+            {
+                key: "status",
+                width: 35
+            }
+        ]
+        modeloffer.map((product, index) => {
+            sheet.addRow({
+                id: index + 1,
+                phone: product.phone,
+                resultCode: product.resultCode,
+
+                oldoffering: product.oldoffering,
+                newoffering: product.newoffering,
+
+                resultdesc: product.resultdesc,
+                status: product.status.toString()
+            });
+        });
+        console.log(sheet);
+
+        const statusCol = sheet.getColumn(6);
+        statusCol.eachCell(cell => {
+            const cellValue = sheet.getCell(cell?.address).value;
+
+            if (cellValue != 'true') {
+                sheet.getCell(cell?.address).fill = {
+                    type: "pattern",
+                    pattern: "solid",
+                    fgColor: { argb: "C5D9F1" }
+                }
+            }
+        })
+
+        sheet.eachRow(function (row, rowNumber) {
+            row.alignment = {
+                horizontal: "center",
+                vertical: "middle"
+            }
+            if (rowNumber == 3) {
+                row.font = {
+                    name: 'Cambria',
+                    size: 10,
+                    bold: true
+                }
+                row.height = 20;
+            }
+            if (rowNumber >= 4) {
+                row.font = {
+                    size: 10
+                }
+                // row.height = 20
+            }
+            row.eachCell((cell, colNumber) => {
+
+                if (rowNumber == 3) {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: "solid",
+                        fgColor: { argb: 'BDC0BE' }
+                    }
+                }
+            })
+        })
+
+
+        worksheet.xlsx.writeBuffer().then(data => {
+            const blob = new Blob([data], {
+                type: "application/vnd.openxmlformats-officedocument.spreasheet.sheet",
+            });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement("a");
+            anchor.href = url;
+            anchor.download = "download.xlsx";
+            anchor.click();
+            window.URL.revokeObjectURL(url);
+        });
+
+
+
+    } catch (error) {
+        console.log(error)
+    }
+
+
+
 }

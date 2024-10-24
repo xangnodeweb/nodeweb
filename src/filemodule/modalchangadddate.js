@@ -7,7 +7,7 @@ export default function Modalchangeadddate({ callmodal, opendialog, openbutton, 
     return (
 
         <>
-            <Modal backdrop={true} key={true} open={opendialog} onClose={(e) => callmodal({ status: false, confirmbtn: 0 }, e)}>
+            <Modal backdrop={true} key={true} open={opendialog} onClose={(e) => callmodal({ status: false, confirmbtn: 0 }, e)}  >
 
                 <Modal.Header>
                     {
@@ -24,7 +24,7 @@ export default function Modalchangeadddate({ callmodal, opendialog, openbutton, 
                     openbutton.openbutton == 0 || openbutton.openbutton == 3 ?
 
                         <>
-                            <Modal.Body>
+                            <Modal.Body style={{ "maxHeight": "400px" }}>
                                 <div className="mt-4">
 
                                     <table>
@@ -92,7 +92,7 @@ export default function Modalchangeadddate({ callmodal, opendialog, openbutton, 
                             </Modal.Body>
                 }
 
-                <Modal.Footer style={{ "marginTop": openbutton.openbutton == 1 ? "12px" : "" }}>
+                <Modal.Footer style={{ "marginTop": "12px" }}>
                     {
                         openbutton.openbutton == 1 ?
                             <>
@@ -116,7 +116,7 @@ export default function Modalchangeadddate({ callmodal, opendialog, openbutton, 
                 </Modal.Footer>
 
 
-            </Modal>
+            </Modal >
 
 
         </>
