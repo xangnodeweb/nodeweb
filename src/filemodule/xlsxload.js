@@ -4,6 +4,7 @@ import * as XLSX from "xlsx";
 import * as XLSXpopulate from "xlsx-populate/browser/xlsx-populate";
 const exceljs = require("exceljs");
 import { dateformat, dateexport } from "../filemodule/dataformat"
+
 export const Excelexport = ({ data, date }) => {
 
     if (data.length == 0) {
@@ -569,19 +570,21 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
         modelsetvalidity = [
             {
                 phone: "2058177781",
+                validityincrement: 50,
                 resultdesc: "success",
                 status: true,
-                validityincrement: 5
+
             }, {
                 phone: "2057757757",
-                resultdesc: "error",
-                status: false,
-                validityincrement: 4
+                validityincrement: 40,
+                resultdesc: "success",
+                status: true
             }, {
                 phone: "2052843575",
+                validityincrement: 40,
                 resultdesc: "error",
                 status: false,
-                validityincrement: 4
+
             }
         ]
 
@@ -602,24 +605,23 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
         // sheet.getCell(1).value = "report modifield data";
         sheet.getCell("A1").value = "report changemainoffering";
         sheet.getCell("A3").value = "phone"; // no 
-        sheet.getCell("B3").value = "resultCode"; // no 
-        sheet.getCell("C3").value = "oldoffering"; // no 
-        sheet.getCell("D3").value = "newoffering"; // no 
+        sheet.getCell("B3").value = "oldoffering"; // no 
+        sheet.getCell("C3").value = "newoffering"; // no 
+        sheet.getCell("D3").value = "resultCode"; // no 
         sheet.getCell("E3").value = "resultdesc"; // no 
         sheet.getCell("F3").value = "status"; // no 
 
         worksheetrow.getCell('A1', 'F2').font = {
             name: "Cambria"
         };
-
+        worksheetrow.getCell('A3', 'F3').font = {
+            bold: true,
+            size: 11
+        };
         sheet.columns = [
             {
                 key: "phone",
                 width: 10
-            },
-            {
-                key: "resultCode",
-                width: 20
             },
             {
                 key: "oldoffering",
@@ -627,7 +629,11 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
             },
             {
                 key: "newoffering",
-                width: 20
+                width: 15
+            },
+            {
+                key: "resultCode",
+                width: 10
             },
             {
                 key: "resultdesc",
@@ -642,11 +648,10 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
             sheet.addRow({
                 id: index + 1,
                 phone: product.phone,
-                resultCode: product.resultCode,
 
                 oldoffering: product.oldoffering,
                 newoffering: product.newoffering,
-
+                resultCode: product.resultCode,
                 resultdesc: product.resultdesc,
                 status: product.status.toString()
             });
@@ -695,10 +700,173 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
                     }
                 }
             })
-        })
+        });
 
 
+        worksheetrow.mergeCells(`A${parseInt(modeloffer.length) + 6}`, `E${parseInt(modeloffer.length) + 7}`);
+        sheet.getCell(`A${parseInt(modeloffer.length) + 6}`).value = "report changemaxday";
+        sheet.getCell(`A${parseInt(modeloffer.length) + 8}`).value = "phone"; // no 
+        sheet.getCell(`B${parseInt(modeloffer.length) + 8}`).value = "datevalue"; // no 
+        sheet.getCell(`C${parseInt(modeloffer.length) + 8}`).value = "code"; // no 
+        sheet.getCell(`D${parseInt(modeloffer.length) + 8}`).value = "message"; // no 
+        sheet.getCell(`E${parseInt(modeloffer.length) + 8}`).value = "status"; // no 
+
+        worksheetrow.getCell(`A${parseInt(modeloffer.length) + 6}`, `E50`).font = {
+            name: "Cambria"
+        };
+        const rowmax = parseInt(modeloffer.length) + parseInt(modelchangemax.length) + parseInt(modelsetvalidity.length) + 3;
+        worksheetrow.getCell(`A${parseInt(modeloffer.length) + 6}`, `E${rowmax}`).alignment = {
+
+            horizontal: "center",
+            vertical: "middle"
+        };
+        sheet.columns = [
+            {
+                key: "phone",
+                width: 20
+            },
+            {
+                key: "datevalue",
+                width: 20
+            },
+            {
+                key: "code",
+                width: 35
+            },
+            {
+                key: "message",
+                width: 20
+            },
+            {
+                key: "status",
+                width: 35
+            }
+        ]
+
+        modelchangemax.map((product, index) => {
+            sheet.addRow({
+                id: index + 1,
+                phone: product.phone,
+                datevalue: product.datevalue,
+
+                code: product.code,
+                message: product.message,
+                status: product.status.toString()
+            });
+        });
+
+
+        const coltwo = parseInt(modeloffer.length) + 8;
+        sheet.eachRow(function (row, rowNumber) {
+
+            row.alignment = {
+                horizontal: "center",
+                vertical: "middle"
+            }
+            row.font = {
+                name: "Cambria"
+            }
+            row.height = 20;
+            if (rowNumber == coltwo) {
+                row.height = 20;
+                row.eachCell((cell, number) => {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: "solid",
+                        fgColor: { argb: 'BDC0BE' }
+                    }
+                })
+            }
+        });
+
+
+        const rowmaxs = parseInt(modeloffer.length) + parseInt(modelchangemax.length) + parseInt(modelsetvalidity.length) + 12;
+        worksheetrow.mergeCells(`A${parseInt(modeloffer.length) + parseInt(modelchangemax.length) + 12}`, `D${parseInt(modeloffer.length) + parseInt(modelchangemax.length) + 13}`);
+        sheet.getCell(`A${parseInt(modeloffer.length) + parseInt(modelchangemax.length) + 12}`).value = "report setvalidity";
+        sheet.getCell(`A${parseInt(modeloffer.length) + parseInt(modelchangemax.length) + 14}`).value = "phone"; // no 
+        sheet.getCell(`B${parseInt(modeloffer.length) + parseInt(modelchangemax.length) + 14}`).value = "validityincrement"; // no 
+        sheet.getCell(`C${parseInt(modeloffer.length) + parseInt(modelchangemax.length) + 14}`).value = "resultdesc"; // no 
+        sheet.getCell(`D${parseInt(modeloffer.length) + parseInt(modelchangemax.length) + 14}`).value = "status"; // no 
+
+        worksheetrow.getCell(`A${parseInt(modeloffer.length) + parseInt(modelchangemax.length) + 14}`, `D${rowmaxs}`).font = {
+            name: "Cambria"
+        };
+
+        worksheetrow.getCell(`A${parseInt(modeloffer.length) + parseInt(modelchangemax.length) + 14}`, `D${rowmaxs}`).alignment = {
+
+            horizontal: "center",
+            vertical: "middle"
+        };
+
+        sheet.columns = [
+            {
+                key: "phone",
+                width: 20
+            },
+            {
+                key: "resultdesc",
+                width: 20
+            },
+            {
+                key: "validityincrement",
+                width: 25
+            },
+            {
+                key: "status",
+                width: 35
+            }
+        ];
+
+        modelsetvalidity.map((product, index) => {
+            console.log(product.validityincrement)
+            sheet.addRow({
+
+                phone: product.phone,
+                status: product.status.toString(),
+                resultdesc: product.resultdesc,
+                validityincrement: product.validityincrement
+            });
+
+        });
+
+
+
+        const colthree = parseInt(modeloffer.length) + parseInt(modelchangemax.length) + parseInt(modelsetvalidity.length) + 11;
+        sheet.eachRow(function (row, rowNumber) {
+            console.log(row);
+        console.log(row["_cells"])
+            row.alignment = {
+                horizontal: "center",
+                vertical: "middle"
+            }
+            row.font = {
+                name: "Cambria"
+            }
+            row.height = 20;
+
+            if (row.getCell() == 4) {
+
+
+            }
+
+            if (rowNumber == colthree) {
+                row.height = 20;
+                row.eachCell((cell, number) => {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: "solid",
+                        fgColor: { argb: 'BDC0BE' }
+                    }
+                })
+            }
+
+
+
+        });
+
+        console.log(worksheet);
         worksheet.xlsx.writeBuffer().then(data => {
+
             const blob = new Blob([data], {
                 type: "application/vnd.openxmlformats-officedocument.spreasheet.sheet",
             });
