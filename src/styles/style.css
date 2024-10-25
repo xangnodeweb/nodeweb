@@ -82,19 +82,22 @@ div.lb-record.disable {
     width: 70%;
 }
 
-.w-65{
+.w-65 {
     width: 65%;
 }
 
 .w-50 {
     width: 50%;
 }
-.w-40{
+
+.w-40 {
     width: 40%;
 }
-.w-35{
+
+.w-35 {
     width: 35%;
 }
+
 .w-30 {
     width: 30%;
 }
@@ -118,7 +121,8 @@ div.lb-record.disable {
 .w-40-px {
     width: 40px;
 }
-.w-50-px{
+
+.w-50-px {
     width: 50px;
 }
 
@@ -185,7 +189,8 @@ div.lb-record.disable {
 .h-400-px {
     height: 400px;
 }
-.h-325-px{
+
+.h-325-px {
     height: 325px;
 }
 
@@ -196,30 +201,36 @@ div.lb-record.disable {
 .h-290-px {
     height: 290px;
 }
-.h-280-px{
+
+.h-280-px {
     height: 280px;
 }
 
-.h-275-px{
+.h-275-px {
     height: 275px;
 }
-.h-270-px{
+
+.h-270-px {
     height: 270px;
 }
-.h-265-px{
+
+.h-265-px {
     height: 265px;
 }
 
 
-.h-245-px{
-    height: 245px; 
+.h-245-px {
+    height: 245px;
 }
-.h-232-px{
+
+.h-232-px {
     height: 232px;
 }
-.h-230-px{
+
+.h-230-px {
     height: 230px;
 }
+
 .h-220-px {
     height: 220px;
 }
@@ -228,7 +239,7 @@ div.lb-record.disable {
     height: 200px;
 }
 
-.h-160-px{
+.h-160-px {
     height: 160px;
 }
 
@@ -260,7 +271,7 @@ div.lb-record.disable {
     min-height: 35px;
 }
 
-.min-232-px{
+.min-232-px {
     min-height: 232px;
 }
 
@@ -283,10 +294,12 @@ div.lb-record.disable {
 .min-w-115-px {
     width: 115px;
 }
-.min-w-300-px{
+
+.min-w-300-px {
     min-width: 300px;
 }
-.min-w-350-px{
+
+.min-w-350-px {
     min-width: 350px;
 }
 
@@ -301,7 +314,8 @@ div.lb-record.disable {
 .max-w-76 {
     max-width: 76%;
 }
-.max-w-350-px{
+
+.max-w-350-px {
     max-width: 350px;
 }
 
@@ -373,9 +387,11 @@ div.lb-record.disable {
 .border-red {
     border: 1px solid #FF0000;
 }
+
 .border-2-red {
     border: 2px solid #FF0000;
 }
+
 .border-grey {
     border: 1px solid #efe5e5;
 }
@@ -523,10 +539,12 @@ div.lb-record.disable {
     margin-right: 8px;
 
 }
-.mx-3{
+
+.mx-3 {
     margin-left: 12px;
     margin-right: 12px;
 }
+
 .mx-auto {
     margin-left: auto;
     margin-right: auto;
@@ -608,9 +626,11 @@ div.lb-record.disable {
 .pb-1 {
     padding-bottom: 4px;
 }
-.pb-2{
+
+.pb-2 {
     padding-bottom: 8px;
 }
+
 .pb-3 {
     padding-bottom: 12px;
 }
@@ -635,10 +655,18 @@ div.lb-record.disable {
     padding: 12px;
 }
 
+.p-5{
+  padding: 20px;
+
+}
+
 .top-0 {
     top: 0px;
 }
 
+.top-8 {
+    top: 8%;
+}
 
 .top-12 {
     top: 12%;
@@ -652,6 +680,11 @@ div.lb-record.disable {
     top: 14%;
 }
 
+.top-15 {
+    top: 15%;
+}
+
+
 .top-16 {
     top: 16%;
 }
@@ -659,7 +692,8 @@ div.lb-record.disable {
 .top-18 {
     top: 18%;
 }
-.top-30{
+
+.top-30 {
     top: 30%;
 }
 
@@ -683,6 +717,10 @@ div.lb-record.disable {
     top: 52%;
 }
 
+.top-54{
+    top: 54%;
+}
+
 .top-57 {
     top: 57%;
 }
@@ -698,9 +736,11 @@ div.lb-record.disable {
 .top-72 {
     top: 72%;
 }
+
 .top-8-px-l {
     top: -8px;
 }
+
 .top-9-px-l {
     top: -9px;
 }
@@ -711,6 +751,10 @@ div.lb-record.disable {
 
 .top-12-px {
     top: 12px;
+}
+
+.top-27-px {
+    top: 27px;
 }
 
 .top-260-px {
@@ -768,8 +812,17 @@ div.lb-record.disable {
 .left-5-px {
     left: 5px;
 }
-.left-12-px{
+
+.left-12-px {
     left: 12px;
+}
+
+.left-21-px {
+    left: 21px;
+}
+
+.left-22-px {
+    left: 22px;
 }
 
 .left-9 {
@@ -792,6 +845,10 @@ div.lb-record.disable {
     left: 13%;
 }
 
+.left-28 {
+    left: 28%;
+}
+
 .left-30 {
     left: 30%;
 }
@@ -812,6 +869,10 @@ div.lb-record.disable {
     left: 35%;
 }
 
+.left-36{
+    left: 36%;
+}
+
 .left-37 {
     left: 37%;
 }
@@ -819,7 +880,8 @@ div.lb-record.disable {
 .left-38 {
     left: 38%;
 }
-.left-39{
+
+.left-39 {
     left: 39%;
 }
 
@@ -829,6 +891,14 @@ div.lb-record.disable {
 
 .left-41 {
     left: 41%;
+}
+
+.left-45-l{
+    left: -45%;
+}
+
+.left-50 {
+    left: 50%;
 }
 
 .left-3-px-l {
@@ -843,8 +913,27 @@ div.lb-record.disable {
     left: -10px;
 }
 
+.left-17-px-l {
+    left: -17px;
+}
+
+.left-20-px-l {
+    left: -20px;
+}
+
+.left-21-px-l {
+    left: -21px;
+}
+
+.left-22-px-l {
+    left: -22px;
+}
+
 .left-11-px-l {
     left: -11px;
+}
+.left-45-px-l{
+    left: -45px;
 }
 
 .left-46-px-l {
@@ -882,6 +971,10 @@ div.lb-record.disable {
     right: -7px;
 }
 
+.right-8-px-l {
+    right: -8px;
+}
+
 .right-10-px-l {
     right: -10px;
 }
@@ -903,12 +996,33 @@ div.lb-record.disable {
     right: -15px;
 }
 
+.right-17-px-l {
+    right: -17px;
+}
+
+.right-18-px-l {
+    right: -18px;
+}
+
 .right-30 {
     right: 30%;
 }
+
 .right-35 {
     right: 35%;
 }
+.right-38-l{
+    right: -38%;
+}
+
+.right-42-l{
+    right: -42%;
+}
+
+.right-13-px{
+    right: 13px;
+}
+
 .right-20-px {
     right: 20px;
 }
@@ -941,6 +1055,10 @@ div.lb-record.disable {
     bottom: 0;
 }
 
+.bottom-4{
+   bottom: 4%;
+}
+
 .bottom-5 {
     bottom: 5%;
 }
@@ -953,9 +1071,10 @@ div.lb-record.disable {
     bottom: 15%;
 }
 
-.bottom-23{
+.bottom-23 {
     bottom: 23%;
 }
+
 .bottom-24 {
     bottom: 24%;
 }
@@ -1002,6 +1121,10 @@ div.lb-record.disable {
 
 }
 
+.bottom-6-px-l {
+    bottom: -6px;
+}
+
 .bottom-8-l {
     bottom: -8px;
 }
@@ -1023,9 +1146,22 @@ div.lb-record.disable {
     bottom: -14px;
 }
 
-.bottom-17-l {
+.bottom-16-px-l {
+    bottom: -16px;
+}
+
+.bottom-17-px-l {
     bottom: -17px;
 }
+
+
+.bottom-18-px-l {
+    bottom: -18px;
+}
+.bottom-20-px-l{
+    bottom: -20px;
+}
+
 
 .bottom-178-px {
     bottom: 178px;
@@ -1096,9 +1232,11 @@ div.lb-record.disable {
 .bg-default-btn {
     background-color: #dddddd78;
 }
-.bg-red{
+
+.bg-red {
     background-color: #F00;
 }
+
 .color-red {
     color: #FF0000;
 }
@@ -1110,6 +1248,7 @@ div.lb-record.disable {
 .text-white {
     color: #FFF;
 }
+
 .color-default {
     color: #000000;
 }
@@ -1129,9 +1268,11 @@ div.lb-record.disable {
 .bg-gray {
     background-color: #808080;
 }
+
 .bg-box-gray {
     background-color: #dddddd;
 }
+
 .box-shadow {
 
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -1160,12 +1301,15 @@ div.lb-record.disable {
 .f-35-px {
     font-size: 35px;
 }
+
 .f-55-px {
     font-size: 55px;
 }
+
 .f-60-px {
     font-size: 60px;
 }
+
 .f-70-px {
     font-size: 70px;
 }
@@ -1190,14 +1334,20 @@ input {
     padding-top: 6px;
 }
 
-.transform-5-l{
+.transform-5-l {
     transform: rotate(-5deg);
 }
-.transform-8-l{
+
+.transform-8-l {
     transform: rotate(-8deg);
 }
+
 .transform-9-l {
     transform: rotate(-9deg);
+}
+
+.transform-10-l{
+    transform: rotate(-10deg);
 }
 
 .transform-16-l {
@@ -1206,6 +1356,10 @@ input {
 
 .transform-20-l {
     transform: rotate(-20deg);
+}
+
+.transform-25-l {
+    transform: rotate(-25deg);
 }
 
 .transform-30-l {
@@ -1252,12 +1406,19 @@ input {
     transform: rotate(-90deg);
 }
 
-.tansform-20 {
+.transform-20 {
     transform: rotate(20deg);
+}
+.transform-22{
+    transform: rotate(22deg);
 }
 
 .transform-24 {
     transform: rotate(24deg);
+}
+
+.transform-28 {
+    transform: rotate(28deg);
 }
 
 .transform-30 {
@@ -1288,12 +1449,19 @@ input {
     transform: rotate(60deg);
 }
 
+.tansform-65 {
+    transform: rotate(65deg);
+}
+
 .transform-67 {
     transform: rotate(67deg);
 }
 
-.transform-90{
+.transform-90 {
     transform: rotate(90deg);
+}
+.transform-95{
+    transform: rotate(95deg );
 }
 
 .transform-145 {

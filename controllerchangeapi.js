@@ -245,10 +245,7 @@ app.post("/setvalidity", async (req, res) => {
 
                 const bodysetvaliditys = bodysetvalidity(body[i].phone, body[i].validitydate);
 
-                if (i == 1) {
-
-                    await sleep(10000);
-                }
+             
                 console.log(bodysetvaliditys);
 
 
@@ -336,7 +333,7 @@ app.post("/setvalidity", async (req, res) => {
 
             }
             const modelindex = modelresponse.findIndex(x => x.status == false && x.code == 2);
-            if (modelindex.length != -1) {
+            if (modelindex != -1) {
                 return res.status(400).json({ status: false, code: 2, messgae: "ConnectTimeoutError", result: modelresponse });
             } else {
                 return res.status(200).json({ status: true, code: 0, messgae: "set validity success", result: modelresponse });

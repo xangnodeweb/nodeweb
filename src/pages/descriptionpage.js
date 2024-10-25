@@ -40,7 +40,7 @@ export default function Descriptionpage({ callpages }) {
                     </div>
                     <div className="d-flex">
                         <span className="f-18-px"> 6/ description ລາຍລະອຽດການໃຊ້ soap query phone </span>
-                       
+
                     </div>
 
                 </div>
@@ -424,6 +424,74 @@ export default function Descriptionpage({ callpages }) {
                             <img src="http://127.0.0.1:8080/image/addpackage-success-main.png" className="h-300-px w-100" />
                             <span className="f-18-px pt-2">  add package ສຳເລັດ  </span>
                         </div>
+                    </div>
+                </div>
+                <div className="d-flex flex-column mt-5 px-3">
+
+                    <span className="f-20-px f-weight-900"> 6/ changemain offering , changemaxday , setvalidity ອັບເດດມື້  </span>
+                    <div className="d-flex flex-column mt-3 ">
+
+                        <span className="f-18-px"> 1/ ກົດປຸ່ມ no file change ເພື່ອເລືອກຟາຍ ຫຼັງຈາກເລືອກຟາຍແລ້ວ ກວດເບິ່ງຂໍ້ມູນທີ່ ຮູບ 1.2 ຂໍ້ມູນທີ່ສະແດງວ່າຄົບບໍ່ ສາມາດເລືອກປ່ຽນຂໍ້ມູນ primaryOffering  ກົດເລືອກ ທີ່ດ້ານລຸ່ມ ຮູບ 1.1 ສາມາດເລືອກໄດ້ 2 primary   </span>
+                        <span className="f-18-px"> 1.2 / ສາມາດເລືອກກົດປຸ່ມ request response ເພື່ອກວດເບິ່ງຂໍ້ມູນ ປຸ່ມ request ຈະສະແດງຂໍ້ມູນຈາກຟາຍ ທີ່ສະແດງ  ແລະ ປຸ່ມ response ແມ່ນ ຖ້າ subscripber ສຳເລັດຈະສະແດງຂໍ້ມູນທີ່ສຳເລັດ true ຄືຂໍ້ມູນທີ່ສຳເລັດ ແລະ false ເປັນຂໍ້ມູນທີ່ ບໍ່ສຳເລັດ </span>
+                        <span className="f-18-px"> 2/ ຮູບເລກ 2 ປ້ອນຂໍ້ມູນ change max day ປ້ອນຈຳນວນມື້ທີ່ຕ້ອງການ ຖ້າປ້ອນຄົບແລ້ວ ກົດປຸ່ມ changemaxdate ແລ້ວຈະມີຂໍ້ມູນສະແດງ ກະລຸນາກວດຄືນ ກົດປຸ່ມ ok ເພື່ອ change max day  ຖ້າສຳເລັດຈະມີຂໍ້ມູນສະແດງທີ່ detail changemaxday ຈະມີສະຖານະຂໍ້ມູນສະແດງ ຂໍ້ມູນທີ່ສຳເລັດ ຈະມີ status true ແລະ ຂໍ້ມູນທີ່ບໍ່ສຳເລັດ ຈະສະແດງເປັນ false </span>
+                        <span className="f-18-px"> 3/ ຮູບເລກ 3 ປ້ອນຈຳນວນມື້ increment ຖ້າປ້ອນຄົບແລ້ວ ກົດປຸ່ມ setvalidity ຖ້າສຳເລັດຈະມີຂໍ້ມູນສະແດງ ຖ້າສຳເລັດຈະມີຟາຍ excel    </span>
+                    </div>
+
+
+                    <div className="position-relative w-70 m-auto">
+                        <img src="http://localhost:8080/image/changemain-max-setvalidity-main.png" className="w-100 h-500-px" />
+
+                        <div className="position-absolute top-8 left-28">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray  top-0 left-0 d-flex align-items-center justify-content-center">
+                                    <span> 1.1 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left f-20-px position-absolute top-27-px left-17-px-l transform-20-l">  </i>
+                                <i className="fa fa-long-arrow-right f-20-px position-absolute right-13-px  bottom-20-px-l transform-95 ">  </i>
+                            </div>
+                        </div>
+
+                        <div className="position-absolute top-8 left-50">
+                            <div className="position-relative">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray d-flex justify-content-center align-items-center">
+                                    <span> 1.2 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left f-20-px position-absolute top-27-px left-17-px-l transform-20-l">  </i>
+                                <i className="fa fa-long-arrow-right f-20-px position-absolute right-0  bottom-18-px-l transform-67 ">  </i>
+                            </div>
+                        </div>
+                        <div className="position-absolute top-54 left-36">
+                            <div className="positin-relative ">
+                                <div className="w-40-px h-40-px border-radius-50 bg-gray  d-flex justify-content-center align-items-center">
+                                    <span> 2 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left position-absolute left-10-px-l top-0 transform-22"></i>
+                                <i className="fa fa-long-arrow-right position-absolute right-7-px-l bottom-0 transform-10-l"></i>
+                            </div>
+                        </div>
+                        <div className="position-absolute  left-36 bottom-5">
+                            <div className="position-relative">
+                                <div className=" w-40-px  h-40-px border-radius-50 bg-gray d-flex justify-content-center align-items-center">
+                                    <span className=""> 3 </span>
+                                </div>
+                                <i className="fa fa-long-arrow-left f-20-px position-absolute left-45-l top-8 transform-20">   </i>
+                                <i className="fa fa-long-arrow-right f-20-px position-absolute right-38-l bottom-4 transform-20-l">   </i>
+
+                            </div>
+                        </div>
+
+
+                        <div className="w-40-px h-40-px border-radius-50 bg-gray  position-absolute top-0 left-0">
+                            <span> 4 </span>
+                        </div>
+
+
+                    </div>
+                    <div className="p-5 d-flex">
+<div className="position-relative">
+
+                        <img src="http://127.0.0.1:8080/image/dialog-changemaxday-main.png" className="h-300-px" />
+</div>
                     </div>
                 </div>
                 <div className="w-100  d-flex flex-column px-5">

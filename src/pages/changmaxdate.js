@@ -627,6 +627,8 @@ export default function ChangMaxDate() {
 
             if (linenumber == 0) {
                 seteditline(btnvalue);
+                seteditlineone(0);
+                seteditlinetwo(0);
 
                 setmodelsetvalidity([]);
                 setmodelchangemaxday([]);
@@ -999,7 +1001,7 @@ export default function ChangMaxDate() {
 
                 </div>
 
-                <div className="w-100 h-300-px border-1-solid overflow-hidden overflow-y-scroll ">
+                <div className="w-100 h-300-px  overflow-hidden overflow-y-scroll ">
                     <div>
                         <span> detail setvalidity data </span>
                     </div>
