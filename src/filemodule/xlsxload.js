@@ -756,7 +756,12 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
         });
 
 
-        const coltwo = parseInt(modeloffer.length) + 8;
+        const coltwo = parseInt(modeloffer.length) + 8; // row header table three fill color
+
+        worksheetrow.getCell(`A5` , `E5`).fill = {
+            bgColor : "BDC0BE"
+        };
+
         sheet.eachRow(function (row, rowNumber) {
 
             row.alignment = {
@@ -767,6 +772,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
                 name: "Cambria"
             }
             row.height = 20;
+           
             if (rowNumber == coltwo) {
                 row.height = 20;
                 row.eachCell((cell, number) => {
@@ -777,6 +783,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
                     }
                 })
             }
+
         });
 
 
@@ -834,7 +841,6 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
         const colthree = parseInt(modeloffer.length) + parseInt(modelchangemax.length) + parseInt(modelsetvalidity.length) + 11;
         sheet.eachRow(function (row, rowNumber) {
             console.log(row);
-        console.log(row["_cells"])
             row.alignment = {
                 horizontal: "center",
                 vertical: "middle"
@@ -844,10 +850,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
             }
             row.height = 20;
 
-            if (row.getCell() == 4) {
-
-
-            }
+        
 
             if (rowNumber == colthree) {
                 row.height = 20;

@@ -182,6 +182,27 @@ export default function ChangMaxDate() {
 
         } catch (error) {
             console.log(error)
+            if (error) {
+                if (error.response) {
+
+                    let statuscode = error.response.data;
+                    if (statuscode.status == false && statuscode.code == 2) {
+                        if (statuscode.result.length > 0) {
+                            setmodelsubscriber(statuscode.result)
+                            setloading(false);
+                            setbtncheckoption(1);
+                            openmodalsuccess(true, 1, "cannot changemainoffering ConnectTimeoutError", "");
+                            return;
+                        }
+
+                    } else {
+                        openmodalsuccess(true, 1, "cannot changemain offering ", "");
+                        return;
+                    }
+                }
+            }
+
+
             setloading(false);
         }
     }
@@ -239,10 +260,29 @@ export default function ChangMaxDate() {
 
         } catch (error) {
             console.log(error);
-            seterrormsg(true);
-            setlinenum(2);
-            setmsgvalids(2);
+            if (error) {
+                if (error.response) {
+                    let statuscode = error.response.data;
 
+                    seterrormsg(true);
+                    setlinenum(2);
+                    setmsgvalids(2);
+                    if (statuscode.status == false && statuscode.code == 2) {
+                        setloading(false)
+                        openmodalsuccess(true, 1, "cannot changemaxday ConnectTimeoutError", "");
+                        return;
+                    } else {
+                        setloading(false);
+                        openmodalsuccess(true, 1, "cannot Changemaxday", "");
+                        return;
+                    }
+                } else {
+                    setloading(false);
+                    openmodalsuccess(true, 1, "cannot Changemaxday", "");
+                    return;
+                }
+
+            }
             setloading(false);
         }
     }
@@ -316,6 +356,26 @@ export default function ChangMaxDate() {
 
         } catch (error) {
             console.log(error)
+
+            if (error) {
+                if (error.response) {
+                    let statuscode = error.response.data;
+                    if (statuscode.status == false && statuscode.code == 2) {
+                        openmodalsuccess(true, 1, "cannot setvalidity ConnectTimeoutError", "");
+                        setloading(false);
+                        return;
+                    } else {
+                        openmodalsuccess(true, 1, "cannot setvalidity", "");
+                        setloading(false);
+                        return;
+                    }
+                } else {
+                    openmodalsuccess(true, 1, "cannot setvalidity", "");
+                    setloading(false);
+                    return;
+                }
+            }
+
             setloading(false);
         }
 
@@ -722,7 +782,7 @@ export default function ChangMaxDate() {
         <div className="w-100 position-relative d-flex flex-column pb-5 ">
 
 
-            <div className="w-100 border-1-solid d-flex  h-300-px p-3">
+            <div className="w-100 d-flex  h-300-px p-3">
                 <div className="d-flex flex-column box-shadow p-3 w-35 h-230-px">
                     <div>
                         <label for="btnfile" className={`${error && msgvalid == 1 ? "border-2-red" : ""} btnfile`}> no file change  </label>
@@ -766,7 +826,7 @@ export default function ChangMaxDate() {
                         <button className={`h-30-px px-3 border-radius-3-px ${btncheckoption == 1 ? "bg-default color-white" : ""}`} onClick={(e) => btnmodelfileoption(e)} value={1}> response </button>
                     </div>
 
-                    <div className="w-100 h-245-px border-1-solid overflow-hidden overflow-y-scroll">
+                    <div className="w-100 h-245-px overflow-hidden overflow-y-scroll">
                         {
                             btncheckoption == 0 ?
                                 <>
@@ -809,11 +869,11 @@ export default function ChangMaxDate() {
                                                 modelsubscriber.map((item, index) => (
                                                     <React.Fragment>
                                                         <tr key={index}>
-                                                            <td>{item.phone}</td>
-                                                            <td>{item.oldoffering}</td>
-                                                            <td>{item.newoffering}</td>
-                                                            <td> {item.resultcode}</td>
-                                                            <td>{item.status ? item.status.toString() : item.status.toString()}</td>
+                                                            <td className={!item.status ? "bg-default-td" : ""}>{item.phone}</td>
+                                                            <td className={!item.status ? "bg-default-td" : ""}>{item.oldoffering}</td>
+                                                            <td className={!item.status ? "bg-default-td" : ""}> {item.newoffering}</td>
+                                                            <td className={!item.status ? "bg-default-td" : ""}> {item.resultcode}</td>
+                                                            <td className={!item.status ? "bg-default-td" : ""}>{item.status ? item.status.toString() : item.status.toString()}</td>
                                                         </tr>
 
                                                     </React.Fragment>
@@ -866,13 +926,13 @@ export default function ChangMaxDate() {
                         <span className="f-20-px f-weight-900 color-white"> 2 </span>
                     </div>
                 </div>
-                <div className="w-100 border-1-  my-3 ">
+                <div className="w-100  my-3 ">
                     <div>
                         <span> detail changemaxday </span>
                     </div>
                     <div className="d-flex flex-column">
 
-                        <div className="w-100 h-300-px border-1-solid overflow-hidden overflow-y-scroll">
+                        <div className="w-100 h-300-px  overflow-hidden overflow-y-scroll">
 
                             <table>
                                 <thead>
@@ -888,9 +948,9 @@ export default function ChangMaxDate() {
                                         modelchangemaxday.map((item, index) => (
                                             <React.Fragment>
                                                 <tr >
-                                                    <td>{item.phone}</td>
-                                                    <td>{item.datevalue}</td>
-                                                    <td>{item.status.toString()}</td>
+                                                    <td className={!item.status ? "bg-default-td" : ""}> {item.phone}</td>
+                                                    <td className={!item.status ? "bg-default-td" : ""}>{item.datevalue}</td>
+                                                    <td className={!item.status ? "bg-default-td" : ""}>{item.status.toString()}</td>
                                                 </tr>
 
                                             </React.Fragment>
@@ -910,7 +970,7 @@ export default function ChangMaxDate() {
                 </div>
             </div>
 
-            <div className="w-100 border-1-solid h-300-px d-flex px-3">
+            <div className="w-100  h-300-px d-flex px-3">
                 <div className="d-flex flex-column  box-shadow p-3  w-35 my-3 h-160-px">
                     <span> validity date </span>
                     <Phonenumber placeholder="000" onChange={(e) => validityvalue(e)} value={validitydate} error={error && msgvalid == 4 ? true : false} helperText={error && msgvalid == 4 ? "please enter value validity day" : ""} inputRef={isvalidity} />

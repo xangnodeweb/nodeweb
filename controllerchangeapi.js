@@ -20,7 +20,10 @@ app.post("/changemainoffering", async (req, res) => {
         if (body.length > 0) {
 
             for (var i = 0; i < body.length; i++) {
+
                 const databody = await changemainoffering(body[i].phone, body[i].oldoffering, body[i].newoffering);
+
+
                 console.log(databody);
 
                 if (databody == null) {
@@ -29,7 +32,7 @@ app.post("/changemainoffering", async (req, res) => {
                 let modelresponse = {};
                 let data = {};
                 let datasuboffering = {};
-                // return res.status(200).json(databody)
+
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8'
                 }
@@ -42,14 +45,14 @@ app.post("/changemainoffering", async (req, res) => {
                     return response.text();
                 }).then(responseText => {
 
-                    console.log(responseText)
+                    // console.log(responseText)
                     const modeldata = responseText
 
                     parseString(modeldata, function (err, result) {
                         let datas = JSON.stringify(result);
                         const datass = JSON.parse(datas);
 
-                        // console.log(datass)
+
                         console.log(datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubOfferingResultMsg"]);
                         console.log(datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubOfferingResultMsg"][0]["ResultHeader"][0]);
 
@@ -88,36 +91,34 @@ app.post("/changemainoffering", async (req, res) => {
 
                     const error = JSON.stringify(err)
                     const errors = JSON.parse(error);
-                    console.log(errors)
-
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            data = { phone: null, newoffering: null, oldoffering: null, version: null, resultcode: null, resultdesc: null, offeringkey: null, purchaseseq: null, effectiveTime: null, expirationTime: null, rentdeductionstatus: null, status: false, code: 2, message: "ConnectTimeoutError" };
+                            data = { phone: body[i].phone, newoffering: null, oldoffering: null, version: null, resultcode: null, resultdesc: null, offeringkey: null, purchaseseq: null, effectiveTime: null, expirationTime: null, rentdeductionstatus: null, status: false, code: 2, message: "ConnectTimeoutError" };
                             modelresponse = data;
 
-                            // return res.status(400).json({ status: false, code: 2, message: "ConnectTimeoutError", result: null });
+                        } else {
+                            data = { phone: body[i].phone, newoffering: null, oldoffering: null, version: null, resultcode: null, resultdesc: null, offeringkey: null, purchaseseq: null, effectiveTime: null, expirationTime: null, rentdeductionstatus: null, status: false, code: 2, message: "cannot changemainoffering" };
+                            modelresponse = data;
                         }
                     }
-
-                    data = { phone: null, newoffering: null, oldoffering: null, version: null, resultcode: null, resultdesc: null, offeringkey: null, purchaseseq: null, effectiveTime: null, expirationTime: null, rentdeductionstatus: null, status: false, code: 2, message: "cannot changemainoffering" };
-                    modelresponse = data;
-
-                    //     if (err["cause"].name == "ConnectTimeoutError") 
-                    return res.status(400).json({ status: false, code: 1, message: "changemain offering failed", result: null });
                 });
 
-                if (modelresponse.status && modelresponse.code == 2) {
+
+                model.push(modelresponse);
+
+                if (!modelresponse.status && modelresponse.code == 2) {
                     break;
                 }
-                model.push(modelresponse);
             }
 
-            const modelindex = model.filter(x => x.status == true && x.code == 2);
+
+            const modelindex = model.filter(x => x.status == false && x.code == 2);
             if (modelindex.length > 0) {
                 return res.status(400).json({ status: false, code: 2, message: "changemain offering ConnectTimeoutError", result: model });
             } else {
                 return res.status(200).json({ status: true, code: 0, message: "changemain offering success", result: model });
             }
+
         }
     } catch (error) {
         console.log(error);
@@ -143,6 +144,7 @@ app.post("/changemaxday", async (req, res) => {
             for (var i = 0; i < body.length; i++) {
 
                 const bodydatas = changemaxdate(body[i].phone, body[i].balance, body[i].datevalue);
+
                 console.log(bodydatas)
 
                 const headers = {
@@ -169,9 +171,9 @@ app.post("/changemaxday", async (req, res) => {
                         const datachange = datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubInfoResultMsg"][0]["ResultHeader"][0];
                         // success or failed ==  Resultcode  0 or Resultcode != 0 
                         const statusresult = datachange["cbs:ResultCode"][0] == '0' ? true : false;
-                        console.log(statusresult)
-                        console.log(datachange["cbs:ResultCode"][0])
-                        console.log(typeof datachange["cbs:ResultCode"][0])
+                        // console.log(statusresult)
+                        // console.log(datachange["cbs:ResultCode"][0])
+                        // console.log(typeof datachange["cbs:ResultCode"][0])
 
                         modelresponsetext = { phone: body[i].phone, datevalue: body[i].datevalue, status: statusresult, code: datachange["cbs:ResultCode"][0], message: datachange["cbs:ResultDesc"][0] };
 
@@ -186,17 +188,12 @@ app.post("/changemaxday", async (req, res) => {
 
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-
-                            modelresponsetext = { phone: body[i].phone, status: false, code: 2, message: "ConnectTimeoutError", result: [] }
-
+                            modelresponsetext = { phone: body[i].phone, status: false, code: 2, message: "ConnectTimeoutError", datevalue: body[i].datevalue }
                         } else {
-                            modelresponsetext = { phone: body[i].phone, status: false, code: 1, message: "cannot changemax_day", result: [] }
-
+                            modelresponsetext = { phone: body[i].phone, status: false, code: 1, message: "cannot changemax_day", datevalue: body[i].datevalue }
                         }
                     }
-
-
-                })
+                });
 
                 if (modelresponsetext) {
                     if (modelresponsetext.status) {
@@ -211,11 +208,10 @@ app.post("/changemaxday", async (req, res) => {
                             modelresponse.push(modelresponsetext);
                         }
                     }
-
                 }
             }
 
-            const modelindex = modelresponse.findIndex(x => x.status == false && x.code == 2);
+            const modelindex = modelresponse.findIndex(x => x.status == false && parseInt(x.code) == 2);
 
             if (modelindex != -1) {
                 return res.status(400).json({ status: false, code: 2, message: "connectTimeoutError", result: modelresponse });
@@ -248,7 +244,14 @@ app.post("/setvalidity", async (req, res) => {
             for (var i = 0; i < body.length; i++) {
 
                 const bodysetvaliditys = bodysetvalidity(body[i].phone, body[i].validitydate);
+
+                if (i == 1) {
+
+                    await sleep(10000);
+                }
                 console.log(bodysetvaliditys);
+
+
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8'
                 }
@@ -274,7 +277,7 @@ app.post("/setvalidity", async (req, res) => {
                         const data = datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubValidityResultMsg"][0]["ResultHeader"][0];
                         const datanewliftcyclestatus = datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubValidityResultMsg"][0]["ChangeSubValidityResult"];
                         const statusresult = data["cbs:ResultCode"][0] == '0' ? true : false;
-                        modelresponsetext = { phone: body[i].phone,  validityincrement : body[i].validitydate , code: data["cbs:ResultCode"][0], status: statusresult, message: "", resultdesc: data["cbs:ResultDesc"][0], currentlifecycleindex: 0, newlifecyclestatus: [] }
+                        modelresponsetext = { phone: body[i].phone, validityincrement: body[i].validitydate, code: data["cbs:ResultCode"][0], status: statusresult, message: "", resultdesc: data["cbs:ResultDesc"][0], currentlifecycleindex: 0, newlifecyclestatus: [] }
 
                         if (datanewliftcyclestatus) {
                             let models = [];
@@ -282,7 +285,7 @@ app.post("/setvalidity", async (req, res) => {
                                 if (datanewliftcyclestatus[0]["bcs:LifeCycleChgInfo"][0]["bcs:NewLifeCycleStatus"].length > 0) {
 
                                     const modelnewlife = datanewliftcyclestatus[0]["bcs:LifeCycleChgInfo"][0]["bcs:NewLifeCycleStatus"];
-                                   console.log(modelnewlife)
+                                    console.log(modelnewlife)
                                     for (var ii = 0; ii < modelnewlife.length; ii++) {
                                         models.push({ statusname: modelnewlife[ii]["bcs:StatusName"][0], statusexpiretime: modelnewlife[ii]["bcs:StatusExpireTime"][0], statusindex: modelnewlife[ii]["bcs:StatusIndex"][0] });
 
@@ -291,8 +294,8 @@ app.post("/setvalidity", async (req, res) => {
                                     if (models.length > 0) {
 
                                         console.log(models)
-                                            modelresponsetext.newlifecyclestatus = models;
-                                            modelresponsetext.currentlifecycleindex  = 0;
+                                        modelresponsetext.newlifecyclestatus = models;
+                                        modelresponsetext.currentlifecycleindex = 0;
                                     }
                                 }
                             }
@@ -309,7 +312,10 @@ app.post("/setvalidity", async (req, res) => {
 
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            modelresponsetext = { phone: body[i].phone,  validityincrement : body[i].validitydate, code: 2, status: false, message: "ConnectTimeoutError", resultdesc: "", currentlifecycleindex: 0, newlifecyclestatus: [] }
+                            modelresponsetext = { phone: body[i].phone, validityincrement: body[i].validitydate, code: 2, status: false, message: "ConnectTimeoutError", resultdesc: "", currentlifecycleindex: 0, newlifecyclestatus: [] }
+
+                        } else {
+                            modelresponsetext = { phone: body[i].phone, validityincrement: body[i].validitydate, code: 1, status: false, message: "cannot setvalidity", resultdesc: "", currentlifecycleindex: 0, newlifecyclestatus: [] }
 
                         }
                     }
@@ -330,7 +336,7 @@ app.post("/setvalidity", async (req, res) => {
 
             }
             const modelindex = modelresponse.findIndex(x => x.status == false && x.code == 2);
-            if (modelindex.length > 0) {
+            if (modelindex.length != -1) {
                 return res.status(400).json({ status: false, code: 2, messgae: "ConnectTimeoutError", result: modelresponse });
             } else {
                 return res.status(200).json({ status: true, code: 0, messgae: "set validity success", result: modelresponse });
@@ -344,9 +350,11 @@ app.post("/setvalidity", async (req, res) => {
         return res.status(400).json({ status: false, code: 0, message: "cannot setvalidity", result: null });
 
     }
+});
 
-
-})
+const sleep = (ms) => {
+    return new Promise(res => setTimeout(res, ms));
+}
 
 
 
