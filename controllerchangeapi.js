@@ -245,7 +245,7 @@ app.post("/setvalidity", async (req, res) => {
 
                 const bodysetvaliditys = bodysetvalidity(body[i].phone, body[i].validitydate);
 
-             
+
                 console.log(bodysetvaliditys);
 
 
@@ -348,6 +348,10 @@ app.post("/setvalidity", async (req, res) => {
 
     }
 });
+
+
+
+
 
 const sleep = (ms) => {
     return new Promise(res => setTimeout(res, ms));

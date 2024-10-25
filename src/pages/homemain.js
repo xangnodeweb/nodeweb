@@ -81,12 +81,12 @@ export default function Homemain() {
                                         <li> <a href="/Addpackagelistphone"> add package listphone</a> </li>
                                     </ul>
                                 </li>
-                                <li>
+                                {/* <li>
                                     <a href="/changemaxdate">
                                         <i className="fa fa-calendar"> </i>
                                         <span > changemax date </span>
                                     </a>
-                                </li>
+                                </li> */}
                                 <li onClick={() => {
                                     console.log("page");
                                     setpage(true)
