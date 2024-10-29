@@ -534,7 +534,18 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
         sheet.getCell("D3").value = "status"; // 
         sheet.getCell("E3").value = "resultdesc"; // 
 
-
+        worksheetrow.getCell('A3', 'E3').fill = {
+            type: "pattern",
+            pattern: "solid",
+            bgColor: { argb: 'D9D9D9' },
+            fgColor: { argb: 'D9D9D9' }
+        }
+        // worksheetrow.getCell('B3', 'E3').fill = {
+        //     type: "pattern",
+        //     pattern: "solid",
+        //     bgColor: { argb: 'D9D9D9' },
+        //     fgColor: { argb: 'D9D9D9' }
+        // }
         const totalrecord = modeloffer.length + modelchangemax.length + modelsetvalidity.length + 15;
         worksheetrow.getCell('A1', `E${totalrecord}`).font = {
             name: "Cambria"
@@ -722,45 +733,56 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
                 }
             }
         });
+
         const colonecolor = modeloffer.length + 8;
         const colcolortwo = modeloffer.length + modelchangemax.length + 14;
-        sheet.eachRow(function (row, rownumber) {
+
+        sheet.eachRow(function (row, rowNumber) {
+
             row.font = {
                 name: "Cambria",
                 size: 10
             }
+
             row.alignment = {
                 horizontal: "center",
                 vertical: "middle"
             }
 
-            row.eachCell(cell => {
+            row.eachCell((cell, colNumber) => {
+
+                if (rowNumber == 3) {
+                    console.log(cell)
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: "BDC0BE" }
+                    }
+
+                }
+
+                if (rowNumber == colonecolor) {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: "BDC0BE" }
+                    }
+                }
+
+                if (rowNumber == colcolortwo) {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: "BDC0BE" }
+                    }
+                }
+
+
                 cell.height = 20;
-            })
-            if (rownumber == 3) {
-                row.eachCell(cell => {
-                    cell.fill = {
-                        fgColor: { argb: "C4C7C8" }
-                    }
-                })
-            }
 
-            if (rownumber == colonecolor) {
-                row.eachCell(cell => {
-                    cell.fill = {
-                        fgColor: { argb: "C4C7C8" }
-                    }
-                })
+            });
 
-            }
-            if (rownumber == colcolortwo) {
-                row.eachCell(cell => {
-                    cell.fill = {
-                        fgColor: { argb: "C4C7C8" }
 
-                    }
-                })
-            }
 
         })
 

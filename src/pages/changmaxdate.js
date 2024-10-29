@@ -54,6 +54,7 @@ export default function ChangMaxDate() {
     const [editlineone, seteditlineone] = useState(0);
     const [editlinetwo, seteditlinetwo] = useState(0);
 
+    const [lineonesuccess, setlineonesuccess] = useState(false);
 
     const [iseditlineone, setiseditlineone] = useState(false);
     const [loading, setloading] = useState(false);
@@ -61,7 +62,7 @@ export default function ChangMaxDate() {
     const ismaxday = React.createRef();
     const isvalidity = React.createRef();
 
-     
+
 
 
     const openfiletxt = (e) => {
@@ -148,7 +149,7 @@ export default function ChangMaxDate() {
                 setlinenum(1);
                 setmsgvalids(1);
                 setloading(false);
-                
+
                 openmodalsuccess(true, 1, "please select primary offering", "");
                 return;
             }
@@ -183,6 +184,7 @@ export default function ChangMaxDate() {
                     setmodelchangemaxdate(model);
                 }
                 setloading(false);
+                setlineonesuccess(true);
             }
 
         } catch (error) {
@@ -209,6 +211,7 @@ export default function ChangMaxDate() {
 
 
             setloading(false);
+            setlineonesuccess(true);
         }
     }
     async function onaddchangmaxdate() {
@@ -820,9 +823,9 @@ export default function ChangMaxDate() {
                     </div>
                 </div>
                 <div className=" min-w-50-px mx-3 d-flex justify-content-center h-300-px">
-                    <div className={errormsg == true && linenum == 1 && msgvalids == 1 ? `border-left-red` : linenum >= 2 ? "border-left-success" : linenum == 0 ? "border-left" : ""}>
+                    <div className={errormsg == true && linenum == 1 && msgvalids == 1 ? `border-left-red` : lineonesuccess && linenum >= 2 ? "border-left-success" : lineonesuccess == false && linenum <= 2 ? "border-left" : ""}>
                     </div>
-                    <div className={`${errormsg == true && linenum == 1 && msgvalids == 1 ? "bg-red" : linenum >= 2 ? "bg-default" : linenum == 0 ? "bg-box-gray" : ""} min-w-50-px w-50-px h-50-px border-radius-50 d-flex justify-content-center align-items-center position-absolute`} >
+                    <div className={`${errormsg == true && linenum == 1 && msgvalids == 1 ? "bg-red" : lineonesuccess && linenum >= 2 ? "bg-default" : lineonesuccess == false && linenum <= 2 ? "bg-box-gray" : ""} min-w-50-px w-50-px h-50-px border-radius-50 d-flex justify-content-center align-items-center position-absolute`} >
                         <span className="f-20-px f-weight-900 color-white"> 1 </span>
                     </div>
                 </div>

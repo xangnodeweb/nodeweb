@@ -441,7 +441,7 @@ export default function Descriptionpage({ callpages }) {
                     </div>
 
 
-                    <div className="position-relative w-70 m-auto">
+                    <div className="position-relative w-70 mx-auto mt-2 ">
                         <img src="http://172.28.27.50:8080/image/changemain-max-setvalidity-main.png" className="w-100 h-500-px" />
 
                         <div className="position-absolute top-13 left-28 ">
@@ -490,6 +490,18 @@ export default function Descriptionpage({ callpages }) {
 
 
                     </div>
+                    <div className="position-relative d-flex justify-content-center">
+                        <div className="d-flex position-relative flex-column align-items-center mt-6 w-50">
+
+                            <img src="http://localhost:8080/image/file-changemainoffering-main.png" className="h-300-px w-100 border-grey" />
+                            <span className="f-18-px mt-1"> 1.1 ຮູບແບບຟາຍ file txt changemainoffering </span>
+
+                            <div className="w-40-px h-40-px bg-gray border-radius-50 d-flex justify-content-center align-items-center position-absolute top-23-px-l left-20-px-l">
+                                <span > 1.1 </span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="p-5 d-flex justify-content-around mt-4">
                         <div className="position-relative d-flex flex-column align-items-center">
 
