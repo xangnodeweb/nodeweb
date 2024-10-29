@@ -3,7 +3,11 @@ const app = require("express").Router();
 const { changemainoffering, changemaxdate, bodysetvalidity } = require("./modelbody");
 
 const { parseString } = require("xml2js");
-const fetch = require("node-fetch")
+const fetch = require("node-fetch");
+const { convertFieldResponseIntoMuiTextFieldProps } = require("@mui/x-date-pickers/internals");
+
+const fs = require("fs");
+const path = require("path");
 
 app.post("/changemainoffering", async (req, res) => {
     try {
@@ -238,6 +242,8 @@ app.post("/setvalidity", async (req, res) => {
         let model = [];
         let modelresponse = [];
         let modelresponsetext = {};
+
+
         if (body.length > 0) {
 
 
@@ -332,10 +338,19 @@ app.post("/setvalidity", async (req, res) => {
                 }
 
             }
+
             const modelindex = modelresponse.findIndex(x => x.status == false && x.code == 2);
             if (modelindex != -1) {
+
                 return res.status(400).json({ status: false, code: 2, messgae: "ConnectTimeoutError", result: modelresponse });
+
             } else {
+
+                //
+                console.log(modelresponse);
+                //
+                adddatafile(modelresponse);
+
                 return res.status(200).json({ status: true, code: 0, messgae: "set validity success", result: modelresponse });
 
             }
@@ -357,6 +372,44 @@ const sleep = (ms) => {
     return new Promise(res => setTimeout(res, ms));
 }
 
+const datetime = () => {
+    try {
+        const date = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", hour12: false }).format(new Date());
+        const time = new Intl.DateTimeFormat("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Bangkok" }).format(new Date());
+        return date.replace(new RegExp("-", "g"), "") + "" + time.replace(new RegExp(":", "g"), "");
+    } catch (error) {
+        console.log(error)
+    }
+}
 
+const adddatafile = async (bodydata) => {
+    try {
+
+        let data = "";
+        if (bodydata.length > 0) {
+
+            let date = datetime();
+            console.log(date);
+            for (var i = 0; i < bodydata.length; i++) {
+
+                const status = bodydata[i].status ? "Operation successfully" : "failed"
+                data = `${bodydata[i].phone + "|" + bodydata[i].validityincrement + "|" + bodydata[i].code + "|" + status + "|" + date}\n`;
+                const folderpath = path.join("./filedatatxt/");
+                await fs.appendFile(folderpath + "filedatachange.txt", data, (err) => {
+                    if (err) {
+                        console.log(bodydata)
+                        console.log("cannot setvalidity");
+                    }
+                })
+
+            }
+
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+
+}
 
 module.exports = app;
