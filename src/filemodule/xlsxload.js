@@ -518,24 +518,25 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
 
         // console.log(modeloffer);
         // console.log(modelchangemax);
-        // console.log(modelsetvalidity);
+        console.log(modelsetvalidity);
 
 
         const worksheet = new exceljs.Workbook();
         const sheet = worksheet.addWorksheet("My Sheet");
 
         const worksheetrow = worksheet.getWorksheet(1);
-        worksheetrow.mergeCells("A1", "F1");
+        worksheetrow.mergeCells("A1", "E2");
         sheet.getCell("A1").value = "report changemainoferring"
 
         sheet.getCell("A3").value = "phone"; // no 
         sheet.getCell("B3").value = "oldoffering"; // 
         sheet.getCell("C3").value = "newoffering"; //  
         sheet.getCell("D3").value = "status"; // 
-        sheet.getCell("E3").value = "resultcode"; // 
-        sheet.getCell("F3").value = "resultdesc"; // 
+        sheet.getCell("E3").value = "resultdesc"; // 
 
-        worksheetrow.getCell('A1', 'F2').font = {
+
+        const totalrecord = modeloffer.length + modelchangemax.length + modelsetvalidity.length + 15;
+        worksheetrow.getCell('A1', `E${totalrecord}`).font = {
             name: "Cambria"
         };
 
@@ -558,17 +559,16 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
             },
             {
                 key: "resultdesc",
-                width: 20
+                width: 40
             }
         ]
 
         modeloffer.map(products => {
             sheet.addRow({
                 phone: products.phone,
-                oldoffering: products.products,
+                oldoffering: products.oldoffering,
                 newoffering: products.newoffering,
                 status: products.status,
-                resultcode : products.resultcode,
                 resultdesc: products.resultdesc
 
             });
@@ -589,18 +589,20 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
         });
 
 
+
+
         console.log(modelchangemax);
 
         const colone = modeloffer.length + 6;
         worksheetrow.mergeCells(`A${colone}`, `F${colone + 1}`);
-        sheet.getCell(`A${colone}`).value = "report changemainoferring"
+        sheet.getCell(`A${colone}`).value = "report changemaxday"
 
         sheet.getCell(`A${colone + 2}`).value = "phone"; // no 
-        sheet.getCell(`B${colone + 2}`).value = "oldoffering"; // 
-        sheet.getCell(`C${colone + 2}`).value = "newoffering"; //  
-        sheet.getCell(`D${colone + 2}`).value = "status"; // 
-        sheet.getCell(`E${colone + 2}`).value = "resultcode"; // 
-        sheet.getCell(`F${colone + 2}`).value = "resultdesc"; // 
+        sheet.getCell(`B${colone + 2}`).value = "maxdayvalidity"; // 
+        sheet.getCell(`C${colone + 2}`).value = "code"; //  
+        sheet.getCell(`D${colone + 2}`).value = "status"; //  
+        sheet.getCell(`E${colone + 2}`).value = "resultdesc"; // 
+
 
         worksheetrow.getCell(`A${colone + 2}`, `F${colone + 2}`).font = {
             name: "Cambria"
@@ -613,7 +615,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
                 width: 20
             },
             {
-                key: "datevalue",
+                key: "maxdayvalidity",
                 width: 20
             },
             {
@@ -633,7 +635,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
         modelchangemax.map(products => {
             sheet.addRow({
                 phone: products.phone,
-                datevalue: products.datevalue,
+                maxdayvalidity: products.datevalue,
                 code: products.code,
                 status: products.status,
                 message: products.message
@@ -659,7 +661,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
         console.log(modelsetvalidity)
 
         const coltwo = modeloffer.length + modelchangemax.length + 12;
-        worksheetrow.mergeCells(`A${coltwo}`, `F${coltwo + 1}`);
+        worksheetrow.mergeCells(`A${coltwo}`, `E${coltwo + 1}`);
         sheet.getCell(`A${coltwo}`).value = "report setvalidity"
 
         sheet.getCell(`A${coltwo + 2}`).value = "phone"; // no 
@@ -668,7 +670,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
         sheet.getCell(`D${coltwo + 2}`).value = "status"; // 
         sheet.getCell(`E${coltwo + 2}`).value = "resultdesc"; // 
 
-        
+
         worksheetrow.getCell(`A${coltwo + 2}`, `E${coltwo + 2}`).font = {
             name: "Cambria"
         };
@@ -697,9 +699,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
             }
         ];
 
-
-
-        modelchangemax.map(products => {
+        modelsetvalidity.map(products => {
             sheet.addRow({
                 phone: products.phone,
                 validityincrement: products.validityincrement,
@@ -722,7 +722,47 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
                 }
             }
         });
+        const colonecolor = modeloffer.length + 8;
+        const colcolortwo = modeloffer.length + modelchangemax.length + 14;
+        sheet.eachRow(function (row, rownumber) {
+            row.font = {
+                name: "Cambria",
+                size: 10
+            }
+            row.alignment = {
+                horizontal: "center",
+                vertical: "middle"
+            }
 
+            row.eachCell(cell => {
+                cell.height = 20;
+            })
+            if (rownumber == 3) {
+                row.eachCell(cell => {
+                    cell.fill = {
+                        fgColor: { argb: "C4C7C8" }
+                    }
+                })
+            }
+
+            if (rownumber == colonecolor) {
+                row.eachCell(cell => {
+                    cell.fill = {
+                        fgColor: { argb: "C4C7C8" }
+                    }
+                })
+
+            }
+            if (rownumber == colcolortwo) {
+                row.eachCell(cell => {
+                    cell.fill = {
+                        fgColor: { argb: "C4C7C8" }
+
+                    }
+                })
+            }
+
+        })
 
         worksheet.xlsx.writeBuffer().then(data => {
 

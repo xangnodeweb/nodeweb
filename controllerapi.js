@@ -162,8 +162,8 @@ app.post("/addpackage", async (req, res) => {
             counternames = "Prepaid_Staff_25GB";
         }
         // console.log(counternames);
-
-        const bodyquery = await bodyaddpackage(phone, counternames, datestart, dateexpire, refillstoptime);
+  
+        const bodyquery = await bodyaddpackage(phone , counternames, datestart, dateexpire, refillstoptime);
         // console.log(bodyquery);
 
         if (bodyquery == null) {
@@ -184,7 +184,6 @@ app.post("/addpackage", async (req, res) => {
             return response.text();
         }).then(responseText => {
 
-            // console.log(responseText)
             const modeldata = responseText
 
             parseString(modeldata, function (err, result) {
@@ -196,9 +195,6 @@ app.post("/addpackage", async (req, res) => {
                 const modeldatasuccess = datass['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['OperationStatus'][0]; // operation status
                 const counterresponsepackage = datass['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['CounterArray'][0]['CounterInfo']; // counterinfo data
 
-                // console.log(modeldatasuccess);
-                // console.log(counterresponsepackage);
-                // console.log(typeof datas);
 
                 if (modeldatasuccess.IsSuccess[0] == 'true') {
                     let modelInfo = [];
@@ -207,7 +203,6 @@ app.post("/addpackage", async (req, res) => {
                         for (var i = 0; i < counterresponsepackage.length; i++) {
 
                             const data = { Msisdn: counterresponsepackage[i].Msisdn[0], ProductNumber: counterresponsepackage[i].ProductNumber[0], CounterName: counterresponsepackage[i].CounterName[0], StartTime: counterresponsepackage[i].StartTime[0], ExpiryTime: counterresponsepackage[i].ExpiryTime[0], status: modeldatasuccess.IsSuccess[0] };
-                            // const data = { status: modeldatasuccess.IsSuccess[0], Code: modeldatasuccess.Code[0], Msisdn: counterresponsepackage.Msisdn[0], PhoneNumber: counterresponsepackage.ProductNumber[0], CounterName: counterresponsepackage.CounterName[0], StartTime: counterresponsepackage.StartTime[0], ExpiryTime: counterresponsepackage.ExpiryTime[0] };
                             modelInfo.push(data)
                         }
                     }
@@ -229,33 +224,38 @@ app.post("/addpackage", async (req, res) => {
                         "result": data
                     }
                     modelresponse = response;
-                    // console.log(data);
                 }
             });
+
             if (modelresponse.status = true) {
                 return res.status(200).json(modelresponse);
             } else {
                 return res.status(400).json(modelresponse);
             }
+
         }).catch(err => {
             console.log(err)
             const error = JSON.stringify(err);
             const errors = JSON.parse(error);
             if (err) {
                 if (errors.code == "ETIMEDOUT") {
-                    return res.status(400).json({ status: false, code: 2, message: "cannot add package ConnectTimeoutError", result: null });
+                    modelresponse = { status: false, code: 2, message: "cannot add package ConnectTimeoutError", result: null }
                 }
             }
-            // if (err["cause"].name == "ConnectTimeoutError") {
-        })
+        });
 
-        return res.status(400).json({ status: false, code: 1, message: "cannot add pacakge", result: null });
+        if (modelresponse.status == false && modelresponse.code == 2) {
+            return res.status(400).json(modelresponse);
+        }
+
+
+
     } catch (error) {
         console.log(error)
-        return res.status(400).json({ status: false, code: 1, message: "cannot add package", result: null })
+        return res.status(400).json({ status: false, code: 1, message: "cannot add package", result: null });
     }
 
-})
+});
 
 
 // data list file

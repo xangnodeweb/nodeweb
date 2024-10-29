@@ -185,6 +185,9 @@ export default function Addpackagephone() {
                         setloading(false)
                         calldialog("", "cannot add package ", 1, 0, true);
                     }
+                }else{
+                    setloading(false)
+                    calldialog("", "cannot add package ", 1, 0, true);
                 }
             }
             setloading(false)
