@@ -256,38 +256,49 @@ exports.adddatafile = async (bodydata, numapi) => {
 
       let data = "";
 
+      let date = datetime();
       const paths = path.join(__dirname, "./filedatatxt/");
       console.log(paths);
 
+      if (numapi == 0) {
+         if (bodydata != null) {
 
-      if (bodydata.length > 0) {
-
-         if (numapi == 0) {
-            if (bodydata != null) {
-
-               data = `${bodydata.Msisdn + "|" + bodydata.ProductNumber + "|" + bodydata.CounterName + "|" + bodydata.StartTime + "|" + bodydata.ExpiryTime + "|" + bodydata.status}`;
-      
-       
-                
-            }
-         } else if (numapi == 1) {
-
-            for (var i = 0; i < bodydata.length; i++) {
-
-
-
-
+            const result = bodydata.result[0]
+            if (result != null) {
+               data = `${result.Msisdn + "|" + result.ProductNumber + "|" + result.CounterName + "|" + result.StartTime + "|" + result.ExpiryTime + "|" + result.status + "|" + date}\n`;
+               await fs.appendFile(paths + "fileaddpackage.txt", data, (err) => {
+                  if (err) {
+                     console.log(bodydata);
+                  }
+               });
             }
          }
+      } else if (numapi == 1) {
+         if (bodydata.length > 0) {
+            for (var i = 0; i < bodydata.length; i++) {
+               data = `${bodydata[i].Msisdn + "|" + bodydata[i].ProductNumber + "|" + bodydata[i].CounterName + "|" + bodydata[i].StartTime + "|" + bodydata[i].ExpiryTime + "|" + bodydata[i].status + "|" + date}\n`
 
-
-
-
+               await fs.appendFile(paths + "fileaddpackage.txt", data, (err) => {
+                  if (err) {
+                     console.log(bodydata)
+                     console.log(err)
+                  }
+               });
+            }
+         }
       }
-
-
    } catch (error) {
       console.log(error)
    }
+}
+const datetime = () => {
+   try {
 
+      const date = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+      const time = new Intl.DateTimeFormat("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Bangkok" }).format(new Date());
+      const datenow = date.replace(new RegExp("-", "g"), "") + "" + time.replace(new RegExp(":", "g"), "");
+      return datenow;
+   } catch (error) {
+      console.log(error);
+   }
 }

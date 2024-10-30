@@ -226,10 +226,10 @@ app.post("/addpackage", async (req, res) => {
                     modelresponse = response;
                 }
             });
-            console.log(modelresponse);
+     
             if (modelresponse.status = true) {
 
-                adddatafile(modelresponse , 0);
+                adddatafile(modelresponse, 0);
                 return res.status(200).json(modelresponse);
             } else {
                 return res.status(400).json(modelresponse);
@@ -593,12 +593,14 @@ app.post("/addpackagelistphone", async (req, res) => {
                     }
                 });
             }
+
             if (modelres.length > 0) {
                 var indexmodel = modelres.filter(x => x.status == false && x.code == 2);
                 if (indexmodel.length > 0) {
                     return res.status(400).json({ status: false, code: 2, message: "cannot add package ConnectTimeoutError", result: modelres })
                 }
             }
+            adddatafile(modelres, 1);
             return res.status(200).json({ status: true, code: 0, message: "success", result: modelres })
         }
 
