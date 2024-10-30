@@ -7,7 +7,7 @@
     "build-dev": "webpack --watch",
     "server": "nodemon app.js",
     "start": "nodemon apppath.js",
-    "dev": "concurrently \"npm run server\" \"npm run build-dev\" \"npm run start\" ",
+    "dev": "concurrently \"npm run server\" \"npm run build-dev\" \"npm run start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
