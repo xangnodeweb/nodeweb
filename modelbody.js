@@ -247,3 +247,47 @@ exports.bodysetvalidity = (phone, validityincrement) => {
       console.log(error)
    }
 }
+
+
+const path = require("path");
+const fs = require("fs");
+exports.adddatafile = async (bodydata, numapi) => {
+   try {
+
+      let data = "";
+
+      const paths = path.join(__dirname, "./filedatatxt/");
+      console.log(paths);
+
+
+      if (bodydata.length > 0) {
+
+         if (numapi == 0) {
+            if (bodydata != null) {
+
+               data = `${bodydata.Msisdn + "|" + bodydata.ProductNumber + "|" + bodydata.CounterName + "|" + bodydata.StartTime + "|" + bodydata.ExpiryTime + "|" + bodydata.status}`;
+      
+       
+                
+            }
+         } else if (numapi == 1) {
+
+            for (var i = 0; i < bodydata.length; i++) {
+
+
+
+
+            }
+         }
+
+
+
+
+      }
+
+
+   } catch (error) {
+      console.log(error)
+   }
+
+}

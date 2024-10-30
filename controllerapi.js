@@ -2,7 +2,7 @@
 const app = require("express").Router();
 const express = require("express")();
 
-const { bodyinquery, bodymodiefield, bodyaddpackage, changemaxdate, changemainoffering } = require("./modelbody");
+const { bodyinquery, bodymodiefield, bodyaddpackage, changemaxdate, changemainoffering, adddatafile } = require("./modelbody");
 const { parseString } = require("xml2js");
 const fetch = require("node-fetch");
 
@@ -157,7 +157,7 @@ app.post("/addpackage", async (req, res) => {
         } else if (countername == 4) {
             counternames = "Prepaid_Staff_10GB";
         } else if (countername == 5) {
-            counternames = "Prepaid_Staff_15GB";
+            counternames = "Prepaid_Staff 15GB";
         } else if (countername == 5) {
             counternames = "Prepaid_Staff_25GB";
         }
@@ -226,8 +226,10 @@ app.post("/addpackage", async (req, res) => {
                     modelresponse = response;
                 }
             });
-
+            console.log(modelresponse);
             if (modelresponse.status = true) {
+
+                adddatafile(modelresponse , 0);
                 return res.status(200).json(modelresponse);
             } else {
                 return res.status(400).json(modelresponse);
@@ -520,7 +522,7 @@ app.post("/addpackagelistphone", async (req, res) => {
 
                 if (countername == "") {
                     const data = { status: false, code: 1, Msisdn: phone, ProductNumber: null, CounterName: countername, StartTime: null, ExpiryTime: null, message: "not found countername" }
-        
+
                     modelres.push(data)
 
                     continue
@@ -528,7 +530,7 @@ app.post("/addpackagelistphone", async (req, res) => {
 
 
                 const bodyadd = await bodyaddpackage(phone, countername, starttime, expiretime, refillstoptime);
- 
+
 
                 if (bodyadd == null) {
                     return res.status(400).json({ status: false, code: 1, message: "please check body data" });
@@ -549,7 +551,7 @@ app.post("/addpackagelistphone", async (req, res) => {
                 }).then(responseText => {
 
                     const modeldata = responseText;
-    
+
                     parseString(modeldata, function (err, result) {
 
                         let data = JSON.stringify(result);
