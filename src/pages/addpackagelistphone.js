@@ -309,16 +309,16 @@ export default function Addpackagelistphone() {
             }
             setiserr(false);
             setmsgs(0)
-            const namepackage = "Prepaid_Staff_";
-            const modelcountername = modelfile.filter(x => !x.countername.toString().toLowerCase().includes(namepackage.toLocaleLowerCase()));
+            // const namepackage = "Prepaid_Staff_"; // package Prepaid 15 GB   Prepaid_Staff 15GB
+            // const modelcountername = modelfile.filter(x => !x.countername.toString().toLowerCase().includes(namepackage.toLocaleLowerCase()));
 
-            if (modelcountername.length > 0) {
-                calldialog("cannot add package", `please check countername  phone : ${modelcountername[0].phone}`, 1, 0)
-                return;
+            // if (modelcountername.length > 0) {
+            //     calldialog("cannot add package", `please check countername  phone : ${modelcountername[0].phone}`, 1, 0)
+            //     return;
 
-            }
+            // }
             setloading(true);
-            const data = await axios.post("http://172.28.27.50:3000/api/addpackagelistphone", modelfile);
+            const data = await axios.post("http://127.0.0.1:3000/api/addpackagelistphone", modelfile);
             if (data.status == 200) {
 
                 addpackageExportexcel({ data: data.data.result })
