@@ -392,7 +392,7 @@ const adddatafile = async (bodydata) => {
             console.log(date);
             for (var i = 0; i < bodydata.length; i++) {
 
-                const status = bodydata[i].status ? "Operation successfully" : "failed"
+                const status = bodydata[i].status ? "true" : "false"
                 data = `${bodydata[i].phone + "|" + bodydata[i].validityincrement + "|" + bodydata[i].code + "|" + status + "|" + date}\n`;
                 const folderpath = path.join("./filedatatxt/");
                 await fs.appendFile(folderpath + "filedatachange.txt", data, (err) => {
@@ -403,7 +403,6 @@ const adddatafile = async (bodydata) => {
                 })
 
             }
-
         }
 
     } catch (error) {

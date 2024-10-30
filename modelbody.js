@@ -246,6 +246,4 @@ exports.bodysetvalidity = (phone, validityincrement) => {
    } catch (error) {
       console.log(error)
    }
-
-
 }

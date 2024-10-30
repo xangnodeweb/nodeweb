@@ -162,8 +162,8 @@ app.post("/addpackage", async (req, res) => {
             counternames = "Prepaid_Staff_25GB";
         }
         // console.log(counternames);
-  
-        const bodyquery = await bodyaddpackage(phone , counternames, datestart, dateexpire, refillstoptime);
+
+        const bodyquery = await bodyaddpackage(phone, counternames, datestart, dateexpire, refillstoptime);
         // console.log(bodyquery);
 
         if (bodyquery == null) {
@@ -520,7 +520,7 @@ app.post("/addpackagelistphone", async (req, res) => {
 
                 if (countername == "") {
                     const data = { status: false, code: 1, Msisdn: phone, ProductNumber: null, CounterName: countername, StartTime: null, ExpiryTime: null, message: "not found countername" }
-                    // console.log(data)
+        
                     modelres.push(data)
 
                     continue
@@ -528,7 +528,7 @@ app.post("/addpackagelistphone", async (req, res) => {
 
 
                 const bodyadd = await bodyaddpackage(phone, countername, starttime, expiretime, refillstoptime);
-                // console.log(bodyadd)
+ 
 
                 if (bodyadd == null) {
                     return res.status(400).json({ status: false, code: 1, message: "please check body data" });
@@ -549,7 +549,7 @@ app.post("/addpackagelistphone", async (req, res) => {
                 }).then(responseText => {
 
                     const modeldata = responseText;
-                    // console.log(modeldata)
+    
                     parseString(modeldata, function (err, result) {
 
                         let data = JSON.stringify(result);
@@ -571,8 +571,6 @@ app.post("/addpackagelistphone", async (req, res) => {
                             modelres.push(data);
                         }
 
-                        // console.log(modelbody)
-                        // console.log(statusmodel)
 
 
                     })
@@ -591,7 +589,7 @@ app.post("/addpackagelistphone", async (req, res) => {
 
                         }
                     }
-                })
+                });
             }
             if (modelres.length > 0) {
                 var indexmodel = modelres.filter(x => x.status == false && x.code == 2);
@@ -606,13 +604,15 @@ app.post("/addpackagelistphone", async (req, res) => {
 
     } catch (error) {
         console.log(error)
-        return res.status(400).json({ status: false, code: 1, message: "", result: [] })
+        return res.status(400).json({ status: false, code: 1, message: "", result: [] });
     }
 });
 
 const sleep = (ms) => {
     return new Promise(ress => setTimeout(ress, ms));
 }
+
+
 
 
 module.exports = app;
