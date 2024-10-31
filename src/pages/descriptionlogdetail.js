@@ -22,7 +22,7 @@ export default function Descriptionlogpage() {
         btnconfirm: 0
     })
 
-    async function getdesclogpage(params) {
+    async function getdesclogpage() {
         try {
             setloading(false);
             let namefile = "";
@@ -41,7 +41,9 @@ export default function Descriptionlogpage() {
             if (data.status == 200) {
                 setmodellogpage(data.data.result);
                 setloading(false);
-                openmodalconfirm({status : true , btnconfirm : 1 , msg : `read data file success`})
+                if(data.data.result.length > 0){
+                    openmodalconfirm({status : true , btnconfirm : 1 , msg : `read data file success`})
+                }
             }
         } catch (error) {
             console.log(error)
