@@ -18,8 +18,21 @@ export default function Modalconfirm({ callmodal, opendialog, optionbtn }) {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button color="primary" onClick={(e) => callmodal({ status: false, btnconfirm: 1 }, e)}> OK </Button>
-                    <Button onClick={(e) => callmodal({ status: false, btnconfirm: 0 }, e)} > Cancle</Button>
+
+                    {
+                        optionbtn.btnconfirm == 0 ?
+                            <>
+                                <Button color="primary" onClick={(e) => callmodal({ status: false, btnconfirm: 1 }, e)}> OK </Button>
+                                <Button onClick={(e) => callmodal({ status: false, btnconfirm: 0 }, e)} > Cancle</Button>
+                            </>
+                            :
+
+                            <>
+                                <Button color="primary" onClick={(e) => callmodal({ status: false, btnconfirm: 0 }, e)}> OK </Button>
+
+                            </>
+                    }
+
                 </Modal.Footer>
             </Modal>
 

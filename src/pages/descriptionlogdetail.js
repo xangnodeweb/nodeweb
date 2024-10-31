@@ -41,7 +41,7 @@ export default function Descriptionlogpage() {
             if (data.status == 200) {
                 setmodellogpage(data.data.result);
                 setloading(false);
-
+                openmodalconfirm({status : true , btnconfirm : 1 , msg : `read data file success`})
             }
         } catch (error) {
             console.log(error)
@@ -100,10 +100,10 @@ export default function Descriptionlogpage() {
             console.log(error);
         }
     }
-    const openmodalconfirm = ({ status, btnconfirm }) => {
+    const openmodalconfirm = ({ status, btnconfirm, msg }) => {
         try {
             setopenmodal(status)
-            optionbtn.titlemsg = "you want delete data file ?"
+            optionbtn.titlemsg = msg 
             optionbtn.btnconfirm = btnconfirm;
         } catch (error) {
             console.log(error)
@@ -127,8 +127,8 @@ export default function Descriptionlogpage() {
                             </Select>
                         </FormControl>
                         <div className="d-flex mt-1">
-                            <button className="btn mx-2" onClick={() => getdesclogpage()}> search </button>
-                            <button className="btn ml-1" onClick={(e) => openmodalconfirm({ status: true, btnconfirm: 0 }, e)}> deletelog </button>
+                            <button className="btn mx-2 bg-default color-white" onClick={() => getdesclogpage()}> search </button>
+                            <button className="btn ml-1" onClick={(e) => openmodalconfirm({ status: true, btnconfirm: 0  , msg : "you want delete data file ?"}, e)}> deletelog </button>
                         </div>
                     </div>
                 </div>

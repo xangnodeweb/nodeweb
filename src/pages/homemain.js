@@ -84,7 +84,7 @@ export default function Homemain() {
                                 </li>
                                 <li>
                                     <a href="/changemaxdate">
-                                        <i className="fa fa-list-ul"> </i>
+                                        <i className="fa fa-bars"> </i>
                                         <span > changemax date </span>
                                     </a>
                                 </li>
