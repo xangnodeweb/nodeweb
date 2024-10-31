@@ -112,16 +112,8 @@ export default function Modalchangeadddate({ callmodal, opendialog, openbutton, 
                                             <Button style={{ "backgroundColor": "#575757", color: "#FFF" }} onClick={() => callmodal({ status: false, confirmbtn: 0 })}> Cancel </Button>
                                         </> : ""
                     }
-
                 </Modal.Footer>
-
-
             </Modal >
-
-
         </>
-
-
     )
-
 }
