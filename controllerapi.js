@@ -5,6 +5,7 @@ const express = require("express")();
 const { bodyinquery, bodymodiefield, bodyaddpackage, changemaxdate, changemainoffering, adddatafile } = require("./modelbody");
 const { parseString } = require("xml2js");
 const fetch = require("node-fetch");
+const { flushSync } = require("react-dom");
 
 
 
@@ -226,7 +227,7 @@ app.post("/addpackage", async (req, res) => {
                     modelresponse = response;
                 }
             });
-     
+
             if (modelresponse.status = true) {
 
                 adddatafile(modelresponse, 0);
@@ -611,6 +612,9 @@ app.post("/addpackagelistphone", async (req, res) => {
         return res.status(400).json({ status: false, code: 1, message: "", result: [] });
     }
 });
+
+
+
 
 const sleep = (ms) => {
     return new Promise(ress => setTimeout(ress, ms));

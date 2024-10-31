@@ -6,8 +6,9 @@ const { parseString } = require("xml2js");
 const fetch = require("node-fetch");
 const { convertFieldResponseIntoMuiTextFieldProps } = require("@mui/x-date-pickers/internals");
 
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
+
 
 app.post("/changemainoffering", async (req, res) => {
     try {
@@ -366,6 +367,51 @@ app.post("/setvalidity", async (req, res) => {
 
 
 
+app.post("/getdatafile/:id", async (req, res) => {
+    try {
+
+        const filenames = req.params.id;
+        console.log(filenames);
+        const paths = path.join(__dirname, "./filedatatxt/");
+        // console.log(paths);
+        const format = /^[\n]|[\r\n]/g;
+        let model = [];
+        const data = await fs.readFile(paths + "" + filenames, "utf8")
+        // console.log(data);
+        const datas = data.split(format);
+        const models = datas.filter(x => x.toString().length > 1);
+        if (models.length > 0) {
+            for (var i = 0; i < models.length; i++) {
+                model.push(`${models[i]}`);
+            }
+        }
+        // console.log(model)
+        return res.status(200).json({ status: true, code: 1, message: "read file success", result: model })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ status: false, code: 1, message: "cannot get data file log", result: [] });
+    }
+});
+app.post("/datafileclear/:namefile", async (req, res) => {
+    try {
+
+        const namefiles = req.params.namefile;
+
+        const paths = path.join(__dirname, "./filedatatxt/");
+        const fileclear = await fs.truncate(paths + "" + namefiles, 0)
+        // console.log(fileclear)
+        return res.json({ status: true, code: 0, message: "filedat clear success", result: [] });
+    } catch (error) {
+        const errors = JSON.stringify(error)
+        console.log(JSON.parse(errors))
+        // console.log(error)
+        return res.status(400).json({ status: false, code: 1, message: "cannot clear filedata" })
+    }
+
+
+})
+
 
 
 const sleep = (ms) => {
@@ -387,7 +433,6 @@ const adddatafile = async (bodydata) => {
 
         let data = "";
         if (bodydata.length > 0) {
-
             let date = datetime();
             console.log(date);
             for (var i = 0; i < bodydata.length; i++) {
@@ -400,15 +445,15 @@ const adddatafile = async (bodydata) => {
                         console.log(bodydata)
                         console.log("cannot setvalidity");
                     }
-                })
-
+                });
             }
         }
 
     } catch (error) {
         console.log(error)
     }
-
 }
+
+
 
 module.exports = app;

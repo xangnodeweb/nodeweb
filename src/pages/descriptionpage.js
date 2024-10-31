@@ -493,7 +493,7 @@ export default function Descriptionpage({ callpages }) {
                     <div className="position-relative d-flex justify-content-center">
                         <div className="d-flex position-relative flex-column align-items-center mt-6 w-50">
 
-                            <img src="http://localhost:8080/image/file-changemainoffering-main.png" className="h-300-px w-100 border-grey" />
+                            <img src="http://172.28.27.50:8080/image/file-changemainoffering-main.png" className="h-300-px w-100 border-grey" />
                             <span className="f-18-px mt-1"> 1.1 ຮູບແບບຟາຍ file txt changemainoffering </span>
 
                             <div className="w-40-px h-40-px bg-gray border-radius-50 d-flex justify-content-center align-items-center position-absolute top-23-px-l left-20-px-l">

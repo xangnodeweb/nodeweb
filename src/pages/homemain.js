@@ -8,6 +8,7 @@ import Addpackagephone from "./addpackagephone";
 import Addpackagelistphone from "./addpackagelistphone";
 import Descriptionpage from "./descriptionpage";
 import ChangMaxDate from "./changmaxdate";
+import Descriptionlogpage from "./descriptionlogdetail";
 export default function Homemain() {
 
 
@@ -83,19 +84,33 @@ export default function Homemain() {
                                 </li>
                                 <li>
                                     <a href="/changemaxdate">
-                                        <i className="fa fa-calendar"> </i>
+                                        <i className="fa fa-list-ul"> </i>
                                         <span > changemax date </span>
                                     </a>
                                 </li>
-                                <li onClick={() => {
-                                    console.log("page");
-                                    setpage(true)
-                                }}>
-                                    <a >
-                                        <i className="fa fa-file-text-o"> </i>
-                                        <span > description page </span>
-                                    </a>
+
+                                <li className="card-item-detail"
+                                >
+                                    <div className="d-flex align-items-center justify-content-between ">
+                                        <a >
+                                            <i className="fa fa-file-text-o"> </i>
+                                            <span > description page </span>
+                                        </a>
+                                        <i className="fa fa-chevron-down arrow" ></i>
+                                    </div>
+                                    <ul className="link-submenu mb-0">
+
+                                        <li
+                                            onClick={() => {
+                                                console.log("page");
+                                                setpage(true)
+                                            }}
+                                        > <a > description page </a> </li>
+                                        <li > <a href="/desclogpage"> detaillog page </a> </li>
+
+                                    </ul>
                                 </li>
+
                             </div>
 
 
@@ -114,6 +129,7 @@ export default function Homemain() {
                                     <Route path="/Addpackagelistphone" element={<Addpackagelistphone />} />
                                     <Route path="/Descriptionpage" element={<Descriptionpage />} />
                                     <Route path="/changemaxdate" element={<ChangMaxDate />} />
+                                    <Route path="/desclogpage" element={<Descriptionlogpage />} />
                                 </Routes>
                             </BrowserRouter>
 

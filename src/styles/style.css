@@ -86,6 +86,13 @@ div.lb-record.disable {
     width: 65%;
 }
 
+.w-70{
+    width: 70%;
+}
+.w-60{
+    width: 60%;
+}
+
 .w-50 {
     width: 50%;
 }
@@ -371,7 +378,9 @@ div.lb-record.disable {
 .flex-column {
     flex-direction: column;
 }
-
+.flex-column-reverse{
+    flex-direction: column-reverse;
+}
 .flex-wrap-wrap {
     flex-wrap: wrap;
 }
@@ -389,7 +398,7 @@ div.lb-record.disable {
 }
 
 .border-2-red {
-    border: 2px solid #FF0000;
+    border: 2 px solid #FF0000;
 }
 
 .border-grey {
@@ -650,7 +659,9 @@ div.lb-record.disable {
 .pr-4 {
     padding-right: 16px;
 }
-
+.p-2{
+    padding: 8px;
+}
 .p-3 {
     padding: 12px;
 }

@@ -171,6 +171,18 @@
     pointer-events: none;
 }
 
+.main-slidebar .nav-link li  i{
+    color: #FFFFFF;
+}
+.main-slidebar .nav-link .card-item-detail.arrow-add i.fa-chevron-down{
+    transform: rotate(-180deg);
+}
+.main-slidebar .nav-link .card-item-add ul.link-submenu{
+    display: none;
+}
+.main-slidebar .nav-link .card-item-detail.arrow-add .link-submenu{
+    display: block;
+}
 
 
 .main-slidebar~.home-section {
