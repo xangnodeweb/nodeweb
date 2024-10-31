@@ -5,7 +5,6 @@ const express = require("express")();
 const { bodyinquery, bodymodiefield, bodyaddpackage, changemaxdate, changemainoffering, adddatafile } = require("./modelbody");
 const { parseString } = require("xml2js");
 const fetch = require("node-fetch");
-const { flushSync } = require("react-dom");
 
 
 
