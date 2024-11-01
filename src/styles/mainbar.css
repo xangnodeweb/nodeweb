@@ -114,6 +114,7 @@
 .main-slidebar .nav-link li ul li {
     padding-left: 55px;
     cursor: pointer;
+    background-color: #517fa4;
 }
 
 .main-slidebar .nav-link li ul li a {
