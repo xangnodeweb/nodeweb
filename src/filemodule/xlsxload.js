@@ -605,7 +605,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
         console.log(modelchangemax);
 
         const colone = modeloffer.length + 6;
-        worksheetrow.mergeCells(`A${colone}`, `F${colone + 1}`);
+        worksheetrow.mergeCells(`A${colone}`, `E${colone + 1}`);
         sheet.getCell(`A${colone}`).value = "report changemaxday"
 
         sheet.getCell(`A${colone + 2}`).value = "phone"; // no 
