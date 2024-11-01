@@ -938,12 +938,18 @@ div.lb-record.disable {
     left: 41%;
 }
 
+.left-43{
+    left: 43%;
+}
 .left-45-l {
     left: -45%;
 }
 
 .left-50 {
     left: 50%;
+}
+.left-51{
+    left: 51%;
 }
 
 .left-3-px-l {
@@ -1222,7 +1228,9 @@ div.lb-record.disable {
 .bottom-178-px {
     bottom: 178px;
 }
-
+.bottom-188-px{
+    bottom: 188px;
+}
 .bottom-19-px-l {
     bottom: -19px;
 }
