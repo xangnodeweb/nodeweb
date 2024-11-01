@@ -52,7 +52,7 @@ export default function ChangMaxDate() {
 
     const [editline, seteditline] = useState(0);
     const [editlineone, seteditlineone] = useState(0);
-    const [editlinetwo, seteditlinetwo] = useState(0);
+    const [editlinetwo, seteditlinetwo] = useState(0);   // edit line one two == 0 == default || 1 == error line one || 2 == success line one || 3 == success two or error default 3 setvalidity || 4 success line 3
 
     const [lineonesuccess, setlineonesuccess] = useState(false);
 
@@ -157,7 +157,7 @@ export default function ChangMaxDate() {
             }
 
 
-            const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemainoffering", modelfile);
+            const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemainoffering", modelfile);
             console.log(data.data);
             if (data.status == 200) {
 
@@ -252,7 +252,7 @@ export default function ChangMaxDate() {
 
             console.log(modelchangemaxdate)
 
-            const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemaxday", modelchangemaxdate);
+            const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemaxday", modelchangemaxdate);
 
             console.log(data.data);
             if (data.status == 200) {
@@ -353,7 +353,7 @@ export default function ChangMaxDate() {
 
 
 
-            const data = await axios.post("http://172.28.27.50:3000/apichangemain/setvalidity", ismodelsetvalidity)
+            const data = await axios.post("http://127.0.0.1:3000/apichangemain/setvalidity", ismodelsetvalidity)
             console.log(data.data);
 
             if (data.status == 200) {
@@ -689,6 +689,7 @@ export default function ChangMaxDate() {
 
             } else if (linenumber == 2) {
                 seteditlinetwo(btnvalue);
+                isvalidity.current.focus();
             }
         } catch (error) {
             console.log(error);
@@ -942,7 +943,7 @@ export default function ChangMaxDate() {
             <div className="w-100 d-flex px-3">
                 <div className="w-35 d-flex flex-column p-3 box-shadow h-160-px my-3">
                     <span className="pb-1"> change max day value  </span>
-                    <Phonenumber placeholder="365" onChange={(e) => valuevalidity(e)} value={valuechangemaxday} error={error && msgvalid == 3 ? true : false} helperText={error && msgvalid == 3 ? "please enter value day" : ""} inputRef={ismaxday} readOnly={editlineone == 1 ? true : false} />
+                    <Phonenumber placeholder="365" onChange={(e) => valuevalidity(e)} value={valuechangemaxday} error={error && msgvalid == 3 ? true : false} helperText={error && msgvalid == 3 ? "please enter value day" : ""} inputRef={ismaxday} readOnly={editlineone == 1 ? true : false}  />
 
                     {
                         editlineone == 0 && iseditlineone == false ?
@@ -1012,7 +1013,7 @@ export default function ChangMaxDate() {
             <div className="w-100  h-300-px d-flex px-3">
                 <div className="d-flex flex-column  box-shadow p-3  w-35 my-3 h-160-px">
                     <span> validity date </span>
-                    <Phonenumber placeholder="000" onChange={(e) => validityvalue(e)} value={validitydate} error={error && msgvalid == 4 ? true : false} helperText={error && msgvalid == 4 ? "please enter value validity day" : ""} inputRef={isvalidity} />
+                    <Phonenumber placeholder="000" onChange={(e) => validityvalue(e)} value={validitydate} error={error && msgvalid == 4 ? true : false} helperText={error && msgvalid == 4 ? "please enter value validity day" : ""} inputRef={isvalidity} readOnly={editlinetwo == 1 ? true : false} />
                     {
 
                         editlinetwo == 0 ?

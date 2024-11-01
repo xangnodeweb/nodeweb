@@ -247,14 +247,9 @@ app.post("/setvalidity", async (req, res) => {
 
         if (body.length > 0) {
 
-
             for (var i = 0; i < body.length; i++) {
-
                 const bodysetvaliditys = bodysetvalidity(body[i].phone, body[i].validitydate);
-
-
-                console.log(bodysetvaliditys);
-
+                // console.log(bodysetvaliditys);
 
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8'
@@ -268,15 +263,15 @@ app.post("/setvalidity", async (req, res) => {
                     return response.text();
                 }).then(responseText => {
 
-                    console.log(responseText)
+                    // console.log(responseText)
                     const modeldata = responseText
 
                     parseString(modeldata, function (err, result) {
                         let datas = JSON.stringify(result);
                         const datass = JSON.parse(datas);
 
-                        console.log(datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubValidityResultMsg"][0]["ResultHeader"][0]);
-                        console.log(datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubValidityResultMsg"][0]["ChangeSubValidityResult"]);
+                        // console.log(datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubValidityResultMsg"][0]["ResultHeader"][0]);
+                        // console.log(datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubValidityResultMsg"][0]["ChangeSubValidityResult"]);
 
                         const data = datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubValidityResultMsg"][0]["ResultHeader"][0];
                         const datanewliftcyclestatus = datass["soapenv:Envelope"]["soapenv:Body"][0]["bcs:ChangeSubValidityResultMsg"][0]["ChangeSubValidityResult"];
@@ -293,7 +288,7 @@ app.post("/setvalidity", async (req, res) => {
                                     for (var ii = 0; ii < modelnewlife.length; ii++) {
                                         models.push({ statusname: modelnewlife[ii]["bcs:StatusName"][0], statusexpiretime: modelnewlife[ii]["bcs:StatusExpireTime"][0], statusindex: modelnewlife[ii]["bcs:StatusIndex"][0] });
 
-                                        console.log(models)
+                                        // console.log(models)
                                     }
                                     if (models.length > 0) {
 
@@ -303,8 +298,7 @@ app.post("/setvalidity", async (req, res) => {
                                     }
                                 }
                             }
-                            console.log(modelresponsetext);
-                        }
+         }
                     });
 
                 }).catch(err => {
@@ -347,11 +341,8 @@ app.post("/setvalidity", async (req, res) => {
 
             } else {
 
-                //
-                console.log(modelresponse);
-                //
+               
                 adddatafile(modelresponse);
-
                 return res.status(200).json({ status: true, code: 0, messgae: "set validity success", result: modelresponse });
 
             }

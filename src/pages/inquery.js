@@ -45,7 +45,7 @@ export default function inquery() {
             clearloaddata(false , 0);
             const datas = { "phone": phones };
             // console.log(phone)
-            const data = await axios.post("http://172.28.27.50:3000/api/inqueryphone", datas);
+            const data = await axios.post("http://127.0.0.1:3000/api/inqueryphone", datas);
             // console.log(data)
             if (data.status == 200) {
                 setUsers(data.data.result);
@@ -146,7 +146,7 @@ export default function inquery() {
                             <tr>
                                 <th> msisdn </th>
                                 <th> productname</th>
-                                <th> countname </th>
+                                <th> countername </th>
                                 <th>RefillStopTime </th>
                                 <th>starttime</th>
                                 <th> expiretime</th>
