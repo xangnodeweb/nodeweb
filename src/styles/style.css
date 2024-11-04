@@ -384,6 +384,11 @@ div.lb-record.disable {
     justify-content: space-between;
 }
 
+.justify-content-start{
+    justify-content: start;
+}
+
+
 .flex-column {
     flex-direction: column;
 }

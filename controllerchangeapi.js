@@ -4,7 +4,6 @@ const { changemainoffering, changemaxdate, bodysetvalidity } = require("./modelb
 
 const { parseString } = require("xml2js");
 const fetch = require("node-fetch");
-const { convertFieldResponseIntoMuiTextFieldProps } = require("@mui/x-date-pickers/internals");
 
 const fs = require("fs").promises;
 const path = require("path");

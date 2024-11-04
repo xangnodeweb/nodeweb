@@ -265,7 +265,7 @@ exports.adddatafile = async (bodydata, numapi) => {
 
             const result = bodydata.result[0]
             if (result != null) {
-               data = `${result.Msisdn + "|" + result.ProductNumber + "|" + result.CounterName + "|" + result.StartTime + "|" + result.ExpiryTime + "|" + result.status + "|" + date}\n`;
+               data = `${result.Msisdn + "|" + result.ProductNumber + "|" + result.CounterName + "|" + result.StartTime.slice(0, 10) + "|" + result.ExpiryTime.slice(0, 10) + "|" + result.status + "|" + date}\n`;
                await fs.appendFile(paths + "fileaddpackage.txt", data, (err) => {
                   if (err) {
                      console.log(bodydata);
@@ -276,7 +276,7 @@ exports.adddatafile = async (bodydata, numapi) => {
       } else if (numapi == 1) {
          if (bodydata.length > 0) {
             for (var i = 0; i < bodydata.length; i++) {
-               data = `${bodydata[i].Msisdn + "|" + bodydata[i].ProductNumber + "|" + bodydata[i].CounterName + "|" + bodydata[i].StartTime + "|" + bodydata[i].ExpiryTime + "|" + bodydata[i].status + "|" + date}\n`
+               data = `${bodydata[i].Msisdn + "|" + bodydata[i].ProductNumber + "|" + bodydata[i].CounterName + "|" + bodydata[i].StartTime.slice(0, 10) + "|" + bodydata[i].ExpiryTime.slice(0, 10) + "|" + bodydata[i].status + "|" + date}\n`
 
                await fs.appendFile(paths + "fileaddpackage.txt", data, (err) => {
                   if (err) {
