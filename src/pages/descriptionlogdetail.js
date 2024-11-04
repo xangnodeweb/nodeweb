@@ -42,7 +42,7 @@ export default function Descriptionlogpage() {
             } else if (selectvalue == 2) {
                 namefile = "filedatachange.txt"
             }
-            const data = await axios.post(`http://127.0.0.1:3000/apichangemain/getdatafile/${namefile}`);
+            const data = await axios.post(`http://172.28.27.50:3000/apichangemain/getdatafile/${namefile}`);
             console.log(data.data);
             if (data.status == 200) {
                 setmodellogpage(data.data.result);
@@ -68,7 +68,7 @@ export default function Descriptionlogpage() {
                                 const model = data.data.result[i].toString().split("|");
                                 if (model.length > 0) {
                                     if (model[6].slice(0, 8)) {
-                                        modeldate.push(model[6].slice(0, 8));
+                                        modeldate.push(model[6].toString().slice(0, 8));
                                     }
                                 }
                             }
@@ -103,7 +103,6 @@ export default function Descriptionlogpage() {
                     let models = [];
                     if (modeldate.length > 0) {
                         for (var i = 0; i < modeldate.length; i++) {
-
                             models.push({ datelog: modeldate[i] });
                         }
                         setmodeldatefile(models)
@@ -135,7 +134,7 @@ export default function Descriptionlogpage() {
             }
             // console.log(namefile)
 
-            const data = await axios.post("http://127.0.0.1:3000/apichangemain/datafileclear/" + namefile);
+            const data = await axios.post("http://172.28.27.50:3000/apichangemain/datafileclear/" + namefile);
             console.log(data.data);
 
             if (data.status == 200) {
