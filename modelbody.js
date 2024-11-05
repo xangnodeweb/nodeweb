@@ -125,7 +125,7 @@ exports.changemainoffering = async (phone, offeringold, offeringnew) => {
          <RequestHeader>
             <cbs:Version>1</cbs:Version>
             <cbs:BusinessCode>ChangeSubOffering</cbs:BusinessCode>
-            <cbs:MessageSeq>${datadateformat}</cbs:MessageSeq>
+            <cbs:MessageSeq>${msgseq}</cbs:MessageSeq>
             <cbs:AccessSecurity>
                <cbs:LoginSystemCode>APIGEEAPI</cbs:LoginSystemCode>
                <cbs:Password>cdVOUWF+57KsMd57vH8D3H+ykq4CbeLtc8wCapSScPhjazQDDuTrFUP4sDBpyX+q</cbs:Password>

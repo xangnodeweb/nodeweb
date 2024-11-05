@@ -8,7 +8,6 @@ const fetch = require("node-fetch");
 const fs = require("fs").promises;
 const path = require("path");
 
-
 app.post("/changemainoffering", async (req, res) => {
     try {
         const body = req.body;
@@ -25,7 +24,7 @@ app.post("/changemainoffering", async (req, res) => {
 
             for (var i = 0; i < body.length; i++) {
 
-                const databody = await changemainoffering(body[i].phone, body[i].oldoffering, body[i].newoffering);
+                const databody = await changemainoffering(body[i].phone, body[i].oldoffering, body[i].newoffering );
 
 
                 console.log(databody);
@@ -36,7 +35,7 @@ app.post("/changemainoffering", async (req, res) => {
                 let modelresponse = {};
                 let data = {};
                 let datasuboffering = {};
-
+      
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8'
                 }
@@ -297,7 +296,7 @@ app.post("/setvalidity", async (req, res) => {
                                     }
                                 }
                             }
-         }
+                        }
                     });
 
                 }).catch(err => {
@@ -340,7 +339,7 @@ app.post("/setvalidity", async (req, res) => {
 
             } else {
 
-               
+
                 adddatafile(modelresponse);
                 return res.status(200).json({ status: true, code: 0, messgae: "set validity success", result: modelresponse });
 
