@@ -384,7 +384,7 @@ div.lb-record.disable {
     justify-content: space-between;
 }
 
-.justify-content-start{
+.justify-content-start {
     justify-content: start;
 }
 
@@ -738,6 +738,10 @@ div.lb-record.disable {
     top: 41%;
 }
 
+.top-42 {
+    top: 42%;
+}
+
 .top-50 {
     top: 50%;
 }
@@ -782,6 +786,8 @@ div.lb-record.disable {
     top: 12px;
 }
 
+
+
 .top-20-px-l {
     top: -20px;
 }
@@ -822,7 +828,9 @@ div.lb-record.disable {
 .top-14-px-l {
     top: -14px;
 }
-
+.top-15-px-l {
+    top: -15px;
+}
 .top-92-px {
     top: 92px;
 }
@@ -863,6 +871,10 @@ div.lb-record.disable {
     left: 12px;
 }
 
+.left-13-px {
+    left: 13px;
+}
+
 .left-15-px {
     left: 15px;
 }
@@ -894,6 +906,11 @@ div.lb-record.disable {
 .left-13 {
     left: 13%;
 }
+
+.left-15 {
+    left: 15%;
+}
+
 
 .left-28 {
     left: 28%;
@@ -943,17 +960,23 @@ div.lb-record.disable {
     left: 41%;
 }
 
-.left-43{
+.left-43 {
     left: 43%;
 }
+
 .left-45-l {
     left: -45%;
+}
+
+.left-49 {
+    left: 49%;
 }
 
 .left-50 {
     left: 50%;
 }
-.left-51{
+
+.left-51 {
     left: 51%;
 }
 
@@ -1233,9 +1256,11 @@ div.lb-record.disable {
 .bottom-178-px {
     bottom: 178px;
 }
-.bottom-188-px{
+
+.bottom-188-px {
     bottom: 188px;
 }
+
 .bottom-19-px-l {
     bottom: -19px;
 }
@@ -1301,9 +1326,10 @@ div.lb-record.disable {
 .bg-default-btn {
     background-color: #dddddd78;
 }
-.bg-menubar{
-   background-color: #FFFFFF5c;
-    
+
+.bg-menubar {
+    background-color: #FFFFFF5c;
+
 }
 
 
@@ -1446,6 +1472,10 @@ input {
 
 .transform-35-l {
     transform: rotate(-35deg);
+}
+
+.transform-50-l {
+    transform: rotate(-50deg);
 }
 
 .transform-53-l {

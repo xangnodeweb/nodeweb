@@ -39,8 +39,13 @@ export default function Descriptionpage({ callpages }) {
                         &nbsp;  <span className="f-18-px"> ອັບເດດຂໍ້ມູນ date expire ແບບ user </span>
                     </div>
                     <div className="d-flex">
-                        <span className="f-18-px"> 6/ description ລາຍລະອຽດການໃຊ້ soap query phone </span>
-
+                        <span className="f-18-px"> 6/ changemain setday </span>
+                        &nbsp;   <span className="f-18-px"> ອັບເດດມື້ ເພິ່ມມື້ </span>
+                    </div>
+                    <div className="d-flex flex-column">
+                        <span className="f-18-px"> 7/ description ລາຍລະອຽດການໃຊ້ soap query phone </span>
+                        <span className="f-18-px">  - &nbsp; description page ລາຍລະອຽດການໃຊ້ soap query phone </span>
+                        <span className="f-18-px">  - &nbsp; detaillog page  ລາຍລະອຽດຂໍ້ມູນ log </span>
                     </div>
 
                 </div>
@@ -546,13 +551,16 @@ export default function Descriptionpage({ callpages }) {
                     <div className="d-flex flex-column">
                         <span className="f-20-px f-weight-900"> 7/ desclogpage ກວດເບິ່ງຂໍ້ມູນ log addpackage ແລະ setvalidity </span>
                         <span className="f-18-px"> 1/ ເລືອກປະເພດ log ທີ່ຕ້ອງການຄົ້ນຫາ detaillog addpackage log add package ແລະ detaillog setvalidity log add validity date ກົດປຸ່ມ search ທີ່ຕ້ອງການຄົ້ນຫາ log  </span>
-                        <span className="f-18-px"> 2/ ເລືອກປະເພດ log ທີ່ຕ້ອງການລົບຂໍ້ມູນ log detaillog addpackage ແລະ detaillog setvalidity  ກົດປຸ່ມ deletelog ທີ່ຕ້ອງການລົບຂໍ້ມູນ log  </span>
+                        <span className="f-18-px"> 2/ ເລືອກປະເພດ log ທີ່ຕ້ອງການລົບຂໍ້ມູນ log detaillog addpackage ຫຼື detaillog setvalidity  ກົດປຸ່ມ deletelog ທີ່ຕ້ອງການລົບຂໍ້ມູນ log  </span>
+                        <span className="f-18-px"> 3/ ສາມາດເລືອກເບິ່ງຂໍ້ມູນຕາມວັນທີ ຕາມຂໍ້ມູນທີ່ເກັບໄວ້ ຈະຕ້ອງຄົ້ນຫາຂໍ້ມູນ ແລະ ມີຂໍ້ມູນຈື່ງສາມາດເລືອກມື້ໄດ້ </span>
+
+
 
                         <div className="w-70 m-auto pt-3 position-relative  ">
 
                             <img src="http://172.28.27.50:8080/image/desclogpage-main.png" className="h-500-px w-100" />
 
-                            <div className="  position-absolute  top-14 left-43">
+                            <div className="  position-absolute  top-13 left-41">
                                 <div className="position-relative">
                                     <div className="bg-gray w-40-px h-40-px border-radius-50 d-flex flex-column align-items-center justify-content-center ">
                                         <span> 1 </span>
@@ -560,21 +568,31 @@ export default function Descriptionpage({ callpages }) {
                                     </div>
                                     <i className="fa fa-long-arrow-left bottom-11-l left-0 position-absolute transform-55-l">  </i>
                                     <i className="fa fa-long-arrow-right bottom-11-l right-0 position-absolute transform-55">  </i>
-                              
+
                                 </div>
 
                             </div>
-                            <div className="  position-absolute  top-14 left-51">
+                            <div className="  position-absolute  top-14 left-49">
                                 <div className="position-relative">
                                     <div className="bg-gray w-40-px h-40-px border-radius-50 d-flex flex-column align-items-center justify-content-center ">
                                         <span> 2 </span>
 
                                     </div>
                                     <i className="fa fa-long-arrow-left bottom-13-px-l left-12-px position-absolute transform-90-l">  </i>
-                                 
                                 </div>
-
                             </div>
+
+                            <div className="position-absolute top-12 right-30">
+                                <div className="position-relative">
+                                    <div className="bg-gray w-40-px h-40-px border-radius-50 d-flex justify-content-center align-items-center">
+                                        <span> 3 </span>
+                                    </div>
+                                    <i className="fa fa-long-arrow-left position-absolute bottom-10-l left-0 transform-50-l">  </i>
+                                </div>
+                            </div>
+
+
+
                         </div>
                     </div>
 
