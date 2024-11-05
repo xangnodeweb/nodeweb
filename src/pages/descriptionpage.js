@@ -552,7 +552,7 @@ export default function Descriptionpage({ callpages }) {
                         <span className="f-20-px f-weight-900"> 7/ desclogpage ກວດເບິ່ງຂໍ້ມູນ log addpackage ແລະ setvalidity </span>
                         <span className="f-18-px"> 1/ ເລືອກປະເພດ log ທີ່ຕ້ອງການຄົ້ນຫາ detaillog addpackage log add package ແລະ detaillog setvalidity log add validity date ກົດປຸ່ມ search ທີ່ຕ້ອງການຄົ້ນຫາ log  </span>
                         <span className="f-18-px"> 2/ ເລືອກປະເພດ log ທີ່ຕ້ອງການລົບຂໍ້ມູນ log detaillog addpackage ຫຼື detaillog setvalidity  ກົດປຸ່ມ deletelog ທີ່ຕ້ອງການລົບຂໍ້ມູນ log  </span>
-                        <span className="f-18-px"> 3/ ສາມາດເລືອກເບິ່ງຂໍ້ມູນຕາມວັນທີ ຕາມຂໍ້ມູນທີ່ເກັບໄວ້ ຈະຕ້ອງຄົ້ນຫາຂໍ້ມູນ ແລະ ມີຂໍ້ມູນຈື່ງສາມາດເລືອກມື້ໄດ້ </span>
+                        <span className="f-18-px"> 3/ ສາມາດເລືອກເບິ່ງຂໍ້ມູນຕາມວັນທີ ຕາມຂໍ້ມູນທີ່ເກັບໄວ້ ຈະຕ້ອງຄົ້ນຫາຂໍ້ມູນ ແລະ ຖ້າມີຂໍ້ມູນຈື່ງສາມາດເລືອກມື້ໄດ້ </span>
 
 
 
