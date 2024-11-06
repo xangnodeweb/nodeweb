@@ -106,7 +106,7 @@ exports.bodyaddpackage = async (phone, countername, starttime, expiretime, refil
 
 }
 
-exports.changemainoffering = async (phone, offeringold, offeringnew) => {
+exports.changemainoffering = async (phone, offeringold, offeringnew, msgseq) => {
    try {
 
       const dates = `"${"yyyyMMddHHmmss"}"`

@@ -206,9 +206,14 @@ export default function ChangMaxDate() {
                         }
 
                     } else {
+                        setloading(false);
                         openmodalsuccess(true, 1, "cannot changemain offering ", "");
                         return;
                     }
+                }else{
+                    setloading(false);
+                    openmodalsuccess(true, 1, "cannot changemain offering ", "");
+                    return;
                 }
             }
 
