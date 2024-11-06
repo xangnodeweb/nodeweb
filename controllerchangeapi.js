@@ -138,7 +138,7 @@ app.post("/changemainoffering", async (req, res) => {
         const oldoffering = body.oldoffering;
         const newoffering = body.newoffering;
 
-        console.log(body);
+        // console.log(body);
         let model = []
 
         if (body.length > 0) {
@@ -167,7 +167,7 @@ app.post("/changemainoffering", async (req, res) => {
                 }
                 const datas = await axios.post("https://172.28.26.72:9443/api/cbs_bc_services/ChangeSubOffering", datareq, { headers: headers, httpsAgent: new https.Agent({ rejectUnauthorized: false }) })
                 let datass = datas.data;
-                console.log(datas.data)
+                // console.log(datas.data)
 
                 if (datas.status == 200) {
 
@@ -600,7 +600,7 @@ const adddatafile = async (bodydata) => {
         let data = "";
         if (bodydata.length > 0) {
             let date = datetime();
-            console.log(date);
+            // console.log(date);
             for (var i = 0; i < bodydata.length; i++) {
 
                 const status = bodydata[i].status ? "true" : "false"

@@ -157,7 +157,7 @@ export default function ChangMaxDate() {
             }
 
 
-            const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemainoffering", modelfile);
+            const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemainoffering", modelfile);
             console.log(data.data);
             if (data.status == 200) {
 
@@ -198,11 +198,11 @@ export default function ChangMaxDate() {
                     let statuscode = error.response.data;
                     if (statuscode.status == false && statuscode.code == 2) {
                         // if (statuscode.result.length > 0) {
-                            // setmodelsubscriber(statuscode.result)
-                            setloading(false);
-                            setbtncheckoption(1);
-                            openmodalsuccess(true, 1, "cannot changemainoffering ConnectTimeoutError", "");
-                            return;
+                        // setmodelsubscriber(statuscode.result)
+                        setloading(false);
+                        setbtncheckoption(1);
+                        openmodalsuccess(true, 1, "cannot changemainoffering ConnectTimeoutError", "");
+                        return;
                         // }
 
                     } else {
@@ -210,7 +210,7 @@ export default function ChangMaxDate() {
                         openmodalsuccess(true, 1, "cannot changemain offering ", "");
                         return;
                     }
-                }else{
+                } else {
                     setloading(false);
                     openmodalsuccess(true, 1, "cannot changemain offering ", "");
                     return;
@@ -236,7 +236,8 @@ export default function ChangMaxDate() {
                 setloading(false);
                 return;
             }
-            console.log(modelchangemaxdate)
+
+            // console.log(modelchangemaxdate)
             const modelindex = modelchangemaxdate.filter(x => x.datevalue == 0);
             console.log(modelindex)
             if (modelindex > 0) {
@@ -257,7 +258,7 @@ export default function ChangMaxDate() {
 
             console.log(modelchangemaxdate)
 
-            const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemaxday", modelchangemaxdate);
+            const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemaxday", modelchangemaxdate);
 
             console.log(data.data);
             if (data.status == 200) {
@@ -358,7 +359,7 @@ export default function ChangMaxDate() {
 
 
 
-            const data = await axios.post("http://172.28.27.50:3000/apichangemain/setvalidity", ismodelsetvalidity)
+            const data = await axios.post("http://127.0.0.1:3000/apichangemain/setvalidity", ismodelsetvalidity)
             console.log(data.data);
 
             if (data.status == 200) {
@@ -474,6 +475,14 @@ export default function ChangMaxDate() {
                 const datevalues = e.target.value.replace(/[^0-9]+/g, "");
                 console.log(datevalues);
                 setvaluechangemaxday(datevalues);
+                if (parseInt(e.target.value) > 3650) {
+                    seterror(true);
+                    setmsgvalid(2)
+                    return;
+
+                }
+                seterror(false);
+                setmsgvalid(0)
                 if (modelchangemaxdate.length > 0) {
                     modelchangemaxdate.forEach(x => { x.phone = x.phone, x.balance = x.balance, x.datevalue = parseInt(datevalues) });
                     // setmodelchangemaxdate(modelchangemaxdate)
@@ -528,6 +537,14 @@ export default function ChangMaxDate() {
                 seteditlineone(0);
                 return;
             }
+            if (valuechangemaxday == null) {
+                setmsgvalid(3);
+                seterror(true);
+                ismaxday.current.focus();
+
+                openlinecolor(true, 2, 2);
+                return;
+            }
             if (parseInt(valuechangemaxday) == 0) {
                 setmsgvalid(3);
                 seterror(true);
@@ -548,12 +565,9 @@ export default function ChangMaxDate() {
                 openlinecolor(true, 2, 2);
                 return;
             }
-            if (valuechangemaxday == null) {
-                setmsgvalid(3);
+            if (parseInt(valuechangemaxday) > 3650) {
                 seterror(true);
-                ismaxday.current.focus();
-
-                openlinecolor(true, 2, 2);
+                setmsgvalid(2);
                 return;
             }
 
@@ -948,7 +962,7 @@ export default function ChangMaxDate() {
             <div className="w-100 d-flex px-3">
                 <div className="w-35 d-flex flex-column p-3 box-shadow h-160-px my-3">
                     <span className="pb-1"> change max day value  </span>
-                    <Phonenumber placeholder="365" onChange={(e) => valuevalidity(e)} value={valuechangemaxday} error={error && msgvalid == 3 ? true : false} helperText={error && msgvalid == 3 ? "please enter value day" : ""} inputRef={ismaxday} readOnly={editlineone == 1 ? true : false}  />
+                    <Phonenumber placeholder="3650" onChange={(e) => valuevalidity(e)} value={valuechangemaxday} error={error && msgvalid == 3 ? true : error && msgvalid == 2 ? true : false} helperText={error && msgvalid == 3 ? "please enter value day" : error && msgvalid == 2 ? "please enter value less number 3650" : ""} inputRef={ismaxday} readOnly={editlineone == 1 ? true : false} />
 
                     {
                         editlineone == 0 && iseditlineone == false ?
@@ -1018,7 +1032,7 @@ export default function ChangMaxDate() {
             <div className="w-100  h-300-px d-flex px-3">
                 <div className="d-flex flex-column  box-shadow p-3  w-35 my-3 h-160-px">
                     <span> validity date </span>
-                    <Phonenumber placeholder="000" onChange={(e) => validityvalue(e)} value={validitydate} error={error && msgvalid == 4 ? true : false} helperText={error && msgvalid == 4 ? "please enter value validity day" : ""} inputRef={isvalidity} readOnly={editlinetwo == 1 ? true : false} />
+                    <Phonenumber placeholder="0000" onChange={(e) => validityvalue(e)} value={validitydate} error={error && msgvalid == 4 ? true : false} helperText={error && msgvalid == 4 ? "please enter value validity day" : ""} inputRef={isvalidity} readOnly={editlinetwo == 1 ? true : false} />
                     {
 
                         editlinetwo == 0 ?
@@ -1105,7 +1119,7 @@ export default function ChangMaxDate() {
 
 }
 
-const Phonenumber = props => (<InputMask mask="999" value={props.value} onChange={props.onChange} readOnly={props.readOnly}  >
+const Phonenumber = props => (<InputMask mask="9999" value={props.value} onChange={props.onChange} readOnly={props.readOnly}  >
     {inputProps => <TextField {...inputProps} fullWidth helperText={props.helperText} error={props.error} placeholder={props.placeholder} inputRef={props.inputRef} inputProps={{ readOnly: props.readOnly }} />}
 </InputMask>)
 
