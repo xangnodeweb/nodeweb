@@ -179,8 +179,8 @@ app.post("/changemainoffering", async (req, res) => {
                                 let modelresult = datass.ChangeSubOfferingResultMsg.ResultHeader;
                                 let modeladdoffering = datass.ChangeSubOfferingResultMsg.ChangeSubOfferingResult
                                 modelresponse = { phone: body[i].phone, newoffering: body[i].newoffering, oldoffering: body[i].oldoffering, version: modelresult.Version, resultcode: modelresult.ResultCode, resultDesc: modelresult.ResultDesc, offeringkey: modeladdoffering.AddOffering.OfferingKey.OfferingID, purchaseseq: modeladdoffering.AddOffering.OfferingKey.PurchaseSeq, effectiveTime: modeladdoffering.AddOffering.EffectiveTime, expirationTime: modeladdoffering.AddOffering.ExpirationTime, rentdeductionstatus: modeladdoffering.AddOffering.RentDeductionStatus, status: true, code: 0, message: "success", }
-                                console.log(modelresponse)
-                                console.log(datass.ChangeSubOfferingResultMsg.ChangeSubOfferingResult.AddOffering)
+                                // console.log(modelresponse)
+                                // console.log(datass.ChangeSubOfferingResultMsg.ChangeSubOfferingResult.AddOffering)
                             }
                         } else {
                             let modelresult = datass.ChangeSubOfferingResultMsg.ResultHeader;
@@ -193,12 +193,23 @@ app.post("/changemainoffering", async (req, res) => {
                 }
                 model.push(modelresponse);
             }
-            console.log(model)
-            return res.status(200).json({ status: true, code: 0, message: "success", result: model })
+            // console.log(model)
+
+            return res.status(200).json({ status: true, code: 0, message: "changemain offering success", result: model })
         }
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ status: false, code: 1, message: "changemain offering failed", result: null });
+        const errors = JSON.stringify(error);
+        const err = JSON.parse(errors);
+        // console.log(err.code == "ETIMEDOUT");
+        if (err.code == "ETIMEDOUT") {
+            return res.status(400).json({ status: false, code: 2, message: "changemain offering ConnectTimeOutError", result: null });
+
+        } else {
+            return res.status(400).json({ status: false, code: 1, message: "changemain offering failed", result: null });
+
+        }
+
     }
 });
 
@@ -217,7 +228,7 @@ app.post("/changemaxday", async (req, res) => {
         let model = [];
         let modelresponse = [];
         let modelresponsetext = {};
-        console.log(body)
+        // console.log(body)
 
         if (body.length > 0) {
 
@@ -225,7 +236,7 @@ app.post("/changemaxday", async (req, res) => {
 
 
                 let messageseq = v4().toString().replace(new RegExp(/-/g, "g"), "").slice(0, 30);
-                console.log(messageseq)
+                // console.log(messageseq)
                 let datareq = {
                     ChanelRequest: "CBS_SUB_MAX_VALIDITY",
                     MessageSeq: messageseq,
@@ -237,7 +248,7 @@ app.post("/changemaxday", async (req, res) => {
                     Code: "C_SUB_MAX_VALIDITY",
                     Value: body[i].datevalue
                 }
-                // console.log(datareq)
+       
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8',
                     'apikey': '1ceLL3KitsCAUekVdYTYSaYHrGho6QKA'
@@ -245,7 +256,7 @@ app.post("/changemaxday", async (req, res) => {
 
                 const data = await axios.post("https://172.28.26.72:9443/api/cbs_bc_services/ChangeSubInfo", datareq, { headers: headers, httpsAgent: new https.Agent({ rejectUnauthorized: false }) });
                 let datas = data.data;
-                console.log(data.data);
+                // console.log(data.data);
                 if (data.status == 200) {
 
                     let modelresult = datas.ChangeSubInfoResultMsg
@@ -253,31 +264,42 @@ app.post("/changemaxday", async (req, res) => {
                         if (modelresult.ResultHeader != null) {
                             if (modelresult.ResultHeader.ResultCode == 0) {
                                 modelresponsetext = { phone: body[i].phone, datevalue: body[i].datevalue, version: modelresult.ResultHeader.Version, resultdesc: modelresult.ResultHeader.ResultDesc, resultcode: modelresult.ResultHeader.ResultCode, status: true, code: 0, message: "success" }
-                                console.log(modelresponsetext);
+                     
                             } else {
                                 modelresponsetext = { phone: body[i].phone, datevalue: body[i].datevalue, version: modelresult.ResultHeader.Version, resultdesc: modelresult.ResultHeader.ResultDesc, resultcode: modelresult.ResultHeader.ResultCode, status: false, code: 1, message: "failed" }
-                                console.log(modelresponsetext);
+                            
                             }
                         } else {
                             modelresponsetext = { phone: body[i].phone, datevalue: body[i].datevalue, version: null, resultdesc: null, resultcode: null, status: false, code: 1, message: "failed" }
-                            console.log(modelresponsetext);
+                  
                         }
                     } else {
                         modelresponsetext = { phone: body[i].phone, datevalue: body[i].datevalue, version: null, resultdesc: null, resultcode: null, status: false, code: 1, message: "failed" }
-                        console.log(modelresponsetext);
+                 
                     }
                 }
                 modelresponse.push(modelresponsetext);
             }
 
-            console.log(modelresponse)
+            // console.log(modelresponse)
             return res.status(200).json({ status: false, code: 0, message: "changemaxday success", result: modelresponse });
         }
         return res.status(400).json({ status: false, code: 1, message: "cannot changemax day", result: null });
 
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ status: false, code: 1, message: "cannot changemax day", result: null });
+        const err = JSON.stringify(error);
+        const errors = JSON.parse(err);
+        if (errors) {
+            if (errors.code == "ETIMEDOUT") {
+                return res.status(400).json({ status: false, code: 2, message: "cannot changemax day ConnectTimeOutError", result: null });
+
+            } else {
+                return res.status(400).json({ status: false, code: 1, message: "cannot changemax day", result: null });
+
+            }
+        }
+
     }
 });
 
@@ -410,19 +432,16 @@ app.post("/setvalidity", async (req, res) => {
         const body = req.body;
 
         let model = [];
-        let modelresponse = []
-        console.log(body)
+        // console.log(body)
         if (body.length > 0) {
 
 
             for (var i = 0; i < body.length; i++) {
- console.log(i)
                 let phone = body[i].phone;
                 let validitydate = body[i].validitydate
                 let messageseq = v4();
-                let modelresponsetext = { phone: "", validityincrement: "", version: 0, resultcode: 0, resultdesc: "", currentlifecycleindex: 0, newlifecyclestatus: null, chgvalidity: null, status: false, code: 0, message: "" };
+                // let modelresponsetext = { phone: "", validityincrement: "", version: 0, resultcode: 0, resultdesc: "", currentlifecycleindex: 0, newlifecyclestatus: null, chgvalidity: null, status: false, code: 0, message: "" };
 
-                console.log(body[i]);
                 const dataseq = {
                     ChanelRequest: "CBS_SetDays",
                     MessageSeq: messageseq,
@@ -440,84 +459,69 @@ app.post("/setvalidity", async (req, res) => {
                     'apikey': '1ceLL3KitsCAUekVdYTYSaYHrGho6QKA'
                 }
 
-                console.log(dataseq)
-                const data = await axios.post("https://172.28.26.72:9443/api/cbs_bc_services/ChangeSubValidity", dataseq, { headers: headers, httpsAgent: new https.Agent({ rejectUnauthorized: false }) });
+                // console.log(dataseq)
+                await axios.post("https://172.28.26.72:9443/api/cbs_bc_services/ChangeSubValidity", dataseq, { headers: headers, httpsAgent: new https.Agent({ rejectUnauthorized: false }) }).then(data => {
+                    console.log(data.data)
 
-                console.log(data.data);
-                let datas = data.data;
 
-                if (data.status == 200) {
-                    let modelresult = datas.ChangeSubValidityResultMsg;
-                    let modelnewlifecyclestatus = [];
-                    if (modelresult.ChangeSubValidityResult) {
-                        console.log(modelresult)
+                    let modelresult = data.data
 
-                        
-                        let modelresultlifeinfo = modelresult.ChangeSubValidityResult;
-                     
-                        // console.log(modelresultlifeinfo.LifeCycleChgInfo)
+                    // console.log(modelresult.ChangeSubValidityResultMsg.ChangeSubValidityResult.LifeCycleChgInfo)
+                    let models = [];
+                    if (modelresult.ChangeSubValidityResultMsg) {
+                        if (modelresult.ChangeSubValidityResultMsg.ChangeSubValidityResult) {
 
-                        if (modelresultlifeinfo.LifeCycleChgInfo) {
+                            let modelresultheader = modelresult.ChangeSubValidityResultMsg.ResultHeader;
+                            let modellifecycleinfo = modelresult.ChangeSubValidityResultMsg.ChangeSubValidityResult;
 
-                            if (modelresultlifeinfo.LifeCycleChgInfo.NewLifeCycleStatus) {
-                                if (modelresultlifeinfo.LifeCycleChgInfo.NewLifeCycleStatus.length > 0) {
-                                    for (var i = 0; i < modelresultlifeinfo.LifeCycleChgInfo.NewLifeCycleStatus.length; i++) {
-                                        modelnewlifecyclestatus.push(modelresultlifeinfo.LifeCycleChgInfo.NewLifeCycleStatus[i])
+                            if (modellifecycleinfo) {
+                                if (modellifecycleinfo.LifeCycleChgInfo.NewLifeCycleStatus) {
+                                    for (var i = 0; i < modellifecycleinfo.LifeCycleChgInfo.NewLifeCycleStatus.length; i++) {
+                                        models.push(modellifecycleinfo.LifeCycleChgInfo.NewLifeCycleStatus[i])
                                     }
                                 }
                             }
-                            // console.log(modelnewlifecyclestatus)
-                            let modelresultsleftinfo = modelresultlifeinfo.NewLifeCycleStatus
-                            modelresponsetext.phone = phone;
-                            modelresponsetext.validityincrement = validitydate;
-                            modelresponsetext.version = modelresult.ResultHeader.Version;
-                            modelresponsetext.resultcode = modelresult.ResultHeader.ResultCode;
-                            modelresponsetext.resultdesc = modelresult.ResultHeader.ResultDesc;
-                            modelresponsetext.newlifecyclestatus = modelnewlifecyclestatus;
-                            modelresponsetext.chgvalidity = modelresultlifeinfo.LifeCycleChgInfo.Chgvalidity;
-                            modelresponsetext.currentlifecycleindex = modelresultlifeinfo.LifeCycleChgInfo.currentlifecycleindex;
+                             // console.log(modelresult.ChangeSubValidityResultMsg.ChangeSubValidityResult.LifeCycleChgInfo)
+                            model.push({ phone: phone, validityincrement: validitydate, version: modelresultheader.Version, resultcode: modelresultheader.ResultCode, resultdesc: modelresultheader.ResultDesc, currentlifecycleindex: modellifecycleinfo.LifeCycleChgInfo.CurrentLifeCycleIndex, newlifecyclestatus: models, chgvalidity: modellifecycleinfo.LifeCycleChgInfo.ChgValidity, status: true, code: 0, message: "" })
 
-                            modelresponsetext.status = true;
-                            modelresponsetext.code = 0;
-                            modelresponsetext.message = "success";
+                        } else {
+
+                            // console.log(modelresult.ChangeSubValidityResultMsg.ChangeSubValidityResult.LifeCycleChgInfo)
+                            model.push({ phone: phone, validityincrement: validitydate, version: modelresultheader.Version, resultcode: modelresultheader.ResultCode, resultdesc: modelresultheader.ResultDesc, currentlifecycleindex: 0, newlifecyclestatus: null, chgvalidity: null, status: false, code: 0, message: "failed" })
                         }
-
-                    } else {
-                        modelresponsetext.phone = phone;
-                        modelresponsetext.validityincrement = validitydate;
-                        modelresponsetext.version = modelresult.ResultHeader.Version;
-                        modelresponsetext.resultcode = modelresult.ResultHeader.ResultCode;
-                        modelresponsetext.resultdesc = modelresult.ResultHeader.ResultDesc;
-                        modelresponsetext.code = 1;
-                        modelresponsetext.message = "failed";
                     }
 
-                } else {
-                    modelresponsetext.phone = phone;
-                    modelresponsetext.validityincrement = validitydate;
-                    modelresponsetext.version = modelresult.ResultHeader.Version;
-                    modelresponsetext.resultcode = modelresult.ResultHeader.ResultCode;
-                    modelresponsetext.resultdesc = modelresult.ResultHeader.ResultDesc;
-                    modelresponsetext.code = 1;
-                    modelresponsetext.message = "failed";
-                }
+                }).catch(err => {
+                    console.log(err)
+                    // console.log(modelresult.ChangeSubValidityResultMsg.ChangeSubValidityResult.LifeCycleChgInfo)
+                    model.push({ phone: phone, validityincrement: validitydate, version: null, resultcode: null, resultdesc: null, currentlifecycleindex: 0, newlifecyclestatus: null, chgvalidity: null, status: false, code: 0, message: "failed" })
 
-                modelresponse.push(modelresponsetext);
-
+                });
+                // modelresponse.push(modelresponsetext);
             }
 
         }
 
 
-        console.log(modelresponse)
-        return res.status(200).json({ status: true, code: 0, message: "setvalidity success", result: modelresponse })
-        // return res.status(400).json({ status: false, code: 1, message: "cannot setvalidity", result: null });
-
+        // console.log(model)
+        adddatafile(model);
+        return res.status(200).json({ status: true, code: 0, message: "setvalidity success", result: model })
+     
 
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ status: false, code: 1, message: "cannot setvalidity", result: null });
-    }
+        const err = JSON.stringify(error);
+        const errors = JSON.parse(err);
+        if (errors) {
+            if (errors.code == "ETIMEDOUT") {
+                return res.status(400).json({ status: false, code: 2, message: "cannot setvalidity ConnectTimeOutError", result: null });
+
+            } else {
+                return res.status(400).json({ status: false, code: 1, message: "cannot setvalidity", result: null });
+
+            }
+        }
+     }
 
 })
 
@@ -600,7 +604,7 @@ const adddatafile = async (bodydata) => {
             for (var i = 0; i < bodydata.length; i++) {
 
                 const status = bodydata[i].status ? "true" : "false"
-                data = `${bodydata[i].phone + "|" + bodydata[i].validityincrement + "|" + bodydata[i].code + "|" + status + "|" + date}\n`;
+                data = `${bodydata[i].phone + "|" + bodydata[i].validityincrement + "|" + bodydata[i].resultcode + "|" + status + "|" + date}\n`;
                 const folderpath = path.join("./filedatatxt/");
                 await fs.appendFile(folderpath + "filedatachange.txt", data, (err) => {
                     if (err) {

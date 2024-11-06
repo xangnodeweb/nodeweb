@@ -157,7 +157,7 @@ export default function ChangMaxDate() {
             }
 
 
-            const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemainoffering", modelfile);
+            const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemainoffering", modelfile);
             console.log(data.data);
             if (data.status == 200) {
 
@@ -197,13 +197,13 @@ export default function ChangMaxDate() {
 
                     let statuscode = error.response.data;
                     if (statuscode.status == false && statuscode.code == 2) {
-                        if (statuscode.result.length > 0) {
-                            setmodelsubscriber(statuscode.result)
+                        // if (statuscode.result.length > 0) {
+                            // setmodelsubscriber(statuscode.result)
                             setloading(false);
                             setbtncheckoption(1);
                             openmodalsuccess(true, 1, "cannot changemainoffering ConnectTimeoutError", "");
                             return;
-                        }
+                        // }
 
                     } else {
                         setloading(false);
@@ -257,7 +257,7 @@ export default function ChangMaxDate() {
 
             console.log(modelchangemaxdate)
 
-            const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemaxday", modelchangemaxdate);
+            const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemaxday", modelchangemaxdate);
 
             console.log(data.data);
             if (data.status == 200) {
@@ -358,7 +358,7 @@ export default function ChangMaxDate() {
 
 
 
-            const data = await axios.post("http://127.0.0.1:3000/apichangemain/setvalidity", ismodelsetvalidity)
+            const data = await axios.post("http://172.28.27.50:3000/apichangemain/setvalidity", ismodelsetvalidity)
             console.log(data.data);
 
             if (data.status == 200) {

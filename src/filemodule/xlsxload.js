@@ -580,7 +580,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
                 oldoffering: products.oldoffering,
                 newoffering: products.newoffering,
                 status: products.status,
-                resultdesc: products.resultdesc
+                resultdesc: products.resultDesc
 
             });
         });
@@ -714,7 +714,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
             sheet.addRow({
                 phone: products.phone,
                 validityincrement: products.validityincrement,
-                code: products.code,
+                code: products.resultcode,
                 status: products.status,
                 resultdesc: products.resultdesc
             });
