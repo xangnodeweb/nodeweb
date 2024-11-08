@@ -241,12 +241,6 @@ app.post("/setvalidity", async (req, res) => {
                     ValidityIncrement: `${body[i].validitydate}`
                 }
 
-
-                if (i == 1) {
-                    await sleep(10000);
-                }
-
-
                 const headers = {
                     'Content-Type': 'application/json',
                     'apikey': '1ceLL3KitsCAUekVdYTYSaYHrGho6QKA'
@@ -254,7 +248,7 @@ app.post("/setvalidity", async (req, res) => {
 
                 // console.log(dataseq)
                 await axios.post("https://172.28.26.72:9443/api/cbs_bc_services/ChangeSubValidity", dataseq, { headers: headers, httpsAgent: new https.Agent({ rejectUnauthorized: false }) }).then(data => {
-                    console.log(data.data)
+                    // console.log(data.data)
 
 
                     let modelresult = data.data
