@@ -71,17 +71,18 @@ export default function ChangMaxDate() {
             const file = e.target.files[0];
             const render = new FileReader();
             let model = [];
+            setmodelfile([]);
             render.onload = () => {
 
                 const datafile = render.result.split(/\r?\n/);
-                console.log(datafile)
+                // console.log(datafile)
                 let formatphone = /^20[0-9]{8}$/;
                 if (datafile.length > 1) {
 
                     for (var i = 0; i < datafile.length; i++) {
 
                         const datas = datafile[i].toString().split("|")
-                        console.log(datas);
+                        // console.log(datas);
                         if (datas.length == 3) {
                             if (formatphone.test(datas[0])) {
                                 const dataoldoferring = !datas[1] ? "" : datas[1];
@@ -96,7 +97,7 @@ export default function ChangMaxDate() {
                             return;
                         }
 
-                        console.log(model);
+                        // console.log(model);
                     }
 
                     if (model.length > 0) {
@@ -123,7 +124,7 @@ export default function ChangMaxDate() {
     async function onchangemainoffeprimary() {
 
         try {
-            console.log(modelfile)
+            // console.log(modelfile)
             setloading(true)
             if (modelfile.length == 0) {
                 // setopenmodal(true);
@@ -158,7 +159,7 @@ export default function ChangMaxDate() {
 
 
             const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemainoffering", modelfile);
-            console.log(data.data);
+            // console.log(data.data);
             if (data.status == 200) {
 
 
@@ -199,6 +200,7 @@ export default function ChangMaxDate() {
                     if (statuscode.status == false && statuscode.code == 2) {
                         // if (statuscode.result.length > 0) {
                         // setmodelsubscriber(statuscode.result)
+
                         setloading(false);
                         setbtncheckoption(1);
                         openmodalsuccess(true, 1, "cannot changemainoffering ConnectTimeoutError", "");
@@ -226,9 +228,7 @@ export default function ChangMaxDate() {
         try {
             setloading(true);
             if (modelchangemaxdate.length == 0) {
-                // seterrormsg(true);
-                // setlinenum(2);
-                // setmsgvalids(2);
+
                 openlinecolor(true, 2, 2);
 
                 openmodalsuccess(true, 1, "not found data changemainoffering", "");
@@ -237,16 +237,14 @@ export default function ChangMaxDate() {
                 return;
             }
 
-            // console.log(modelchangemaxdate)
+
             const modelindex = modelchangemaxdate.filter(x => x.datevalue == 0);
-            console.log(modelindex)
+            // console.log(modelindex)
             if (modelindex > 0) {
                 seterror(true);
                 setmsgvalid(3);
 
-                // seterrormsg(true);
-                // setlinenum(2);
-                // setmsgvalids(2);
+
                 openlinecolor(true, 2, 2);
                 openmodalsuccess(true, 1, "please check value day geater date 0 ", "");
 
@@ -284,10 +282,6 @@ export default function ChangMaxDate() {
             if (error) {
                 if (error.response) {
                     let statuscode = error.response.data;
-
-                    // seterrormsg(true);
-                    // setlinenum(2);
-                    // setmsgvalids(2);
                     openlinecolor(true, 2, 2);
                     if (statuscode.status == false && statuscode.code == 2) {
                         setloading(false)
@@ -318,46 +312,30 @@ export default function ChangMaxDate() {
                 // setmsgvalids(3);
 
                 openlinecolor(true, 3, 3);
-
                 seteditlinetwo(0);
-                console.log("please check validity date value")
                 setloading(false);
                 return;
             }
             if (validitydate == "0") {
-                // seterrormsg(true);
-                // setlinenum(3);
-                // setmsgvalids(3);
-
                 setmsgvalids(true, 3, 3);
-
                 seteditlinetwo(0);
-                console.log("please check validity date value")
                 setloading(false);
                 return;
             }
 
             if (modelchangemaxday.length == 0) {
-                // seterrormsg(true);
-                // setlinenum(3);
-                // setmsgvalids(3);
 
                 openlinecolor(true, 3, 3);
-
                 seteditlinetwo(0);
-                console.log("please check data chang max day data you not found data success")
+                // console.log("please check data chang max day data you not found data success")
                 setloading(false);
                 return;
             }
-            console.log(modelchangemaxday)
-
             const modelindex = ismodelsetvalidity.findIndex(x => parseInt(x.validitydate) <= 0);
             if (modelindex.length > 0) {
                 setloading(false);
                 return;
             }
-
-
 
             const data = await axios.post("http://172.28.27.50:3000/apichangemain/setvalidity", ismodelsetvalidity)
             console.log(data.data);
@@ -366,16 +344,10 @@ export default function ChangMaxDate() {
 
                 setmodelsetvalidity(data.data.result);
 
-                // seterrormsg(false);
-                // setlinenum(4);
-                // setmsgvalids(0);
                 openlinecolor(false, 0, 4)
 
                 seteditlinetwo(1);
-
-
                 openmodalsuccess(true, 1, "setvalidity success", "");
-
                 seterror(false);
                 setmsgvalid(0);
                 setloading(false);
@@ -390,24 +362,32 @@ export default function ChangMaxDate() {
                 if (error.response) {
                     let statuscode = error.response.data;
                     if (statuscode.status == false && statuscode.code == 2) {
+                        if (statuscode.result.length > 0) {
+                            setmodelsetvalidity(statuscode.result);
+                            changeexporttoset({ modeloffer: modelsubscriber, modelchangemax: modelchangemaxday, modelsetvalidity: statuscode.result});
+      
+                        }
+
+                        openlinecolor(true, 3, 3);
+
                         openmodalsuccess(true, 1, "cannot setvalidity ConnectTimeoutError", "");
                         setloading(false);
                         return;
                     } else {
+                        openlinecolor(true, 3, 3);
                         openmodalsuccess(true, 1, "cannot setvalidity", "");
                         setloading(false);
                         return;
                     }
                 } else {
+                    openlinecolor(true, 3, 3);
                     openmodalsuccess(true, 1, "cannot setvalidity", "");
                     setloading(false);
                     return;
                 }
             }
-
             setloading(false);
         }
-
     }
 
 
@@ -421,23 +401,20 @@ export default function ChangMaxDate() {
                 if (modelfile.length > 0) {
 
                     modelfile.forEach(item => { item.phone = item.phone, item.oldoffering = "3000001", item.newoffering = "1814607249" });
-                    console.log(modelfile);
+                    // console.log(modelfile);
                 }
             } else if (primaryvalues == 2) {
 
                 if (modelfile.length > 0) {
                     modelfile.forEach(item => { item.phone = item.phone, item.oldoffering = "1814607249", item.newoffering = "3000001" });
-                    console.log(modelfile);
+                    // console.log(modelfile);
                 }
             } else {
                 if (modelfile.length > 0) {
                     modelfile.forEach(item => { item.phone = item.phone, item.oldoffering = "", item.newoffering = "" })
-
-                    console.log(modelfile);
+                    // console.log(modelfile);
                 }
             }
-
-            console.log(e.target.value)
 
         } catch (error) {
             console.log(error)
@@ -448,7 +425,6 @@ export default function ChangMaxDate() {
         try {
 
             const validitydates = e.target.value.replace(/[^0-9]+/g, "");
-            console.log(validitydates)
             setvaliditydate(validitydates);
 
         } catch (error) {
@@ -458,10 +434,7 @@ export default function ChangMaxDate() {
 
     const btnmodelfileoption = (e) => {
         try {
-            console.log(e.target.value)
-
             setbtncheckoption(e.target.value)
-
         } catch (error) {
             console.log(error)
         }
@@ -473,7 +446,7 @@ export default function ChangMaxDate() {
             if (e) {
                 console.log(e.target.value)
                 const datevalues = e.target.value.replace(/[^0-9]+/g, "");
-                console.log(datevalues);
+                // console.log(datevalues);
                 setvaluechangemaxday(datevalues);
                 if (parseInt(e.target.value) > 3650) {
                     seterror(true);
@@ -486,7 +459,7 @@ export default function ChangMaxDate() {
                 if (modelchangemaxdate.length > 0) {
                     modelchangemaxdate.forEach(x => { x.phone = x.phone, x.balance = x.balance, x.datevalue = parseInt(datevalues) });
                     // setmodelchangemaxdate(modelchangemaxdate)
-                    console.log(modelchangemaxdate)
+                    // console.log(modelchangemaxdate)
                 }
             }
 
@@ -503,7 +476,7 @@ export default function ChangMaxDate() {
                 onaddchangmaxdate();
                 seteditlineone(1);
             }
-            console.log(status, confirmbtn)
+            // console.log(status, confirmbtn)
 
             if (confirmbtn == 3) {
                 onsetvalidity();
@@ -518,9 +491,9 @@ export default function ChangMaxDate() {
 
         try {
             // status == open modal and openbutton == open show button
-            console.log(modelchangemaxdate)
-            console.log(status, openbutton)
-            console.log(valuechangemaxday)
+            // console.log(modelchangemaxdate)
+            // console.log(status, openbutton)
+            // console.log(valuechangemaxday)
             if (modelchangemaxdate.length == 0) {
                 setopenmodal(status);
                 openmsg.lbmsg = "please load data file and check data Changemain offering";
@@ -558,9 +531,6 @@ export default function ChangMaxDate() {
                 seterror(true);
 
                 ismaxday.current.focus();
-                // seterrormsg(true);
-                // setlinenum(2);
-                // setmsgvalids(2);
 
                 openlinecolor(true, 2, 2);
                 return;
@@ -579,10 +549,6 @@ export default function ChangMaxDate() {
             if (modeldatavalues != -1) {
 
                 openlinecolor(true, 2, 2);
-                // seterrormsg(true);
-                // setlinenum(2);
-                // setmsgvalids(2);
-
 
                 openmodalsuccess(true, 1, "", "");
                 seteditlineone(0);
@@ -610,8 +576,8 @@ export default function ChangMaxDate() {
     const openmodalonaddvalidity = () => {
         try {
 
-            console.log("onadd setvalidity");
-            console.log(validitydate);
+            // console.log("onadd setvalidity");
+            // console.log(validitydate);
             if (validitydate == null) {
                 seterror(true);
                 setmsgvalid(4);
@@ -632,9 +598,6 @@ export default function ChangMaxDate() {
             }
             if (modelchangemaxday.length == 0) {
 
-                // seterrormsg(true);
-                // setlinenum(2);
-                // setmsgvalids(2);
                 openlinecolor(true, 2, 2);
                 openmodalsuccess(true, 1, "not found data changemaxday please check data ", "")
                 return;
@@ -649,14 +612,14 @@ export default function ChangMaxDate() {
                 }
             }
             setismodelsetvalidity(model);
-            console.log(model);
+            // console.log(model);
 
             setopenmodal(true);
             openmsg.openbutton = 4;
             openmsg.lbmsg = "";
             openmsg.lbmsgtitle = "you want setvalidity or not ?";
 
-            console.log(openmsg);
+            // console.log(openmsg);
 
 
         } catch (error) {
@@ -747,9 +710,9 @@ export default function ChangMaxDate() {
     const loaddataeditmodel = () => {
         try {
 
-            console.log(validitydate == 0)
-            console.log(modelchangemaxdate.length == 0)
-            console.log(modelchangemaxdate)
+            // console.log(validitydate == 0)
+            // console.log(modelchangemaxdate.length == 0)
+            // console.log(modelchangemaxdate)
             if (parseInt(valuechangemaxday) == 0) {
                 setmsgvalid(3);
                 seterror(true);
@@ -800,11 +763,7 @@ export default function ChangMaxDate() {
 
                 openmodalsuccess(true, 1, "");
                 return;
-
-
             }
-
-
         } catch (error) {
             console.log(error);
         }
@@ -816,12 +775,11 @@ export default function ChangMaxDate() {
             openmsg.openbutton = openbutton;
             openmsg.lbmsg = lbmsg;
             openmsg.lbmsgtitle = lbmsgtitle;
-
-
         } catch (error) {
             console.log(error)
         }
     }
+
     const openlinecolor = (errormsg, msgvalid, linenum) => {
         try {
 
@@ -829,11 +787,9 @@ export default function ChangMaxDate() {
             setlinenum(linenum);
             setmsgvalids(msgvalid);
             // setloading(loading);
-
         } catch (error) {
             console.log(error)
         }
-
     }
 
     return (
@@ -865,7 +821,7 @@ export default function ChangMaxDate() {
                                 <>
                                     <button className={`${error && msgvalid == 1 ? "border-2-red" : ""} btn w-100`} onClick={() => onchangemainoffeprimary()} > load data file </button>
                                 </>
-                                : <button className={`${error && msgvalid == 1 ? "border-2-red" : ""} btn w-100`} onClick={() => editbtnvalue(0, 0, false)} > edit changmainoffering </button>
+                                : <button className={`${error && msgvalid == 1 ? "border-2-red" : ""} btn w-100 bg-default color-white`} onClick={() => editbtnvalue(0, 0, false)} > edit changmainoffering </button>
                         }
 
 
@@ -974,7 +930,7 @@ export default function ChangMaxDate() {
                                 <>
                                     <button className="btn w-100 mt-3" onClick={() => loaddataeditmodel()} > saveedit changemaxdate </button>
                                 </> :
-                                <button className="btn w-100 mt-3" onClick={(e) => editbtnvalue(1, 0, true)}> editchangemaxdate </button>
+                                <button className="btn w-100 mt-3 bg-default color-white" onClick={(e) => editbtnvalue(1, 0, true)}> editchangemaxdate </button>
                     }
 
                 </div>
@@ -1040,7 +996,7 @@ export default function ChangMaxDate() {
                                 <button className="btn mt-5 w-100" onClick={() => openmodalonaddvalidity()}> set validity </button>
                             </>
                             :
-                            <button className="btn mt-5 w-100" onClick={() => editbtnvalue(2, 0)}> edit setvalidity </button>
+                            <button className="btn mt-5 w-100 bg-default color-white" onClick={() => editbtnvalue(2, 0)}> edit setvalidity </button>
                     }
 
 

@@ -716,7 +716,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
                 validityincrement: products.validityincrement,
                 code: products.resultcode,
                 status: products.status,
-                resultdesc: products.resultdesc
+                resultdesc: products.resultdesc != null ?  products.resultdesc : products.message
             });
         });
 
@@ -776,8 +776,6 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
                         fgColor: { argb: "BDC0BE" }
                     }
                 }
-
-
                 cell.height = 20;
 
             });
