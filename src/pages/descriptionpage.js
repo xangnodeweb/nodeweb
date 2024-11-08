@@ -553,8 +553,8 @@ export default function Descriptionpage({ callpages }) {
                         <span className="f-18-px"> 1/ ເລືອກປະເພດ log ທີ່ຕ້ອງການຄົ້ນຫາ detaillog addpackage log add package ແລະ detaillog setvalidity log add validity date ກົດປຸ່ມ search ທີ່ຕ້ອງການຄົ້ນຫາ log  </span>
                         <span className="f-18-px"> 2/ ເລືອກປະເພດ log ທີ່ຕ້ອງການລົບຂໍ້ມູນ log detaillog addpackage ຫຼື detaillog setvalidity  ກົດປຸ່ມ deletelog ທີ່ຕ້ອງການລົບຂໍ້ມູນ log  </span>
                         <span className="f-18-px"> 3/ ສາມາດເລືອກເບິ່ງຂໍ້ມູນຕາມວັນທີ ຕາມຂໍ້ມູນທີ່ເກັບໄວ້ ຈະຕ້ອງຄົ້ນຫາຂໍ້ມູນ ແລະ ຖ້າມີຂໍ້ມູນຈື່ງສາມາດເລືອກມື້ໄດ້ </span>
-
-
+                        <span className="f-18-px"> + ຂໍ້ມູນ log add package : ເບີໂທ|productnumber|ຊື່ package|startTime|expiryTime|ສະຖານະສຳເລັດ|log ວັນທີໃດ   </span>
+                        <span className="f-18-px"> + ຂໍ້ມູນ log setvalidity : ເບີໂທ|ຈຳນວນມື້|status code|ສະຖານະສຳເລັດ|log ວັນທີໃດ </span>
 
                         <div className="w-70 m-auto pt-3 position-relative  ">
 
@@ -590,8 +590,6 @@ export default function Descriptionpage({ callpages }) {
                                     <i className="fa fa-long-arrow-left position-absolute bottom-10-l left-0 transform-50-l">  </i>
                                 </div>
                             </div>
-
-
 
                         </div>
                     </div>

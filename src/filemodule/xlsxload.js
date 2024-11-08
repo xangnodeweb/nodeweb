@@ -518,7 +518,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
 
         // console.log(modeloffer);
         // console.log(modelchangemax);
-        console.log(modelsetvalidity);
+        // console.log(modelsetvalidity);
 
 
         const worksheet = new exceljs.Workbook();
@@ -602,7 +602,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
 
 
 
-        console.log(modelchangemax);
+        // console.log(modelchangemax);
 
         const colone = modeloffer.length + 6;
         worksheetrow.mergeCells(`A${colone}`, `E${colone + 1}`);
@@ -669,7 +669,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
 
 
 
-        console.log(modelsetvalidity)
+        // console.log(modelsetvalidity)
 
         const coltwo = modeloffer.length + modelchangemax.length + 12;
         worksheetrow.mergeCells(`A${coltwo}`, `E${coltwo + 1}`);
@@ -752,7 +752,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
             row.eachCell((cell, colNumber) => {
 
                 if (rowNumber == 3) {
-                    console.log(cell)
+                    // console.log(cell)
                     cell.fill = {
                         type: 'pattern',
                         pattern: 'solid',
