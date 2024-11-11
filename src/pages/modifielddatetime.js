@@ -53,9 +53,9 @@ export default function Modifielddatetime() {
 
             const phonenumber = phone.toString().replace(/[^0-9]+/g, "");
             const format = /^85620[0-9]{8}/
-            console.log(phonenumber)
+            // console.log(phonenumber)
             const datas = { "phone": phonenumber };
-            console.log(phone)
+
 
             if (phonenumber.length < 13) {
 
@@ -72,8 +72,8 @@ export default function Modifielddatetime() {
             setloading(true);
             setisphonevalid(0);
             const data = await axios.post("http://172.28.27.50:3000/api/inqueryphone", datas);
-            console.log(phone)
-            console.log(data.data);
+
+            // console.log(data.data);
             if (data.status == 200) {
                 setUsers(data.data.result);
                 inputvalid(false, 4); // data success input readonly
@@ -81,11 +81,10 @@ export default function Modifielddatetime() {
                 return;
             }
 
-            console.log(data.data)
         } catch (error) {
 
             const statuscode = error.response.data;
-            console.log(statuscode)
+            // console.log(statuscode)
             if (error) {
                 if (error.response) {
                     if (statuscode.status == false && statuscode.code == 2) {
@@ -117,7 +116,7 @@ export default function Modifielddatetime() {
                 validmodify(true, "please select product name.", 1)
                 return;
             }
-            console.log(dateexpire);
+            // console.log(dateexpire);
             if (dateexpire == null) {
                 validmodify(true, 'please select date.', 2)
                 return;
@@ -138,7 +137,7 @@ export default function Modifielddatetime() {
             validmodify(false, "", "", 0);
 
             const data = await axios.post("http://172.28.27.50:3000/api/modifielddatetime", datas);
-            console.log(data.data)
+            // console.log(data.data)
             if (data.status == 200) {
                 // console.log(data.data.result) 
 
@@ -158,7 +157,6 @@ export default function Modifielddatetime() {
                     console.log(statuscode);
                     setloading(false)
                     if (statuscode.status == false && statuscode.code == 3) {
-                        console.log(statuscode.message);
                         callopenmodal("", "", "false", "", statuscode.message, "", 2, true);
                     } else {
                         callopenmodal("", "", "", "", "cannot modify phone", "", 1, true);
@@ -189,8 +187,8 @@ export default function Modifielddatetime() {
         try {
             const model = ['Prepaid_Staff_3GB', 'Prepaid_Staff_5GB', 'Prepaid_Staff_7GB', 'Prepaid_Staff_10GB', 'Prepaid_Staff_15GB', 'Prepaid_Staff_25GB'];
             const index = model.findIndex(x => x.toString() == countname);
-            console.log()
-            if (index == -1) {
+
+                        if (index == -1) {
                 return;
             }
 

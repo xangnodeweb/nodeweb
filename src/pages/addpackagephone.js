@@ -41,6 +41,7 @@ export default function Addpackagephone() {
         btnconfirmexpire: 0
     });
     const [loading, setloading] = useState(false);
+    const phoneref = React.createRef();
 
     const valuephone = (e) => {
         try {
@@ -106,7 +107,7 @@ export default function Addpackagephone() {
             // console.log(phonenumber)
             if (phonenumber.length < 13) {
                 validinput(true, 6);
-
+                phoneref.current.focus();
                 // console.log({ "message": 6, "status": true })
                 return;
 
@@ -146,12 +147,12 @@ export default function Addpackagephone() {
                 validinput(true, 7);
                 return;
             }
-       
+
             validinput(false, 0);
             const datas = { "phone": phonenumber, "countername": countername, "datestart": datestart, "dateexpire": dateexpire, "refillstoptime": refillstoptime };
             // console.log(datas);
             setloading(true);
-       
+
             const data = await axios.post("http://172.28.27.50:3000/api/addpackage", datas);
             if (data.status == 200) {
                 // console.log(data.data.result);
@@ -185,7 +186,7 @@ export default function Addpackagephone() {
                         setloading(false)
                         calldialog("", "cannot add package ", 1, 0, true);
                     }
-                }else{
+                } else {
                     setloading(false)
                     calldialog("", "cannot add package ", 1, 0, true);
                 }
@@ -253,7 +254,7 @@ export default function Addpackagephone() {
 
                 <div className="w-100 box-shadow  px-3 py-5 d-flex flex-column">
                     <span className="mb-2">  phonenumber  </span>
-                    <Phonenumber onChange={valuephone} value={phone} placeholder="(85620) 5xxxxxxx" helperText={iserr && ismsg == 5 ? "please enter format phone (85620) 5xxxxxxx" : iserr && ismsg == 6 ? "please enter 13 character phone (85620) 5xxxxxxx" : ""} error={iserr && ismsg == 5 || iserr && ismsg == 5 ? true : false} />
+                    <Phonenumber onChange={valuephone} value={phone} placeholder="(85620) 5xxxxxxx" helperText={iserr && ismsg == 5 ? "please enter format phone (85620) 5xxxxxxx" : iserr && ismsg == 6 ? "please enter 13 character phone (85620) 5xxxxxxx" : ""} error={iserr && ismsg == 5 || iserr && ismsg == 5 ? true : false} inputRef={phoneref} />
 
                     <span className="mt-1"> countername </span>
                     <FormControl >
@@ -374,6 +375,6 @@ export default function Addpackagephone() {
 }
 
 const Phonenumber = props => (<InputMask mask="(99999) 99999999" value={props.value} onChange={props.onChange}  >
-    {inputProps => <TextField {...inputProps} fullWidth helperText={props.helperText} error={props.error} placeholder={props.placeholder} />}
+    {inputProps => <TextField {...inputProps} fullWidth helperText={props.helperText} error={props.error} placeholder={props.placeholder} inputRef={props.inputRef} />}
 </InputMask>)
 

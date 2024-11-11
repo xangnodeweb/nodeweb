@@ -408,7 +408,7 @@ export default function Modifieldlistphone() {
     }
 
     useEffect(() => {
-        console.log(file)
+        // console.log(file)
 
     }, [])
 
@@ -418,7 +418,7 @@ export default function Modifieldlistphone() {
             <div className="w-100  bg-white d-flex position-relative overflow-hidden h-94">
                 <ModalInfoapp callmodal={callmodal} opendialog={openmodal} statuslb={msg} />
                 <div className="w-30  d-flex flex-column px-3 pt-3">
-                    <div className="w-100 d-flex flex-column border-grey box-shadow px-3 pt-4 pb-5 transition-box-btn">
+                    <div className="w-100 d-flex flex-column border-grey box-shadow px-3 pt-4 pb-5 transition-box-btn overflow-hidden">
                         {
                             btncheck == 1 ?
                                 <>
@@ -436,15 +436,21 @@ export default function Modifieldlistphone() {
 
                         <div className="w-100 py-4 d-flex justify-content-between flex-wrap-wrap">
                             <div className="d-flex align-items-center">
-                                <input type="checkbox" id="lbcheck" className="w-20-px" value={0} checked={btncheck == 0 ? true : false} onClick={(e) => btncheckbox(e)} />
+                                <input type="checkbox" id="lbcheck" className="w-20-px"   defaultValue={0}    checked={btncheck == 0 ? true : false} onClick={(e) => btncheckbox(e)} readOnly 
+                                // value={0}
+                             />
                                 <label for="lbcheck" className="ml-1"> none </label>
                             </div>
                             <div className="d-flex align-items-center">
-                                <input type="checkbox" id="lbcheck" className="w-20-px" value={1} checked={btncheck == 1 ? true : false} onClick={(e) => btncheckbox(e)} />
+                                <input type="checkbox" id="lbcheck" className="w-20-px" defaultValue={1} checked={btncheck == 1 ? true : false} onClick={(e) => btncheckbox(e)} readOnly 
+                                // value={1}
+                                />
                                 <label for="lbcheck" className="ml-1"> open file txt </label>
                             </div>
                             <div className="d-flex align-items-center ml-3">
-                                <input type="checkbox" id="lbchecks" className="w-20-px" value={2} checked={btncheck == 2 ? true : false} onClick={(e) => btncheckbox(e)} />
+                                <input type="checkbox" id="lbchecks" className="w-20-px" defaultValue={2} checked={btncheck == 2 ? true : false} onClick={(e) => btncheckbox(e)} readOnly 
+                                // value={2}
+                                />
                                 <label for="lbchecks" className="ml-1"> open file xlsx</label>
                             </div>
                         </div>

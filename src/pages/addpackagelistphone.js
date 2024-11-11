@@ -315,8 +315,8 @@ export default function Addpackagelistphone() {
             // if (modelcountername.length > 0) {
             //     calldialog("cannot add package", `please check countername  phone : ${modelcountername[0].phone}`, 1, 0)
             //     return;
-
             // }
+
             setloading(true);
             const data = await axios.post("http://172.28.27.50:3000/api/addpackagelistphone", modelfile);
             if (data.status == 200) {
@@ -385,7 +385,7 @@ export default function Addpackagelistphone() {
         try {
             e.preventDefault();
             // console.log(modelfile)
-            console.log("file data length : " + modelfile.length)
+            // console.log("file data length : " + modelfile.length)
             if (modelfile.length == 0) {
 
                 ismsgs.title = "please select file";

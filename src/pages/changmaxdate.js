@@ -444,7 +444,7 @@ export default function ChangMaxDate() {
         try {
             // e.preventDefault();
             if (e) {
-                console.log(e.target.value)
+                // console.log(e.target.value)
                 const datevalues = e.target.value.replace(/[^0-9]+/g, "");
                 // console.log(datevalues);
                 setvaluechangemaxday(datevalues);
@@ -561,10 +561,6 @@ export default function ChangMaxDate() {
             openmsg.openbutton = 0; // openbutton 0 default send model response changmain offering message confirm
             openmsg.lbmsgtitle = "please want save changmaxday ?"
 
-            // seterrormsg(false);
-            // setlinenum(2);
-            // setmsgvalids(0);
-
 
             openlinecolor(false, 0, 2);
 
@@ -576,7 +572,6 @@ export default function ChangMaxDate() {
     const openmodalonaddvalidity = () => {
         try {
 
-            // console.log("onadd setvalidity");
             // console.log(validitydate);
             if (validitydate == null) {
                 seterror(true);
