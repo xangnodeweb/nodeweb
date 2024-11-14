@@ -289,7 +289,7 @@ export const Exportexcels = async ({ data }) => { // modifield
                 status: product.status.toString()
             });
         });
-        console.log(sheet);
+        // console.log(sheet);
 
         const statusCol = sheet.getColumn(6);
         statusCol.eachCell(cell => {
@@ -446,7 +446,7 @@ export const addpackageExportexcel = async ({ data }) => {
                 status: product.status.toString()
             });
         });
-        console.log(sheet);
+        // console.log(sheet);
 
         const statusCol = sheet.getColumn(7);
         statusCol.eachCell(cell => {

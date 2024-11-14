@@ -13,6 +13,11 @@
         integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"> </script>
+
+
+
     <script src="../image/jquery-toggle.js"> </script>
 </head>
 
@@ -43,6 +48,75 @@
         })
 
     </script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', '.btn-export', function () {
+                console.log(document.querySelector('.div-container'))
+          
+        
+            
+                // let margins = {
+                //     top: 60,
+                //     bottom: 60,
+                //     left: 30,
+                //     right: 30,
+                //     width: 540
+                // };
+                // var pdf = new jsPDF('p', 'pt', 'a4');
+                // pdf.setFontSize(24);
+                // pdf.fromHTML(document.querySelector('.div-container'),
+                //     margins.left,
+                //     margins.top, {
+                //     width: margins.width,
+                // }, function (dispose) {
+                //     headerFooterFormatting(pdf, pdf.internal.getNumberOfPages());
+                // },
+                //     margins
+                // );
+                // pdf.save("page description.pdf");
+                // const pdfDatauri = pdf.output('datauristring');
+                // const newtab = window.open();
+                // newtab.document.write(`<iframe width='100%' height='100%' src='${pdfDatauri}' > </iframe>`)
+                // function headerFooterFormatting(doc, totalPages) {
+                //     for (var i = totalPages; i >= 1; i--) {
+                //         doc.setPage(i);
+                //         header(doc);
+                //         footer(doc, i, totalPages);
+                //         doc.page++;
+                //     }
+                // }
+
+                // function header(doc) {
+                //     var strTop = 40;
+                //     var str = 'View Description page';
+                //     doc.setFontSize(15);
+                //     doc.setFontStyle('bold');
+
+                //     doc.text(str, margins.left, strTop);
+                //     doc.setLineCap(2);
+                //     doc.setLineWidth(0.5);
+                //     doc.line(3, strTop + 10, margins.width + 155, strTop + 10);
+                // };
+
+                // function footer(doc, pageNumber, totalPages) {
+                //     var str = "page " + pageNumber + " of " + totalPages;
+                //     doc.setFontSize(10);
+                //     doc.setFontStyle('normal');
+                //     doc.text(str, margins.left - 5, doc.internal.pageSize.height - 15);
+                // }
+            
+            });
+        })
+
+
+
+    </script>
+
+
+
 
 </body>
 

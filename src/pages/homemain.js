@@ -99,51 +99,51 @@ export default function Homemain() {
                                     </div>
                                     <ul className="link-submenu mb-0">
 
-                                        <li 
-                                        onClick={() => {
-                                            console.log("page");
-                                            setpage(true)
-                                        }}
+                                        <li
+                                            onClick={() => {
+                                                console.log("page");
+                                                setpage(true)
+                                            }}
                                         > <a > description page </a> </li>
-                                <li style={{backgroundColor :` ${path == "/desclogpage" ? "#FFFFFF5c" : ""}`}}> <a href="/desclogpage"> detaillog page </a> </li>
+                                        <li style={{ backgroundColor: ` ${path == "/desclogpage" ? "#FFFFFF5c" : ""}` }}> <a href="/desclogpage"> detaillog page </a> </li>
 
-                            </ul>
-                        </li>
+                                    </ul>
+                                </li>
 
-                    </div>
+                            </div>
 
 
                         </div >
-        <div className="home-section">
-            <div className="w-100 bg-default h-50-px d-flex align-items-center px-3">
-                <i className="fa fa-home color-white f-24-px"></i><span className="color-white ml-2 f-20-px"> Home : {path.replace("/", "").toLocaleLowerCase()} </span>
-            </div>
-            <BrowserRouter>
+                        <div className="home-section">
+                            <div className="w-100 bg-default h-50-px d-flex align-items-center px-3">
+                                <i className="fa fa-home color-white f-24-px"></i><span className="color-white ml-2 f-20-px"> Home : {path.replace("/", "").toLocaleLowerCase()} </span>
+                            </div>
+                            <BrowserRouter>
 
-                <Routes>
-                    <Route path="/inquery" element={<Inquery />} />
-                    <Route path="/modifielddatetime" element={<Modifielddatetime />} />
-                    <Route path="/modifieldlistphone" element={<Modifieldlistphone />} />
-                    <Route path="/Addpackagephone" element={<Addpackagephone />} />
-                    <Route path="/Addpackagelistphone" element={<Addpackagelistphone />} />
-                    <Route path="/Descriptionpage" element={<Descriptionpage />} />
-                    <Route path="/changemaxdate" element={<ChangMaxDate />} />
-                    <Route path="/desclogpage" element={<Descriptionlogpage />} />
-                </Routes>
-            </BrowserRouter>
+                                <Routes>
+                                    <Route path="/inquery" element={<Inquery />} />
+                                    <Route path="/modifielddatetime" element={<Modifielddatetime />} />
+                                    <Route path="/modifieldlistphone" element={<Modifieldlistphone />} />
+                                    <Route path="/Addpackagephone" element={<Addpackagephone />} />
+                                    <Route path="/Addpackagelistphone" element={<Addpackagelistphone />} />
+                                    <Route path="/Descriptionpage" element={<Descriptionpage />} />
+                                    <Route path="/changemaxdate" element={<ChangMaxDate />} />
+                                    <Route path="/desclogpage" element={<Descriptionlogpage />} />
+                                </Routes>
+                            </BrowserRouter>
 
-        </div>
+                        </div>
 
                     </div >
                     :
-    <>
-        <div className="w-100 h-100-vh bg-gray">
-            <Descriptionpage callpages={callpage} />
-        </div>
+                    <>
+                        <div className="w-100 h-100-vh bg-gray">
+                            <Descriptionpage callpages={callpage} />
+                        </div>
 
 
-    </>
-}
+                    </>
+            }
         </>
 
 

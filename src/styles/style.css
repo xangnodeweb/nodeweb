@@ -146,6 +146,10 @@ div.lb-record.disable {
     width: 100px;
 }
 
+.w-110-px{
+    width: 110px;
+}
+
 .w-115-px {
     width: 115px;
 }
@@ -674,6 +678,10 @@ div.lb-record.disable {
 
 .pr-4 {
     padding-right: 16px;
+}
+
+.pr-3{
+    padding-right: 12px;
 }
 
 .p-2 {

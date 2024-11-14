@@ -6,15 +6,21 @@ export default function Descriptionpage({ callpages }) {
 
     return (
 
-        <div className="w-100 h-100-vh bg-white ">
+        <div className="w-100 h-100-vh bg-white div-container">
+            <div className="d-flex justify-space-between bg-default align-items-center ">
+                <div className="w-100 h-100-px  d-flex align-items-center pl-3">
+                    <div onClick={() => callpages({ status: false, loadpage: 0 })} className="w-50-px min-w-50-px h-50-px border-radius-50 d-flex align-items-center justify-content-center bg-white">
+                        <i className="fa fa-long-arrow-left color-bg-default f-35-px"> </i>
+                    </div>
+                    <span onClick={() => callpages({ status: false, loadpage: 0 })} className="f-20-px color-white ml-2"> page main </span>
 
-            <div className="w-100 h-100-px bg-default d-flex align-items-center pl-3">
-                <div onClick={() => callpages({ status: false, loadpage: 0 })} className="w-50-px min-w-50-px h-50-px border-radius-50 d-flex align-items-center justify-content-center bg-white">
-                    <i className="fa fa-long-arrow-left color-bg-default f-35-px"> </i>
                 </div>
-                <span onClick={() => callpages({ status: false, loadpage: 0 })} className="f-20-px color-white ml-2"> page main </span>
+                {/* <div className="pr-3">
+                    <button className="w-110-px h-40-px border-radius-3-px bg-white btn-export"> download ຄູ່ມື </button>
+                </div> */}
 
             </div>
+
             <div className="w-100 border-1- d-flex flex-column">
                 <span className="m-auto f-20-px">  soap modify or add package  </span>
                 <div className="pl-3 d-flex flex-column mb-3">
