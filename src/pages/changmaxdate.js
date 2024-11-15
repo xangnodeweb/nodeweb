@@ -364,8 +364,8 @@ export default function ChangMaxDate() {
                     if (statuscode.status == false && statuscode.code == 2) {
                         if (statuscode.result.length > 0) {
                             setmodelsetvalidity(statuscode.result);
-                            changeexporttoset({ modeloffer: modelsubscriber, modelchangemax: modelchangemaxday, modelsetvalidity: statuscode.result});
-      
+                            changeexporttoset({ modeloffer: modelsubscriber, modelchangemax: modelchangemaxday, modelsetvalidity: statuscode.result });
+
                         }
 
                         openlinecolor(true, 3, 3);
@@ -577,7 +577,7 @@ export default function ChangMaxDate() {
                 seterror(true);
                 setmsgvalid(4);
                 isvalidity.current.focus();
-
+                openlinecolor(true, 3, 3);
                 // seterrormsg(true);
                 // setlinenum(3);
                 // setmsgvalids(3);
@@ -586,7 +586,7 @@ export default function ChangMaxDate() {
             if (validitydate == '' || validitydate == 0) {
                 seterror(true);
                 setmsgvalid(4);
-
+                openlinecolor(true, 3, 3);
                 isvalidity.current.focus();
 
                 return;
@@ -641,6 +641,7 @@ export default function ChangMaxDate() {
                 setlinenum(0);
                 setmsgvalids(0);
                 setbtncheckoption(0);
+                setlineonesuccess(false)
 
             } else if (linenumber == 1) {
 
@@ -666,6 +667,7 @@ export default function ChangMaxDate() {
 
             } else if (linenumber == 2) {
                 seteditlinetwo(btnvalue);
+                setlinenum(3);
                 isvalidity.current.focus();
             }
         } catch (error) {
@@ -810,7 +812,6 @@ export default function ChangMaxDate() {
                         </FormControl>
                     </div>
                     <div className="pt-3">
-
                         {
                             editline == 0 ?
                                 <>
@@ -819,13 +820,13 @@ export default function ChangMaxDate() {
                                 : <button className={`${error && msgvalid == 1 ? "border-2-red" : ""} btn w-100 bg-default color-white`} onClick={() => editbtnvalue(0, 0, false)} > edit changmainoffering </button>
                         }
 
-
                     </div>
                 </div>
                 <div className=" min-w-50-px mx-3 d-flex justify-content-center h-300-px">
                     <div className={errormsg == true && linenum == 1 && msgvalids == 1 ? `border-left-red` : lineonesuccess && linenum >= 2 ? "border-left-success" : lineonesuccess == false && linenum <= 2 ? "border-left" : ""}>
                     </div>
-                    <div className={`${errormsg == true && linenum == 1 && msgvalids == 1 ? "bg-red" : lineonesuccess && linenum >= 2 ? "bg-default" : lineonesuccess == false && linenum <= 2 ? "bg-box-gray" : ""} min-w-50-px w-50-px h-50-px border-radius-50 d-flex justify-content-center align-items-center position-absolute`} >
+            
+                  <div className={`${errormsg == true && linenum == 1 && msgvalids == 1 ? "bg-red" : lineonesuccess && linenum >= 2 ? "bg-default" : lineonesuccess == false && linenum <= 2 ? "bg-box-gray" : ""} min-w-50-px w-50-px h-50-px border-radius-50 d-flex justify-content-center align-items-center position-absolute`} >
                         <span className="f-20-px f-weight-900 color-white"> 1 </span>
                     </div>
                 </div>
@@ -991,7 +992,7 @@ export default function ChangMaxDate() {
                                 <button className="btn mt-5 w-100" onClick={() => openmodalonaddvalidity()}> set validity </button>
                             </>
                             :
-                            <button className="btn mt-5 w-100 bg-default color-white" onClick={() => editbtnvalue(2, 0)}> edit setvalidity </button>
+                            <button className="btn mt-5 w-100 bg-default color-white" onClick={() => editbtnvalue(2, 0 , false)}> edit setvalidity </button>
                     }
 
 
