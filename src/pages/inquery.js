@@ -133,7 +133,7 @@ export default function inquery() {
 
                     </div>
 
-                    <button className="mt-4 w-100" onClick={onqueryphone}> search </button>
+                    <button className="mt-4 w-100 btn-default" onClick={onqueryphone}> search </button>
                     <button className="btn mt-4 w-100" onClick={cleardata}> cleardata </button>
                 </div>
 

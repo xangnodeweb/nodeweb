@@ -319,7 +319,7 @@ export default function Addpackagephone() {
                         </DemoContainer>
                     </LocalizationProvider>
                     {/* {iserr && ismsg == 3 ? <> <span className="color-red"> please select date expiry </span></> : iserr && ismsg == 4 ? <> <span className="color-red"> please select next  date expiry </span></> : ""} */}
-                    <button className="mt-4 " onClick={onaddpackage}> add package </button>
+                    <button className="mt-4 btn-default" onClick={onaddpackage}> add package </button>
 
 
                 </div>

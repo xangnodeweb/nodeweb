@@ -422,13 +422,13 @@ export default function Modifieldlistphone() {
                         {
                             btncheck == 1 ?
                                 <>
-                                    <input type="file" id="files" onChange={(e) => showfile(e)} /> <label for="files" className="btnfile" >  Choose file txt </label>
+                                    <input type="file" id="files" onChange={(e) => showfile(e)} /> <label for="files" className="btn-transition btn-default btn-file" >  Choose file txt </label>
                                 </> : btncheck == 2 ? <>
-                                    <input type="file" id="files" onChange={(e) => showfilexlsx(e)} /> <label for="files" className="btnfile w-115-px" >  Choose file xlsx </label>
+                                    <input type="file" id="files" onChange={(e) => showfilexlsx(e)} /> <label for="files" className="btn-transition btn-default btn-file" >  Choose file xlsx </label>
                                 </> : btncheck == 0 ? <>
                                     <div className="d-flex flex-column ">
                                         <span className=""> No file  chosen</span>
-                                        <button className=" bg-gray btnfile-none bg-default-btn  border-radius-3-px mt-3" >  none </button>
+                                        <button className=" bg-gray btn-file btn-transition  border-radius-3-px mt-3 btn-none" >  none </button>
 
                                     </div>
                                 </> : ""
@@ -436,19 +436,19 @@ export default function Modifieldlistphone() {
 
                         <div className="w-100 py-4 d-flex justify-content-between flex-wrap-wrap">
                             <div className="d-flex align-items-center">
-                                <input type="checkbox" id="lbcheck" className="w-20-px"   defaultValue={0}    checked={btncheck == 0 ? true : false} onClick={(e) => btncheckbox(e)} readOnly 
+                                <input type="checkbox" id="lbcheck" className="w-20-px" defaultValue={0} checked={btncheck == 0 ? true : false} onClick={(e) => btncheckbox(e)} readOnly
                                 // value={0}
-                             />
+                                />
                                 <label for="lbcheck" className="ml-1"> none </label>
                             </div>
                             <div className="d-flex align-items-center">
-                                <input type="checkbox" id="lbcheck" className="w-20-px" defaultValue={1} checked={btncheck == 1 ? true : false} onClick={(e) => btncheckbox(e)} readOnly 
+                                <input type="checkbox" id="lbcheck" className="w-20-px" defaultValue={1} checked={btncheck == 1 ? true : false} onClick={(e) => btncheckbox(e)} readOnly
                                 // value={1}
                                 />
                                 <label for="lbcheck" className="ml-1"> open file txt </label>
                             </div>
                             <div className="d-flex align-items-center ml-3">
-                                <input type="checkbox" id="lbchecks" className="w-20-px" defaultValue={2} checked={btncheck == 2 ? true : false} onClick={(e) => btncheckbox(e)} readOnly 
+                                <input type="checkbox" id="lbchecks" className="w-20-px" defaultValue={2} checked={btncheck == 2 ? true : false} onClick={(e) => btncheckbox(e)} readOnly
                                 // value={2}
                                 />
                                 <label for="lbchecks" className="ml-1"> open file xlsx</label>
@@ -457,8 +457,8 @@ export default function Modifieldlistphone() {
                         <div className="w-100 d-flex  ">
                             {
                                 btncheck == 1 ?
-                                    <button className="border-radius-3-px  w-100 white-space-nowrap" onClick={btnfile}> load file data </button>
-                                    : btncheck == 2 ? <button className="border-radius-3-px  white-space-nowrap  w-100 " onClick={btnfile}> load file xlsx </button>
+                                    <button className="border-radius-3-px  w-100 white-space-nowrap btn-default" onClick={btnfile}> load file data </button>
+                                    : btncheck == 2 ? <button className="border-radius-3-px  white-space-nowrap  w-100 btn-default" onClick={btnfile}> load file xlsx </button>
                                         : ""
                             }
 
@@ -474,7 +474,7 @@ export default function Modifieldlistphone() {
                             </DemoContainer>
                         </LocalizationProvider>
                         {/* {isdate ? <><span className="color-red"> please select date modify </span> </> : ""} */}
-                        <button onClick={onmodifielddate} className="mt-3 border-radius-3-px " > modify datetime  </button>
+                        <button onClick={onmodifielddate} className="mt-3 border-radius-3-px btn-default" > modify datetime  </button>
                     </div>
 
 
@@ -482,9 +482,9 @@ export default function Modifieldlistphone() {
 
                 <div className="w-70 h-100 pb-3 overflow-y-scroll  px-3 d-flex flex-column mt-3 ">
                     <div className="w-100 d-flex ">
-                        <button className={`${btnclick == 0 ? "bg-default color-white" : "bg-default-btn"} px-3 mr-3`} onClick={() => valuemodeldata(0)}> data all </button>
-                        <button className={`${btnclick == 1 ? "bg-default color-white" : "bg-default-btn"} px-3 mr-3`} onClick={() => valuemodeldata(1)}> data package null </button>
-                        <button className={`${btnclick == 2 ? "bg-default color-white" : "bg-default-btn"} px-3`} onClick={() => valuemodeldata(2)}> data package </button>
+                        <button className={`${btnclick == 0 ? "bg-default color-white btn-default" : "bg-default-btn"} px-3 mr-3`} onClick={() => valuemodeldata(0)}> data all </button>
+                        <button className={`${btnclick == 1 ? "bg-default color-white btn-default" : "bg-default-btn"} px-3 mr-3`} onClick={() => valuemodeldata(1)}> data package null </button>
+                        <button className={`${btnclick == 2 ? "bg-default color-white btn-default" : "bg-default-btn"} px-3`} onClick={() => valuemodeldata(2)}> data package </button>
                     </div>
                     <div className="w-100 px-0 h-290-px  max-h-290-px  d-flex flex-column overflow-y-scroll mt-1">
                         <table className="table position-sticky top-0 left-0">
@@ -527,9 +527,9 @@ export default function Modifieldlistphone() {
                     <span className="f-14-px  "> Detail modify </span>
                     <div className="d-flex justify-space-between py-3">
                         <div className="d-flex">
-                            <button className={`btn ${btnmodify == 0 ? "bg-default color-white" : "bg-default-btn"}`} value={0} onClick={() => btnmodifymodel(0)} > modify all </button>
-                            <button className={`btn mx-2 ${btnmodify == 1 ? "bg-default color-white" : "bg-default-btn"}`} value={1} onClick={() => btnmodifymodel(1)}> modify success </button>
-                            <button className={`btn ${btnmodify == 2 ? "bg-default color-white" : "bg-default-btn"}`} value={2} onClick={() => btnmodifymodel(2)}> modify failed </button>
+                            <button className={`btn ${btnmodify == 0 ? "bg-default color-white btn-default" : "bg-default-btn"}`} value={0} onClick={() => btnmodifymodel(0)} > modify all </button>
+                            <button className={`btn mx-2 ${btnmodify == 1 ? "bg-default color-white btn-default" : "bg-default-btn"}`} value={1} onClick={() => btnmodifymodel(1)}> modify success </button>
+                            <button className={`btn ${btnmodify == 2 ? "bg-default color-white btn-default" : "bg-default-btn"}`} value={2} onClick={() => btnmodifymodel(2)}> modify failed </button>
                         </div>
 
                         <div>

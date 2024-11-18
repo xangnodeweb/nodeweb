@@ -304,7 +304,7 @@ export default function Modifielddatetime() {
                     {/* <input type="text" onChange={phonevalue} value={phone} ref={isrefphone} onCompleted="off" className={` ${isbtn && isphonevalid == 1 ? "border-red" : ""}`} readOnly={!isbtn && isphonevalid == 2 ? true : false} /> */}
                     <Phonenumber onChange={phonevalue} value={phone} error={isbtn && isphonevalid == 1 ? true : false} helperText={isbtn && isphonevalid == 1 ? "please enter phonenumber" : isbtn && isphonevalid == 2 ? "please enter 13 character (85620 5xxxxxxx)" : isbtn && isphonevalid == 3 ? "please enter phone format (85620 5xxxxxxx)" : ""} inputRef={isrefphone} readOnly={!isbtn && isphonevalid == 4 ? true : false} placeholder="85620 5xxxxxxx" />
                     {
-                        !isbtn && isphonevalid == 4 ? <button className="btn-iquery mt-4 border-radius-3-px" onClick={cleardata}> cleardata </button> : <button className="btn-iquery mt-4 border-radius-3-px" onClick={onqueryphone}> send </button>
+                        !isbtn && isphonevalid == 4 ? <button className="btn-iquery mt-4 border-radius-3-px" onClick={cleardata}> cleardata </button> : <button className="btn-iquery mt-4 border-radius-3-px btn-default" onClick={onqueryphone}> send </button>
                     }
                 </div>
                 <div className="w-100 d-flex flex-column mt-12 px-4 border-grey pb-5 pt-5 border-radius-3-px box-shadow">
@@ -320,7 +320,7 @@ export default function Modifielddatetime() {
                         </DemoContainer>
                     </LocalizationProvider>
 
-                    <button className="mt-4" onClick={onupdateexpire}> modify </button>
+                    <button className="mt-4 btn-default " onClick={onupdateexpire}> modify </button>
 
                 </div>
             </div>

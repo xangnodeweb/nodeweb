@@ -115,9 +115,18 @@ export default function Homemain() {
 
                         </div >
                         <div className="home-section">
-                            <div className="w-100 bg-default h-50-px d-flex align-items-center px-3">
-                                <i className="fa fa-home color-white f-24-px"></i><span className="color-white ml-2 f-20-px"> Home : {path.replace("/", "").toLocaleLowerCase()} </span>
+                            <div className="h-50-px d-flex align-items-centen bg-default">
+                                <div className="w-100 bg-default h-50-px d-flex align-items-center px-3">
+                                    <i className="fa fa-home color-white f-24-px"></i><span className="color-white ml-2 f-20-px"> Home : {path.replace("/", "").toLocaleLowerCase()} </span>
+                                </div>
+
+                                <div className="d-flex align-items-center pr-3">
+                                    <button  onClick={() => setpage(true)}  className="h-40-px px-3 w-110-px btn-desc border-radius-3-px"> ຄູ່ມືການນຳໃຊ້ </button>
+                                </div>
+
                             </div>
+
+
                             <BrowserRouter>
 
                                 <Routes>

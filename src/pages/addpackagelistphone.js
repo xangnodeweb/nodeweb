@@ -445,7 +445,7 @@ export default function Addpackagelistphone() {
                         </div>
                         <div className="d-flex align-items-center">
                             <input type="checkbox" id="lbcheck" value={1} onChange={(e) => btncheck(e)} checked={btnchecks == 1 ? true : false} className="w-20-px" />
-                            <label for="lbcheck" className="ml-2"> file open txt </label>
+                            <label for="lbcheck" className="ml-2 "> file open txt </label>
                         </div>
                         <div className="d-flex align-items-center">
                             <input type="checkbox" id="lbcheck" value={2} onChange={(e) => btncheck(e)} checked={btnchecks == 2 ? true : false} className="w-20-px" />
@@ -455,18 +455,18 @@ export default function Addpackagelistphone() {
                     <div className="d-flex algin-items-center overflow-hidden py-4">
                         {
                             btnchecks == 1 ? <>
-                                <label className="btnfile w-115-px" for="file"> choose file txt </label>
-                                <input type="file" id="file" onChange={(e) => btnopenfiletxt(e)} className="w-115-px pt-2" />
+                                <label className="btnfile w-115-px " for="file"> choose file txt </label>
+                                <input type="file" id="file" onChange={(e) => btnopenfiletxt(e)} className="w-115-px pt-2 " />
                             </> : btnchecks == 2 ? <>
-                                <label className="btnfile w-115-px" for="file"> choose filexlsx </label>
-                                <input type="file" id="file" onChange={(e) => showfilexlsx(e)} className="w-115-px pt-2" />
+                                <label className="btnfile w-115-px " for="file"> choose filexlsx </label>
+                                <input type="file" id="file" onChange={(e) => showfilexlsx(e)} className="w-115-px pt-2 " />
                             </> : <>
-                                <label className="btnfile-none w-115-px bg-gray" for="file"> none </label>
+                                <label className="btnfile-none w-115-px btn-none" for="file"> none </label>
                             </>
                         }
                     </div>
 
-                    <button className="mt-1 " onClick={(e) => loaddatafile(e)}> load file data </button>
+                    <button className={`mt-1 ${btnchecks != 0 ? "btn-default" : ""}`} onClick={(e) => loaddatafile(e)}> load file data </button>
                 </div>
 
                 <div className="w-100 box-shadow  px-3 py-4 d-flex flex-column">
@@ -537,7 +537,7 @@ export default function Addpackagelistphone() {
                         </DemoContainer>
                     </LocalizationProvider>
 
-                    <button className="mt-4 " onClick={onaddpackage}> add package </button>
+                    <button className="mt-4 btn-default" onClick={onaddpackage}> add package </button>
 
 
 
