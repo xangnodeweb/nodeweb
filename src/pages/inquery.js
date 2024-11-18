@@ -63,6 +63,7 @@ export default function inquery() {
                         return
                     }
                 }
+                console.log(error)
                 setloading(false);
                 callopenmodal("", "cannot inquery phone ", 1);
             }

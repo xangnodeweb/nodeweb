@@ -4,11 +4,12 @@ const path = require("path");
 const app = express();
 
 const cors = require("cors");
-const https = require("https");
-const fs = require("fs");
+// const https = require("https");
+// const fs = require("fs");
 
 const apirouter = require("./controllerapi");
 const apichangerouter = require("./controllerchangeapi");
+
 
 app.use(cors());
 app.use(express.json());
@@ -30,11 +31,11 @@ app.listen(PORT, () => {
     console.log("running app is port on : " + PORT)
 })
 
-const options = {
-    key: fs.readFileSync("server.key"),
-    cert: fs.readFileSync("server.cert")
-}
+// const options = {
+//     key: fs.readFileSync("server.key"),
+//     cert: fs.readFileSync("server.cert")
+// }
 
-https.createServer(options, app).listen(PORTS, (req, res) => {
-    console.log("running is port : " + PORTS);
-});
+// https.createServer(options, app).listen(PORTS, () => {
+//     console.log("running is port : " + PORTS);
+// });
