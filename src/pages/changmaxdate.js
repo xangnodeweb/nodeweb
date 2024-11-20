@@ -158,7 +158,7 @@ export default function ChangMaxDate() {
             }
 
 
-            const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemainoffering", modelfile);
+            const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemainoffering", modelfile);
             // console.log(data.data);
             if (data.status == 200) {
 
@@ -256,7 +256,7 @@ export default function ChangMaxDate() {
 
             // console.log(modelchangemaxdate)
 
-            const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemaxday", modelchangemaxdate);
+            const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemaxday", modelchangemaxdate);
 
             // console.log(data.data);
             if (data.status == 200) {
@@ -337,7 +337,7 @@ export default function ChangMaxDate() {
                 return;
             }
 
-            const data = await axios.post("http://127.0.0.1:3000/apichangemain/setvalidity", ismodelsetvalidity)
+            const data = await axios.post("http://172.28.27.50:3000/apichangemain/setvalidity", ismodelsetvalidity)
             // console.log(data.data);
 
             if (data.status == 200) {
