@@ -4,8 +4,6 @@ const path = require("path");
 const app = express();
 
 const cors = require("cors");
-// const https = require("https");
-// const fs = require("fs");
 
 const apirouter = require("./controllerapi");
 const apichangerouter = require("./controllerchangeapi");
@@ -16,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3000;
-const PORTS = process.env.PORT_APP || 3001;
+
 
 app.use(express.static("dist"));
 
@@ -31,11 +29,3 @@ app.listen(PORT, () => {
     console.log("running app is port on : " + PORT)
 })
 
-// const options = {
-//     key: fs.readFileSync("server.key"),
-//     cert: fs.readFileSync("server.cert")
-// }
-
-// https.createServer(options, app).listen(PORTS, () => {
-//     console.log("running is port : " + PORTS);
-// });

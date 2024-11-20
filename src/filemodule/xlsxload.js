@@ -243,7 +243,7 @@ export const Exportexcels = async ({ data }) => { // modifield
         sheet.getCell('D2').value = `date export : ${datenows}`;
 
         // sheet.getCell(1).value = "report modifield data";
-        sheet.getCell("A1").value = "report modify data";
+        sheet.getCell("A1").value = "report modify expire data";
         sheet.getCell("A3").value = "id"; // no 
         sheet.getCell("B3").value = "Msisdn"; // no 
         sheet.getCell("C3").value = "ProductNumber"; // no 
@@ -390,7 +390,7 @@ export const addpackageExportexcel = async ({ data }) => {
             bgColor: "BDC0BE"
         };
         // sheet.getCell(1).value = "report modifield data";
-        sheet.getCell("A1").value = "report modify data";
+        sheet.getCell("A1").value = "report add package data";
         sheet.getCell("A3").value = "id"; // no 
         sheet.getCell("B3").value = "Msisdn"; // no 
         sheet.getCell("C3").value = "ProductNumber"; // no 
