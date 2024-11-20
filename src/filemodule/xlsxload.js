@@ -526,7 +526,7 @@ export const changeexporttoset = ({ modeloffer, modelchangemax, modelsetvalidity
 
         const worksheetrow = worksheet.getWorksheet(1);
         worksheetrow.mergeCells("A1", "E2");
-        sheet.getCell("A1").value = "report changemainoferring"
+        sheet.getCell("A1").value = "report changemainofferring"
 
         sheet.getCell("A3").value = "phone"; // no 
         sheet.getCell("B3").value = "oldoffering"; // 

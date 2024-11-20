@@ -158,7 +158,7 @@ export default function ChangMaxDate() {
             }
 
 
-            const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemainoffering", modelfile);
+            const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemainoffering", modelfile);
             // console.log(data.data);
             if (data.status == 200) {
 
@@ -256,7 +256,7 @@ export default function ChangMaxDate() {
 
             // console.log(modelchangemaxdate)
 
-            const data = await axios.post("http://172.28.27.50:3000/apichangemain/changemaxday", modelchangemaxdate);
+            const data = await axios.post("http://127.0.0.1:3000/apichangemain/changemaxday", modelchangemaxdate);
 
             // console.log(data.data);
             if (data.status == 200) {
@@ -337,7 +337,7 @@ export default function ChangMaxDate() {
                 return;
             }
 
-            const data = await axios.post("http://172.28.27.50:3000/apichangemain/setvalidity", ismodelsetvalidity)
+            const data = await axios.post("http://127.0.0.1:3000/apichangemain/setvalidity", ismodelsetvalidity)
             // console.log(data.data);
 
             if (data.status == 200) {
@@ -815,9 +815,9 @@ export default function ChangMaxDate() {
                         {
                             editline == 0 ?
                                 <>
-                                    <button className={`${error && msgvalid == 1 ? "border-2-red" : ""} btn w-100`} onClick={() => onchangemainoffeprimary()} > load data file </button>
+                                    <button className={`${error && msgvalid == 1 ? "border-2-red" : ""} btn-default w-100`} onClick={() => onchangemainoffeprimary()} > load data file </button>
                                 </>
-                                : <button className={`${error && msgvalid == 1 ? "border-2-red" : ""} btn w-100 bg-default color-white`} onClick={() => editbtnvalue(0, 0, false)} > edit changmainoffering </button>
+                                : <button className={`${error && msgvalid == 1 ? "border-2-red" : ""} btn-edit w-100  color-white`} onClick={() => editbtnvalue(0, 0, false)} > edit changmainoffering </button>
                         }
 
                     </div>
@@ -833,8 +833,8 @@ export default function ChangMaxDate() {
                 <div className="w-100">
                     <div className="d-flex mb-1">
 
-                        <button className={`h-30-px px-3 mr-3 border-radius-3-px ${btncheckoption == 0 ? "bg-default color-white" : ""}`} onClick={(e) => btnmodelfileoption(e)} value={0} > request </button>
-                        <button className={`h-30-px px-3 border-radius-3-px ${btncheckoption == 1 ? "bg-default color-white" : ""}`} onClick={(e) => btnmodelfileoption(e)} value={1}> response </button>
+                        <button className={`h-30-px px-3 mr-3 border-radius-3-px ${btncheckoption == 0 ? "btn-default " : ""}`} onClick={(e) => btnmodelfileoption(e)} value={0} > request </button>
+                        <button className={`h-30-px px-3 border-radius-3-px ${btncheckoption == 1 ? "btn-default " : ""}`} onClick={(e) => btnmodelfileoption(e)} value={1}> response </button>
                     </div>
 
                     <div className="w-100 h-245-px overflow-hidden overflow-y-scroll">
@@ -919,14 +919,14 @@ export default function ChangMaxDate() {
                     {
                         editlineone == 0 && iseditlineone == false ?
                             <>
-                                <button className="btn w-100 mt-3" onClick={() => openmodalsbtn({ status: true, openbutton: 0 })}> changemaxdate </button>
+                                <button className="btn-default w-100 mt-3" onClick={() => openmodalsbtn({ status: true, openbutton: 0 })}> changemaxdate </button>
                             </>
                             :
                             editlineone == 0 && iseditlineone == true ?
                                 <>
-                                    <button className="btn w-100 mt-3" onClick={() => loaddataeditmodel()} > saveedit changemaxdate </button>
+                                    <button className="btn-default w-100 mt-3" onClick={() => loaddataeditmodel()} > saveedit changemaxdate </button>
                                 </> :
-                                <button className="btn w-100 mt-3 bg-default color-white" onClick={(e) => editbtnvalue(1, 0, true)}> editchangemaxdate </button>
+                                <button className="btn w-100 mt-3 btn-edit color-white" onClick={(e) => editbtnvalue(1, 0, true)}> editchangemaxdate </button>
                     }
 
                 </div>
@@ -989,10 +989,10 @@ export default function ChangMaxDate() {
 
                         editlinetwo == 0 ?
                             <>
-                                <button className="btn mt-5 w-100" onClick={() => openmodalonaddvalidity()}> set validity </button>
+                                <button className="btn-default mt-5 w-100" onClick={() => openmodalonaddvalidity()}> set validity </button>
                             </>
                             :
-                            <button className="btn mt-5 w-100 bg-default color-white" onClick={() => editbtnvalue(2, 0 , false)}> edit setvalidity </button>
+                            <button className="btn-edit mt-5 w-100  color-white" onClick={() => editbtnvalue(2, 0 , false)}> edit setvalidity </button>
                     }
 
 

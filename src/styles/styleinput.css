@@ -219,6 +219,12 @@ div.css-1nrlq1o-MuiFormControl-root {
     justify-content: center;
     cursor: pointer;
 }
+.btn-edit{
+    background-color: #5f5f5f;
+}
+.btn-edit:hover{
+background-color: #5f5f5fbf;
+}
 
 .btn-transition {
     transition: all 0.3s ease;
