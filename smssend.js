@@ -12,11 +12,9 @@ app.post("/sendsms", async (req, res) => {
         if (!phoneto) {
             return res.status(400).json({ status: false, code: 1, message: "please enter phone send to sms." })
         }
-        if (!phonecharge) {
-            return res.status(400).json({ status: false, code: 2, message: "please enter phone charge send to sms." })
-        }
+   
         if (!contentmsg) {
-            return res.status(400).json({ status: false, code: 3, message: "please enter content message send to sms." })
+            return res.status(400).json({ status: false, code: 2, message: "please enter content message send to sms." })
         }
 
         const reqsms = {
