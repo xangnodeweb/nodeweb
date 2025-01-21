@@ -14,10 +14,9 @@ app.post("/sendsms", async (req, res) => {
             return res.status(400).json({ status: false, code: 1, message: "please enter phone send to sms." })
         }
     
-         if(!header){
-
-            return res.status(400).json({status : false , code :3, message : "please enter from header send to sms."});
-         }
+        //  if(!header){
+        //     return res.status(400).json({status : false , code :3, message : "please enter from header send to sms."});
+        //  }
         if (!contentmsg) {
             return res.status(400).json({ status: false, code: 2, message: "please enter content message send to sms." })
         }
