@@ -8,7 +8,7 @@ app.post("/sendsms", async (req, res) => {
         const phoneto = body.to;
         const phonecharge = body.charge;
         const contentmsg = body.content;
-
+        console.log(body);
         if (!phoneto) {
             return res.status(400).json({ status: false, code: 1, message: "please enter phone send to sms." })
         }
@@ -21,12 +21,12 @@ app.post("/sendsms", async (req, res) => {
 
         const reqsms = {
             "CMD": "SENDMSG",
-            "FROM": "Lao%2DTelecom",
+            "FROM": "TEST",
             "TO": phoneto,
             "REPORT": "Y",
             "CHARGE": phonecharge,
             "CODE": "45140377001",
-            "CTYPE": "TEXT",
+            "CTYPE": "UTF8",
             "CONTENT": contentmsg
         }
 
