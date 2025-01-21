@@ -24,7 +24,7 @@ app.post("/sendsms", async (req, res) => {
             "FROM": "TEST",
             "TO": phoneto,
             "REPORT": "Y",
-            "CHARGE": phonecharge,
+            "CHARGE": "8562052199062",
             "CODE": "45140377001",
             "CTYPE": "UTF8",
             "CONTENT": contentmsg
