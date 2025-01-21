@@ -4,11 +4,11 @@ app.post("/sendsms", async (req, res) => {
     try {
 
 
-        const body = req.body;
+        const body = req.body
         const phoneto = body.to;
         const phonecharge = body.charge;
         const contentmsg = body.content;
-        console.log(body)
+
         if (!phoneto) {
             return res.status(400).json({ status: false, code: 1, message: "please enter phone send to sms." })
         }
@@ -30,17 +30,17 @@ app.post("/sendsms", async (req, res) => {
             "CONTENT": contentmsg
         }
 
-        const data = await axios.post("http://10:30.6.26:10080", reqsms);
-
-        if(data.status == 200){
-
+        const data = await axios.post("http://10.30.6.26:10080", reqsms);
+        console.log(data.data)
+        if (data.status == 200) {
+            return res.status(200).json({ status: true, code: 0, message: "send_sms_success", result: [data.data] })
         }
 
-        return res.status(400).json({status : false , code : 0 , message : "cannot_send_sms"});
+        return res.status(400).json({ status: false, code: 0, message: "cannot_send_sms" });
 
     } catch (error) {
         console.log(error);
-        return res.status(400).json({status : false , code : 0 , message : error});
+        return res.status(400).json({ status: false, code: 0, message: error });
 
     }
 

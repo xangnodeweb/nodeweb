@@ -6,9 +6,6 @@ const { bodyinquery, bodymodiefield, bodyaddpackage, changemaxdate, changemainof
 const { parseString } = require("xml2js");
 const fetch = require("node-fetch");
 
-
-
-
 app.post("/inqueryphone", async (req, res) => {
     try {
         const body = req.body;
@@ -611,9 +608,6 @@ app.post("/addpackagelistphone", async (req, res) => {
         return res.status(400).json({ status: false, code: 1, message: "", result: [] });
     }
 });
-
-
-
 
 const sleep = (ms) => {
     return new Promise(ress => setTimeout(ress, ms));
