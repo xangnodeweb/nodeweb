@@ -5,9 +5,10 @@ app.post("/sendsms", async (req, res) => {
 
 
         const body = req.body;
-        const phoneto = req.body.to;
-        const phonecharge = req.body.charge;
-        const contentmsg = req.body.content;
+        const phoneto = body.to;
+        const phonecharge = body.charge;
+        const contentmsg = body.content;
+        console.log(body)
         if (!phoneto) {
             return res.status(400).json({ status: false, code: 1, message: "please enter phone send to sms." })
         }
