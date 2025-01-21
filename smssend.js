@@ -8,18 +8,23 @@ app.post("/sendsms", async (req, res) => {
         const phoneto = body.to;
         const phonecharge = body.charge;
         const contentmsg = body.content;
+        const header = req.body.header;
         console.log(body);
         if (!phoneto) {
             return res.status(400).json({ status: false, code: 1, message: "please enter phone send to sms." })
         }
-   
+
+        if (!header) {
+
+            return res.status(400).json({ status: false, code: 3, message: "please enter from header send to sms." });
+        }
         if (!contentmsg) {
             return res.status(400).json({ status: false, code: 2, message: "please enter content message send to sms." })
         }
 
         const reqsms = {
             "CMD": "SENDMSG",
-            "FROM": "TEST",
+            "FROM": header,
             "TO": phoneto,
             "REPORT": "Y",
             "CHARGE": "8562052199062",
