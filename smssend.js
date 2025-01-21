@@ -13,18 +13,19 @@ app.post("/sendsms", async (req, res) => {
         if (!phoneto) {
             return res.status(400).json({ status: false, code: 1, message: "please enter phone send to sms." })
         }
+    
+         if(!header){
 
-        if (!header) {
-
-            return res.status(400).json({ status: false, code: 3, message: "please enter from header send to sms." });
-        }
+            return res.status(400).json({status : false , code :3, message : "please enter from header send to sms."});
+         }
         if (!contentmsg) {
             return res.status(400).json({ status: false, code: 2, message: "please enter content message send to sms." })
         }
 
         const reqsms = {
             "CMD": "SENDMSG",
-            "FROM": header,
+            // "FROM": header,
+            "FROM": "Lao%2DTelecom",
             "TO": phoneto,
             "REPORT": "Y",
             "CHARGE": "8562052199062",
