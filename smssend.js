@@ -61,7 +61,11 @@ app.post("/addpackagesms", async (req, res) => {
             for (var i = 0; i < body.length; i++) {
 
                 console.log(body[i])
+                body[i].packagename = "Package Promotion 3GB 24hrs"
                 const bodyaddpackages = await bodyaddpackage(body[i].phone, body[i].packagename, body[i].datestart, body[i].dateend, body[i].refillstoptime); // body request add package
+
+                console.log(bodyaddpackages)
+            
 
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8'
@@ -86,7 +90,7 @@ app.post("/addpackagesms", async (req, res) => {
                         model.push(datas['soap:Envelope']['soap:Body'])
                         const responsesuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['OperationStatus'][0]; // operation status
                         const countersuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['CounterArray'][0]['CounterInfo']; // counterinfo data
-
+                        console.log(responsesuccess)
                         if (responsesuccess.IsSuccess[0] == 'true') {
                             if (countersuccess.length > 0) {
                                 for (var i = 0; i < countersuccess.length; i++) {
@@ -94,7 +98,7 @@ app.post("/addpackagesms", async (req, res) => {
                                     modelInfo.push(data)
                                 }
                             }
-
+                            sendsms(body[i])
 
                         } else {
                             const data = { Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0] };
@@ -167,9 +171,44 @@ app.post("/getpackagename", async (req, res) => {
 
 
 
-const sendsms = (data) => {
+const sendsms = async (data) => {
     try {
-  
+
+        if (!data.headermsg) {
+            return false;
+        }
+        if (!data.content) {
+
+            return false;
+
+        }
+
+        const reqsms = {
+            "CMD": "SENDMSG",
+            "FROM": data.headermsg,
+            // "FROM": "Lao%2DTelecom",
+            "TO": data.phone,
+            "REPORT": "Y",
+            "CHARGE": "8562052199062",
+            "CODE": "45140377001",
+            "CTYPE": "UTF-8",
+            "CONTENT": data.content
+        }
+
+        console.log(reqsms);
+
+        // return reqsms;
+        const data = await axios.post("http://10.30.6.26:10080", reqsms);
+        console.log(data.data)
+        if (data.status == 200) {
+            if (data.data.status == true) {
+                if (data.data.result[0].resultCode == "20000") {
+                    console.log(data.data)
+                    return true;
+                }
+            }
+        }
+        // return res.status(400).json({ status: false, code: 0, message: "cannot_send_sms" });
 
 
     } catch (error) {
