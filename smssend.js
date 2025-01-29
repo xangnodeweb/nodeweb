@@ -32,7 +32,7 @@ app.post("/sendsms", async (req, res) => {
             "REPORT": "Y",
             "CHARGE": "8562052199062",
             "CODE": "45140377001",
-            "CTYPE": "TEXT",
+            "CTYPE": "UTF-8",
             "CONTENT": contentmsg
         }
 
@@ -94,6 +94,8 @@ app.post("/addpackagesms", async (req, res) => {
                                     modelInfo.push(data)
                                 }
                             }
+
+
                         } else {
                             const data = { Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0] };
                             modelInfo.push(data)
@@ -161,10 +163,18 @@ app.post("/getpackagename", async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-
-
 })
 
 
+
+const sendsms = (data) => {
+    try {
+  
+
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 module.exports = app;
