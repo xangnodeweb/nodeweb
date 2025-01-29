@@ -65,7 +65,7 @@ app.post("/addpackagesms", async (req, res) => {
                 const bodyaddpackages = await bodyaddpackage(body[i].phone, body[i].packagename, body[i].datestart, body[i].dateend, body[i].refillstoptime); // body request add package
 
                 console.log(bodyaddpackages)
-            
+
 
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8'
@@ -83,7 +83,7 @@ app.post("/addpackagesms", async (req, res) => {
                     const modeldata = responseText;
                     // console.log(modeldata)
 
-                    parseString(modeldata, function (err, result) {
+                       parseString(modeldata, async function (err, result)  {
                         let data = JSON.stringify(result);
                         const datas = JSON.parse(data);
 
@@ -93,13 +93,14 @@ app.post("/addpackagesms", async (req, res) => {
                         console.log(responsesuccess)
                         if (responsesuccess.IsSuccess[0] == 'true') {
                             if (countersuccess.length > 0) {
-                                for (var i = 0; i < countersuccess.length; i++) {
-                                    const data = { Msisdn: countersuccess[i].Msisdn[0], ProductNumber: countersuccess[i].ProductNumber[0], CounterName: countersuccess[i].CounterName[0], StartTime: countersuccess[i].StartTime[0], ExpiryTime: countersuccess[i].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0] };
+                                for (var ii = 0; ii < countersuccess.length; ii++) {
+                                    const data = { Msisdn: countersuccess[ii].Msisdn[0], ProductNumber: countersuccess[ii].ProductNumber[0], CounterName: countersuccess[ii].CounterName[0], StartTime: countersuccess[ii].StartTime[0], ExpiryTime: countersuccess[ii].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0] };
                                     modelInfo.push(data)
                                 }
                             }
-                            sendsms(body[i])
 
+                            const sendsmss = await sendsmsaddpackage(body[i])
+                            console.log(sendsmss)
                         } else {
                             const data = { Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0] };
                             modelInfo.push(data)
@@ -171,31 +172,24 @@ app.post("/getpackagename", async (req, res) => {
 
 
 
-const sendsms = async (data) => {
+const sendsmsaddpackage = async (datas) => {
     try {
 
-        if (!data.headermsg) {
-            return false;
-        }
-        if (!data.content) {
-
-            return false;
-
-        }
+        // console.log(datas)
 
         const reqsms = {
             "CMD": "SENDMSG",
-            "FROM": data.headermsg,
+            "FROM": datas.headermsg,
             // "FROM": "Lao%2DTelecom",
-            "TO": data.phone,
+            "TO": datas.phone,
             "REPORT": "Y",
             "CHARGE": "8562052199062",
             "CODE": "45140377001",
             "CTYPE": "UTF-8",
-            "CONTENT": data.content
+            "CONTENT": datas.content
         }
 
-        console.log(reqsms);
+        // console.log(reqsms);
 
         // return reqsms;
         const data = await axios.post("http://10.30.6.26:10080", reqsms);
