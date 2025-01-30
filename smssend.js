@@ -7,6 +7,7 @@ const { parseString } = require("xml2js")
 
 const fs = require("fs/promises");
 const path = require("path");
+const { chownSync } = require("fs");
 
 
 app.post("/sendsms", async (req, res) => {
@@ -48,7 +49,7 @@ app.post("/sendsms", async (req, res) => {
     }
 });
 
-app.post("/addpackagesms", async (req, res) => {
+app.post("/addpackagesms", async (req, res) => {  // add package send sms model
     try {
 
         const body = req.body;
@@ -57,12 +58,15 @@ app.post("/addpackagesms", async (req, res) => {
         let model = [];
         let modelInfo = [];
         if (body.length > 0) {
+            console.log(body);
 
             for (var i = 0; i < body.length; i++) {
 
+
+
                 console.log(body[i])
                 body[i].packagename = "Package Promotion 3GB 24hrs"
-                const bodyaddpackages = await bodyaddpackage(body[i].phone, body[i].packagename, body[i].datestart, body[i].dateend, body[i].refillstoptime); // body request add package
+                const bodyaddpackages = await bodyaddpackage(body[i].phone, body[i].packagename, body[i].starttime, body[i].expiretime, body[i].refillstoptime); // body request add package
 
                 console.log(bodyaddpackages)
 
@@ -83,7 +87,7 @@ app.post("/addpackagesms", async (req, res) => {
                     const modeldata = responseText;
                     // console.log(modeldata)
 
-                       parseString(modeldata, async function (err, result)  {
+                    parseString(modeldata, async function (err, result) {
                         let data = JSON.stringify(result);
                         const datas = JSON.parse(data);
 
@@ -92,15 +96,23 @@ app.post("/addpackagesms", async (req, res) => {
                         const countersuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['CounterArray'][0]['CounterInfo']; // counterinfo data
                         console.log(responsesuccess)
                         if (responsesuccess.IsSuccess[0] == 'true') {
+                            let data = {};
                             if (countersuccess.length > 0) {
                                 for (var ii = 0; ii < countersuccess.length; ii++) {
-                                    const data = { Msisdn: countersuccess[ii].Msisdn[0], ProductNumber: countersuccess[ii].ProductNumber[0], CounterName: countersuccess[ii].CounterName[0], StartTime: countersuccess[ii].StartTime[0], ExpiryTime: countersuccess[ii].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0] };
-                                    modelInfo.push(data)
+                                    data = { Msisdn: countersuccess[ii].Msisdn[0], ProductNumber: countersuccess[ii].ProductNumber[0], CounterName: countersuccess[ii].CounterName[0], StartTime: countersuccess[ii].StartTime[0], ExpiryTime: countersuccess[ii].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false };
+
                                 }
                             }
 
                             const sendsmss = await sendsmsaddpackage(body[i])
+                            if (sendsmss == true) {
+                                data.statussms = true
+                                modelInfo.push(data)
+                            } else {
+                                modelInfo.push(data)
+                            }
                             console.log(sendsmss)
+                            console.log(modelInfo)
                         } else {
                             const data = { Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0] };
                             modelInfo.push(data)
@@ -118,12 +130,12 @@ app.post("/addpackagesms", async (req, res) => {
                     }
                 });
                 const index = modelInfo.findIndex(x => x.status == false && x.code == 2);
-                if (index != -1) {
+                if (index != -1) { // break for then timeout 
                     break;
                 }
             }
             const indexresponse = modelInfo.filter(x => x.status == false && x.code == 2);
-            if (indexresponse.length == 0) {
+            if (indexresponse.length == 0) { // check response have timeout
                 return res.status(200).json({ status: true, code: 0, message: "add package success", result: modelInfo })
             } else {
                 const status = indexresponse.length == 0 ? 1 : 2;
@@ -131,8 +143,7 @@ app.post("/addpackagesms", async (req, res) => {
                 return res.status(400).json({ status: false, code: status, message: message, result: modelInfo });
             }
         }
-        return
-        console.log(body);
+
         return res.status(400).json({ status: true, code: 0, message: 'cannot add package', result: null });
 
     } catch (error) {
@@ -140,6 +151,9 @@ app.post("/addpackagesms", async (req, res) => {
         return res.status(400).json({ status: false, code: 0, message: "cannot add package", result: null })
     }
 });
+
+
+
 
 app.post("/getpackagename", async (req, res) => {
 
@@ -175,7 +189,7 @@ app.post("/getpackagename", async (req, res) => {
 const sendsmsaddpackage = async (datas) => {
     try {
 
-        // console.log(datas)
+        console.log(datas)
 
         const reqsms = {
             "CMD": "SENDMSG",
@@ -188,8 +202,8 @@ const sendsmsaddpackage = async (datas) => {
             "CTYPE": "UTF-8",
             "CONTENT": datas.content
         }
-
-        // console.log(reqsms);
+        console.log("request sms : ")
+        console.log(reqsms);
 
         // return reqsms;
         const data = await axios.post("http://10.30.6.26:10080", reqsms);
@@ -202,11 +216,10 @@ const sendsmsaddpackage = async (datas) => {
                 }
             }
         }
-        // return res.status(400).json({ status: false, code: 0, message: "cannot_send_sms" });
-
-
+        return false;
     } catch (error) {
         console.log(error);
+        return false;
     }
 }
 
