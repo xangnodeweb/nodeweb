@@ -107,6 +107,8 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                             const sendsmss = await sendsmsaddpackage(body[i])
                             if (sendsmss == true) {
                                 data.statussms = true
+                                console.log("status : ")
+                                console.log(data)
                                 modelInfo.push(data)
                             } else {
                                 modelInfo.push(data)
@@ -114,7 +116,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                             console.log(sendsmss)
                             console.log(modelInfo)
                         } else {
-                            const data = { Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0] };
+                            const data = { Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0] , statussms :false };
                             modelInfo.push(data)
                         }
                     });
@@ -124,7 +126,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     const errors = JSON.parse(error);
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            const data = { Msisdn: body[0].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: false, code: 2, message: "cannot add package ConnectTimeoutError" };
+                            const data = { Msisdn: body[0].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: false, code: 2, message: "cannot add package ConnectTimeoutError" , statussms : false};
                             modelInfo.push(data);
                         }
                     }
@@ -209,11 +211,11 @@ const sendsmsaddpackage = async (datas) => {
         const data = await axios.post("http://10.30.6.26:10080", reqsms);
         console.log(data.data)
         if (data.status == 200) {
-            if (data.data.status == true) {
-                if (data.data.result[0].resultCode == "20000") {
+
+                if (data.data.resultCode == "20000") {
                     console.log(data.data)
                     return true;
-                }
+             
             }
         }
         return false;
