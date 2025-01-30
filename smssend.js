@@ -9,6 +9,7 @@ const fs = require("fs/promises");
 const path = require("path");
 const { chownSync } = require("fs");
 const { response } = require("express");
+const { JavascriptModulesPlugin } = require("webpack");
 
 
 app.post("/sendsms", async (req, res) => {
@@ -99,7 +100,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                         if (responsesuccess.IsSuccess[0] == 'true') {
 
                             if (countersuccess.length > 0) {
-
+                                console.log(countersuccess)
                                 for (var ii = 0; ii < countersuccess.length; ii++) {
 
                                     const data = { Msisdn: countersuccess[ii].Msisdn[0], ProductNumber: countersuccess[ii].ProductNumber[0], CounterName: countersuccess[ii].CounterName[0], StartTime: countersuccess[ii].StartTime[0], ExpiryTime: countersuccess[ii].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false };
@@ -233,21 +234,19 @@ app.post("/modifypackagehours", async (req, res) => {
         const body = req.body;
 
         if (body.length > 0) {
-
+            let modelresponse = [];  // item response
 
             for (let item of body) {
 
                 console.log(item.phone, item.productnumber, item.starttime, item.expiretime)
-             
+
                 const bodymodifield = bodymodiefieldhours(item.phone, item.productnumber, item.starttime, item.expiretime);
 
                 const header = {
                     'Content-Type': 'text/xml;charset=utf-8'
                 }
 
-                let model = []
-                let modelbody = [];
-                let modelresponse = [];  // item response
+
 
                 await fetch("http://10.0.10.35/vsmpltc/web/services/amfwebservice.asmx", {
                     method: "POST",
@@ -257,30 +256,69 @@ app.post("/modifypackagehours", async (req, res) => {
                     return response.text();
 
                 }).then(responsetext => {
-    
-                      const modelres = responsetext;
 
-                      parseString(modelres , function(err , result) {
+                    const modelres = responsetext;
 
-                         console.log(result)
+                    parseString(modelres, function (err, result) {
 
-                          const models = JSON.stringify(result);
-                          const modelresdata = JSON.parse(models);
-                          console.log(modelresdata)
+                        console.log(result)
 
-                      })
+                        const models = JSON.stringify(result);
+                        const modelresdata = JSON.parse(models);
+                        console.log(modelresdata);
+
+                        console.log(modelresdata["soap:Envelope"]["soap:Body"][0]["modifyCounterResponse"][0]["modifyCounterResult"][0])
+
+
+                        const modeldata = modelresdata["soap:Envelope"]["soap:Body"][0]["modifyCounterResponse"][0]["modifyCounterResult"][0]
+
+                        if (modeldata.IsSuccess[0] == "true") {
+                            modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: item.starttime, expiretime: item.expiretime, status: true, description: modeldata.Description[0], transactionID: modeldata.TransactionID[0], code: modeldata.Code[0] });
+                        } else {
+                            modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: item.starttime, expiretime: item.expiretime, status: false, description: modeldata.Description[0], transactionID: modeldata.TransactionID[0], code: modeldata.Code[0] });
+                        }
+
+                    })
 
                 }).catch(err => {
+                    const error = JSON.stringify(err);
+                    const errors = JSON.parse(error);
+                    if (err) {
+                        if (errors.code == "ETIMEDOUT") {
+                            modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: item.starttime, expiretime: item.expiretime, status: false, description: "not found data", transactionID: "not found data", code: 2 });
+                        }
+                    }
+                    console.log(err)
+                });
+                const index = modelresponse.findIndex(x => x.status == false && x.code == 2);
+                if (index != -1) {
+                    break;
+                }
+            }
 
-  console.log(err)
-                })
+            const responseindex = modelresponse.filter(x => x.status == false && x.code == 2);
+            if (responseindex.length == 0) {
 
+                return res.status(200).json({ status: true, code: 0, message: "modify_package_hours_success", result: modelresponse });
+
+            } else {
+
+                if (responseindex.length > 0) {
+
+                    return res.status(400).json({ status: false, code: 2, message: "modify_package_ConnectionTimeOutError", result: modelresponse });
+                } else {
+                    return res.status(400).json({ status: false, code: 0, message: "cannot_modify_package_hours", result: modelresponse });
+
+                }
             }
         }
+        return res.status(400).json({ status: false, code: 0, message: "cannot_modify_package_hours", result: [] });
 
 
     } catch (error) {
         console.log(error);
+        return res.status(400).json({ status: false, code: 0, message: "cannot_modify_package_hours", result: [] });
+
     }
 
 })
@@ -345,13 +383,16 @@ const sendsmsaddpackage = async (datas) => {
 
             if (data.data.resultCode.toString() == "20000") {
                 console.log(data.data)
+                console.log("send add package : " + true);
                 return true;
 
             }
         }
+        console.log("send add package : " + false);
         return false;
     } catch (error) {
         console.log(error);
+        console.log("send add package failed : " + false);
         return false;
     }
 }
