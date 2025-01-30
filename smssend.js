@@ -209,7 +209,7 @@ const sendsmsaddpackage = async (datas) => {
 
         // return reqsms;
         const data = await axios.post("http://10.30.6.26:10080", reqsms);
-        console.log(data.data)
+        console.log(data.data.toString())
         if (data.status == 200) {
 
                 if (data.data.resultCode == "20000") {
