@@ -102,11 +102,19 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                             if (countersuccess.length > 0) {
                                 console.log(countersuccess)
                                 for (var ii = 0; ii < countersuccess.length; ii++) {
-
-                                    const data = { Msisdn: countersuccess[ii].Msisdn[0], ProductNumber: countersuccess[ii].ProductNumber[0], CounterName: countersuccess[ii].CounterName[0], StartTime: countersuccess[ii].StartTime[0], ExpiryTime: countersuccess[ii].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false };
-                                    modelInfo.push(data)
+                                    modelInfo.push({ Msisdn: countersuccess[ii].Msisdn[0], ProductNumber: countersuccess[ii].ProductNumber[0], CounterName: countersuccess[ii].CounterName[0], StartTime: countersuccess[ii].StartTime[0], ExpiryTime: countersuccess[ii].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false })
                                 }
-                                const sendsmss = await sendsmsaddpackage(body[i])
+
+                                const sendsmss = await sendsmsaddpackage(body[i]);
+
+                                if (sendsmss == true) {
+                                    const index = modelInfo.findIndex(x => x.phone == body[i].phone);
+                                    if (index != -1) {
+                                        modelInfo[index].statussms = true;
+                                    } else {
+                                        modelInfo[index].statussms = false;
+                                    }
+                                }
                                 console.log(sendsmss)
                             }
 
@@ -360,8 +368,6 @@ app.post("/getpackagename", async (req, res) => {
 const sendsmsaddpackage = async (datas) => {
     try {
 
-        console.log(datas)
-
         const reqsms = {
             "CMD": "SENDMSG",
             "FROM": datas.headermsg,
@@ -373,22 +379,14 @@ const sendsmsaddpackage = async (datas) => {
             "CTYPE": "UTF-8",
             "CONTENT": datas.content
         }
-        console.log("request sms : ")
-        console.log(reqsms);
-
-        // return reqsms;
         const data = await axios.post("http://10.30.6.26:10080", reqsms);
-        console.log(data.data.toString())
+
         if (data.status == 200) {
-
             if (data.data.resultCode.toString() == "20000") {
-                console.log(data.data)
-                console.log("send add package : " + true);
                 return true;
-
             }
         }
-        console.log("send add package : " + false);
+        // console.log("send add package : " + false);
         return false;
     } catch (error) {
         console.log(error);
@@ -396,5 +394,10 @@ const sendsmsaddpackage = async (datas) => {
         return false;
     }
 }
+
+
+
+
+
 
 module.exports = app;
