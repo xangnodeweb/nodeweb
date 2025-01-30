@@ -212,7 +212,7 @@ const sendsmsaddpackage = async (datas) => {
         console.log(data.data.toString())
         if (data.status == 200) {
 
-                if (data.data.resultCode == "20000") {
+                if (data.data.resultCode.toString() == "20000") {
                     console.log(data.data)
                     return true;
              
