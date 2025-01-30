@@ -105,6 +105,47 @@ exports.bodyaddpackage = async (phone, countername, starttime, expiretime, refil
    }
 
 }
+exports.bodymodiefieldhours = (phone, productno, starttime, expire) => {
+   try {
+
+      const bodys = `<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:web="http://vsmp.ais.co.th/webservices/">
+   <soap:Header/>
+   <soap:Body>
+      <web:modifyCounter>
+         <!--Optional:-->
+         <web:Username>vansana</web:Username>
+         <!--Optional:-->
+         <web:OrderRef>test</web:OrderRef>
+         <!--Optional:-->
+         <web:OrderDesc>migrateexpdate</web:OrderDesc>
+         <!--Optional:-->
+         <web:Msisdn>${phone}</web:Msisdn>
+         <!--Optional:-->
+         <web:ProductNo>${productno}</web:ProductNo>
+         <!--Optional:-->
+         <web:ExpiryRecurringFlag></web:ExpiryRecurringFlag>
+         <!--Optional:-->
+         <web:ExpiryTime>${expire}T23:59:59.0700000+07:00</web:ExpiryTime>
+         <!--Optional:-->
+         <web:StartTime>${starttime}T00:00:00.0000000+07:00</web:StartTime>
+         <!--Optional:-->
+         <web:CounterState></web:CounterState>
+         <!--Optional:-->
+         <web:RefillStopTime>${expire}T23:59:59.0700000+07:00</web:RefillStopTime>
+      </web:modifyCounter>
+   </soap:Body>
+</soap:Envelope>`
+      {/* <web:ExpiryTime>2024-10-30T23:59:59.0700000+07:00</web:ExpiryTime> */ }
+
+
+      return bodys;
+   } catch (error) {
+      console.log(error)
+   }
+
+}
+
+
 
 exports.changemainoffering = async (phone, offeringold, offeringnew, msgseq) => {
    try {

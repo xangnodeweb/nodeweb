@@ -1,13 +1,14 @@
 const app = require("express").Router();
 const axios = require("axios");
 
-const { bodyaddpackage } = require("./modelbody");
+const { bodyaddpackage, bodymodiefieldhours, bodyinquery } = require("./modelbody");
 const fetch = require("node-fetch");
 const { parseString } = require("xml2js")
 
 const fs = require("fs/promises");
 const path = require("path");
 const { chownSync } = require("fs");
+const { response } = require("express");
 
 
 app.post("/sendsms", async (req, res) => {
@@ -94,29 +95,22 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                         model.push(datas['soap:Envelope']['soap:Body'])
                         const responsesuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['OperationStatus'][0]; // operation status
                         const countersuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['CounterArray'][0]['CounterInfo']; // counterinfo data
-                        console.log(responsesuccess)
+
                         if (responsesuccess.IsSuccess[0] == 'true') {
-                            let data = {};
+
                             if (countersuccess.length > 0) {
+
                                 for (var ii = 0; ii < countersuccess.length; ii++) {
-                                    data = { Msisdn: countersuccess[ii].Msisdn[0], ProductNumber: countersuccess[ii].ProductNumber[0], CounterName: countersuccess[ii].CounterName[0], StartTime: countersuccess[ii].StartTime[0], ExpiryTime: countersuccess[ii].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false };
 
+                                    const data = { Msisdn: countersuccess[ii].Msisdn[0], ProductNumber: countersuccess[ii].ProductNumber[0], CounterName: countersuccess[ii].CounterName[0], StartTime: countersuccess[ii].StartTime[0], ExpiryTime: countersuccess[ii].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false };
+                                    modelInfo.push(data)
                                 }
+                                const sendsmss = await sendsmsaddpackage(body[i])
+                                console.log(sendsmss)
                             }
 
-                            const sendsmss = await sendsmsaddpackage(body[i])
-                            if (sendsmss == true) {
-                                data.statussms = true
-                                console.log("status : ")
-                                console.log(data)
-                                modelInfo.push(data)
-                            } else {
-                                modelInfo.push(data)
-                            }
-                            console.log(sendsmss)
-                            console.log(modelInfo)
                         } else {
-                            const data = { Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0] , statussms :false };
+                            const data = { Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false };
                             modelInfo.push(data)
                         }
                     });
@@ -126,7 +120,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     const errors = JSON.parse(error);
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            const data = { Msisdn: body[0].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: false, code: 2, message: "cannot add package ConnectTimeoutError" , statussms : false};
+                            const data = { Msisdn: body[0].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false };
                             modelInfo.push(data);
                         }
                     }
@@ -153,6 +147,143 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
         return res.status(400).json({ status: false, code: 0, message: "cannot add package", result: null })
     }
 });
+
+
+app.post("/getpackagelistphone", async (req, res) => {
+
+    try {
+
+        const body = req.body;
+
+        console.log(body);
+
+        if (body.length > 0) {
+
+            let model = []
+            let modelbody = [];
+            let modelresponse = [];  // item response
+            for (let item of body) {
+
+                console.log(item)
+                const bodyqueryphone = await bodyinquery(item.toString());
+                console.log(body)
+
+                const header = {
+                    'Content-Type': 'text/xml;charset=utf-8'
+                }
+
+
+
+                await fetch("http://10.0.10.35/vsmpltc/web/services/amfwebservice.asmx", {
+                    method: "POST",
+                    headers: header,
+                    body: bodyqueryphone
+                }).then(response => {
+                    return response.text();
+
+                }).then(responsetext => {
+
+
+                    const modeldata = responsetext
+
+
+                    parseString(modeldata, function (err, result) {
+
+
+                        let data = JSON.stringify(result);
+                        const datas = JSON.parse(data);
+
+                        const model = datas["soap:Envelope"]["soap:Body"][0]["inquiryCounterResponse"][0]["inquiryCounterResult"][0]["CounterArray"][0]["CounterInfo"]
+
+                        for (var i = 0; i < model.length; i++) {
+                            console.log()
+
+
+                            modelresponse.push({ phone: model[i].Msisdn[0], productnumber: model[i].ProductNumber[0], countername: model[i].CounterName[0], starttime: model[i].StartTime[0], expirytime: model[i].ExpiryTime[0], refillstoptime: model[i].RefillStopTime[0]["$"]["xsi:nil"] })
+
+                        }
+
+                        console.log(model)
+                    })
+
+
+
+
+                }).catch(err => {
+
+                    console.log(err)
+                })
+            }
+            return res.json({ status: true, code: 0, message: "get_package_listphone", result: modelresponse })
+        }
+
+        return res.json({ status: false, code: 0, message: "get_package_failed", result: [] })
+
+
+    } catch (error) {
+        console.log(error);
+    }
+
+})
+
+
+app.post("/modifypackagehours", async (req, res) => {
+    try {
+
+        const body = req.body;
+
+        if (body.length > 0) {
+
+
+            for (let item of body) {
+
+                console.log(item.phone, item.productnumber, item.starttime, item.expiretime)
+             
+                const bodymodifield = bodymodiefieldhours(item.phone, item.productnumber, item.starttime, item.expiretime);
+
+                const header = {
+                    'Content-Type': 'text/xml;charset=utf-8'
+                }
+
+                let model = []
+                let modelbody = [];
+                let modelresponse = [];  // item response
+
+                await fetch("http://10.0.10.35/vsmpltc/web/services/amfwebservice.asmx", {
+                    method: "POST",
+                    headers: header,
+                    body: bodymodifield
+                }).then(response => {
+                    return response.text();
+
+                }).then(responsetext => {
+    
+                      const modelres = responsetext;
+
+                      parseString(modelres , function(err , result) {
+
+                         console.log(result)
+
+                          const models = JSON.stringify(result);
+                          const modelresdata = JSON.parse(models);
+                          console.log(modelresdata)
+
+                      })
+
+                }).catch(err => {
+
+  console.log(err)
+                })
+
+            }
+        }
+
+
+    } catch (error) {
+        console.log(error);
+    }
+
+})
 
 
 
@@ -212,10 +343,10 @@ const sendsmsaddpackage = async (datas) => {
         console.log(data.data.toString())
         if (data.status == 200) {
 
-                if (data.data.resultCode.toString() == "20000") {
-                    console.log(data.data)
-                    return true;
-             
+            if (data.data.resultCode.toString() == "20000") {
+                console.log(data.data)
+                return true;
+
             }
         }
         return false;
