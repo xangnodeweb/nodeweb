@@ -370,7 +370,7 @@ const sendsmsaddpackage = async (datas) => {
             "CHARGE": "8562052199062",
             "CODE": "45140377001",
             "CTYPE": "UTF-8",
-            "CONTENT": datas.content
+            "CONTENT": datas.contentmsg
         }
         console.log(reqsms)
         const data = await axios.post("http://10.30.6.26:10080", reqsms);
