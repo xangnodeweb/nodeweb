@@ -67,7 +67,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
 
 
                 console.log(body[i])
-                body[i].packagename = "Package Promotion 3GB 24hrs"
+                // body[i].packagename = "Package Promotion 3GB 24hrs"
                 const bodyaddpackages = await bodyaddpackage(body[i].phone, body[i].packagename, body[i].starttime, body[i].expiretime, body[i].refillstoptime); // body request add package
 
                 console.log(bodyaddpackages)
