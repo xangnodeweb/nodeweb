@@ -372,8 +372,9 @@ const sendsmsaddpackage = async (datas) => {
             "CTYPE": "UTF-8",
             "CONTENT": datas.content
         }
+        console.log(reqsms)
         const data = await axios.post("http://10.30.6.26:10080", reqsms);
-
+ console.log(data.data)
         if (data.status == 200) {
             if (data.data.resultCode.toString() == "20000") {
                 return true;
