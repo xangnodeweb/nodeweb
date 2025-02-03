@@ -59,18 +59,20 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
 
         let model = [];
         let modelInfo = [];
+
+
         if (body.length > 0) {
             console.log(body);
 
             for (var i = 0; i < body.length; i++) {
 
-
-
                 console.log(body[i])
-                // body[i].packagename = "Package Promotion 3GB 24hrs"
-                const bodyaddpackages = await bodyaddpackage(body[i].phone, body[i].packagename, body[i].starttime, body[i].expiretime, body[i].refillstoptime); // body request add package
 
-                console.log(bodyaddpackages)
+                // body[i].packagename = "Package Promotion 3GB 24hrs"
+                const bodyaddpackages = await bodyaddpackage(body[i].Msisdn, body[i].CounterName, body[i].StartTime, body[i].ExpiryTime, body[i].refillstoptime); // body request add package
+              
+   
+                // console.log(bodyaddpackages)
 
 
                 const headers = {
@@ -100,19 +102,18 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                         if (responsesuccess.IsSuccess[0] == 'true') {
 
                             if (countersuccess.length > 0) {
-                                console.log(countersuccess)
-                                for (var ii = 0; ii < countersuccess.length; ii++) {
-                                    modelInfo.push({ Msisdn: countersuccess[ii].Msisdn[0], ProductNumber: countersuccess[ii].ProductNumber[0], CounterName: countersuccess[ii].CounterName[0], StartTime: countersuccess[ii].StartTime[0], ExpiryTime: countersuccess[ii].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false })
-                                }
-
+                                // console.log(countersuccess)
+                           
+                                     modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg })
+                             
                                 const sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
-                                
+
                                 console.log(sendsmss)
                             }
 
                         } else {
-                            const data = { Msisdn: body[i].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false };
+                            const data = { Msisdn: body[i].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg };
                             modelInfo.push(data)
                         }
                     });
@@ -122,7 +123,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     const errors = JSON.parse(error);
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            const data = { Msisdn: body[0].phone, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false };
+                            const data = { Msisdn: body[0].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg };
                             modelInfo.push(data);
                         }
                     }
@@ -132,17 +133,20 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     break;
                 }
             }
-            const indexresponse = modelInfo.filter(x => x.status == false && x.code == 2);
-            if (indexresponse.length == 0) { // check response have timeout
-                return res.status(200).json({ status: true, code: 0, message: "add package success", result: modelInfo })
-            } else {
-                const status = indexresponse.length == 0 ? 1 : 2;
-                const message = indexresponse.length > 0 ? "cannot add package data ConnectionTimeOutError" : "cannot add package data";
-                return res.status(400).json({ status: false, code: status, message: message, result: modelInfo });
+            if (modelInfo.length > 0) {
+                const indexresponse = modelInfo.filter(x => x.status == false && x.code == 2);
+                if (indexresponse.length == 0) { // check response have timeout
+                    return res.status(200).json({ status: true, code: 0, message: "add package success", result: modelInfo })
+                } else {
+                    const status = indexresponse.length == 0 ? 1 : 2;
+                    const message = indexresponse.length > 0 ? "cannot add package data ConnectionTimeOutError" : "cannot add package data";
+                    return res.status(400).json({ status: false, code: status, message: message, result: modelInfo });
+                }
             }
+
         }
 
-        return res.status(400).json({ status: true, code: 0, message: 'cannot add package', result: null });
+        return res.status(400).json({ status: true, code: 0, message: 'cannot add package', result: [] });
 
     } catch (error) {
         console.log(error);
@@ -365,7 +369,7 @@ const sendsmsaddpackage = async (datas) => {
             "CMD": "SENDMSG",
             "FROM": datas.headermsg,
             // "FROM": "Lao%2DTelecom",
-            "TO": datas.phone,
+            "TO": datas.Msisdn,
             "REPORT": "Y",
             "CHARGE": "8562052199062",
             "CODE": "45140377001",
@@ -374,7 +378,7 @@ const sendsmsaddpackage = async (datas) => {
         }
         console.log(reqsms)
         const data = await axios.post("http://10.30.6.26:10080", reqsms);
- console.log(data.data)
+        console.log(data.data)
         if (data.status == 200) {
             if (data.data.resultCode.toString() == "20000") {
                 return true;
