@@ -10,6 +10,7 @@ const path = require("path");
 const { chownSync } = require("fs");
 const { response } = require("express");
 const { JavascriptModulesPlugin } = require("webpack");
+const { Console } = require("console");
 
 
 app.post("/sendsms", async (req, res) => {
@@ -70,8 +71,8 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
 
                 // body[i].packagename = "Package Promotion 3GB 24hrs"
                 const bodyaddpackages = await bodyaddpackage(body[i].Msisdn, body[i].CounterName, body[i].StartTime, body[i].ExpiryTime, body[i].refillstoptime); // body request add package
-              
-   
+
+
                 // console.log(bodyaddpackages)
 
 
@@ -103,9 +104,8 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
 
                             if (countersuccess.length > 0) {
                                 // console.log(countersuccess)
-                           
-                                     modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg })
-                             
+                                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg  ,  refillstoptime : countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
+
                                 const sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
 
@@ -113,7 +113,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                             }
 
                         } else {
-                            const data = { Msisdn: body[i].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg };
+                            const data = { Msisdn: body[i].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg  , refillstoptime : null};
                             modelInfo.push(data)
                         }
                     });
@@ -123,7 +123,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     const errors = JSON.parse(error);
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            const data = { Msisdn: body[0].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg };
+                            const data = { Msisdn: body[0].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg  , refillstoptime : null};
                             modelInfo.push(data);
                         }
                     }
