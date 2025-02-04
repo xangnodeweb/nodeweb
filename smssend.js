@@ -65,6 +65,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
         if (body.length > 0) {
             console.log(body);
 
+
             for (var i = 0; i < body.length; i++) {
 
                 console.log(body[i])
@@ -103,17 +104,28 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                         if (responsesuccess.IsSuccess[0] == 'true') {
 
                             if (countersuccess.length > 0) {
-                                // console.log(countersuccess)
-                                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg  ,  refillstoptime : countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
-
+                                console.log(countersuccess)
+                                let sendsmsdata = false;
+                                // modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
+                                console.log("body success : ")
+                                let data = { Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] };
                                 const sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
+                                if (sendsmss == true) {
+                                
+                                    data.statussms = true
+                                }
+                                console.log(data)
+                                modelInfo.push(...data, modelInfo);
+
+
 
                                 console.log(sendsmss)
+                                console.log(modelInfo)
                             }
 
                         } else {
-                            const data = { Msisdn: body[i].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg  , refillstoptime : null};
+                            const data = { Msisdn: body[i].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: null };
                             modelInfo.push(data)
                         }
                     });
@@ -121,9 +133,10 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                 }).catch(err => {
                     const error = JSON.stringify(err);
                     const errors = JSON.parse(error);
+                    console.log(err)
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            const data = { Msisdn: body[0].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg  , refillstoptime : null};
+                            const data = { Msisdn: body[0].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: null };
                             modelInfo.push(data);
                         }
                     }
@@ -146,11 +159,11 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
 
         }
 
-        return res.status(400).json({ status: true, code: 0, message: 'cannot add package', result: [] });
+        return res.status(400).json({ status: true, code: 1, message: 'cannot add package', result: [] });
 
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ status: false, code: 0, message: "cannot add package", result: null })
+        return res.status(400).json({ status: false, code: 0, message: error.toString(), result: null })
     }
 });
 
