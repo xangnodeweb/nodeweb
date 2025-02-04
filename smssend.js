@@ -116,7 +116,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                                     data.statussms = true
                                 }
                                 console.log(data)
-                                modelInfo.push(...data, modelInfo);
+                                modelInfo.push(data);
 
 
 
