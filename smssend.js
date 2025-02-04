@@ -147,7 +147,10 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     break;
                 }
             }
-            console.log("modelinfo : " + modelInfo.length);
+         
+
+        }
+   console.log("modelinfo : " + modelInfo.length);
             console.log(modelInfo)
             if (modelInfo.length > 0) {
                 const indexresponse = modelInfo.filter(x => Boolean(x.status) == false && x.code == 2);
@@ -159,10 +162,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     return res.status(400).json({ status: false, code: status, message: message, result: modelInfo });
                 }
             }
-
-        }
-
-        return res.status(400).json({ status: true, code: 1, message: 'cannot add package', result: [] });
+        // return res.status(400).json({ status: true, code: 1, message: 'cannot add package', result: [] });
 
     } catch (error) {
         console.log(error);
