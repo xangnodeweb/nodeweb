@@ -112,9 +112,10 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                                 const sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
                                 if (sendsmss == true) {
-                                
+
                                     data.statussms = true
                                 }
+                                console.log("modelindex send")
                                 console.log(data)
                                 modelInfo.push(data);
 
@@ -141,13 +142,15 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                         }
                     }
                 });
-                const index = modelInfo.findIndex(x => x.status == false && x.code == 2);
+                const index = modelInfo.findIndex(x => Boolean(x.status) == false && x.code == 2);
                 if (index != -1) { // break for then timeout 
                     break;
                 }
             }
+            console.log("modelinfo : " + modelInfo.length);
+            console.log(modelInfo)
             if (modelInfo.length > 0) {
-                const indexresponse = modelInfo.filter(x => x.status == false && x.code == 2);
+                const indexresponse = modelInfo.filter(x => Boolean(x.status) == false && x.code == 2);
                 if (indexresponse.length == 0) { // check response have timeout
                     return res.status(200).json({ status: true, code: 0, message: "add package success", result: modelInfo })
                 } else {
