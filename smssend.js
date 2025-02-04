@@ -104,24 +104,17 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                         if (responsesuccess.IsSuccess[0] == 'true') {
 
                             if (countersuccess.length > 0) {
-                                console.log(countersuccess)
-                                let sendsmsdata = false;
+                                // console.log(countersuccess)
                                 // modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
-                                console.log("body success : ")
                                 let data = { Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] };
                                 const sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
                                 if (sendsmss == true) {
-
                                     data.statussms = true
                                 }
-                                console.log("modelindex send")
-                                console.log(data)
-                                modelInfo.push(data);
+                                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: data.statussms, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] });
 
-
-
-                                console.log(sendsmss)
+                                // console.log(sendsmss)
                                 console.log(modelInfo)
                             }
 
@@ -147,11 +140,6 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     break;
                 }
             }
-         
-
-        }
-   console.log("modelinfo : " + modelInfo.length);
-            console.log(modelInfo)
             if (modelInfo.length > 0) {
                 const indexresponse = modelInfo.filter(x => Boolean(x.status) == false && x.code == 2);
                 if (indexresponse.length == 0) { // check response have timeout
@@ -162,7 +150,8 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     return res.status(400).json({ status: false, code: status, message: message, result: modelInfo });
                 }
             }
-        // return res.status(400).json({ status: true, code: 1, message: 'cannot add package', result: [] });
+        }
+        return res.status(400).json({ status: true, code: 1, message: 'cannot add package', result: [] });
 
     } catch (error) {
         console.log(error);
