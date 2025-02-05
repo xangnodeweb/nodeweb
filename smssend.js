@@ -108,18 +108,16 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                                 // let data = { Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] };
                                 let sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
+                                console.log("msisdn phone : " + body[i].Msisdn.toString());
                                 if (sendsmss == true) {
-                                    const index = modelInfo.findIndex(x => x.Msisdn.toString() == body[i].Msisdn);
+                                    const index = modelInfo.findIndex(x => x.Msisdn.toString() == body[i].Msisdn.toString());
                                     if (index != -1) {
                                         modelInfo[index].statussms = true;
 
                                     }
                                 }
 
-                                // modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: data.statussms, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] });
-
-                                // console.log(sendsmss)
-                                console.log(modelInfo)
+                                 console.log(modelInfo)
                             }
 
                         } else {
