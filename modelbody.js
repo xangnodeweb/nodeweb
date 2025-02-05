@@ -68,7 +68,7 @@ exports.bodymodiefield = (phone, productno, expire) => {
 
 }
 
-exports.bodyaddpackage = async (phone, countername, starttime, expiretime, refillstoptime) => {
+exports.bodyaddpackage = async (Msisdn, countername, starttime, expiretime, refillstoptime) => {
    try {
       const body = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://vsmp.ais.co.th/webservices/">
    <soapenv:Header/>
@@ -81,7 +81,7 @@ exports.bodyaddpackage = async (phone, countername, starttime, expiretime, refil
          <!--Optional:-->
          <web:OrderDesc>0307564</web:OrderDesc>
          <!--Optional:-->
-         <web:Msisdn>${phone}</web:Msisdn>
+         <web:Msisdn>${Msisdn}</web:Msisdn>
          <!--Optional:-->
          <web:CounterName>${countername}</web:CounterName>
          <!--Optional:-->
