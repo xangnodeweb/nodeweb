@@ -140,7 +140,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     break;
                 }
             }
- console.log(modelInfo)
+            console.log(modelInfo)
             if (modelInfo.length > 0) {
                 const indexresponse = modelInfo.filter(x => Boolean(x.status) == false && x.code == 2);
                 if (indexresponse.length == 0) { // check response have timeout
@@ -321,9 +321,6 @@ app.post("/modifypackagehours", async (req, res) => {
 
 })
 
-
-
-
 app.post("/getpackagename", async (req, res) => {
 
     try {
@@ -353,6 +350,40 @@ app.post("/getpackagename", async (req, res) => {
     }
 })
 
+app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
+    try {
+
+        const filename = req.params.filename;
+        let model = [];
+        const paths = path.join(__dirname, "./filedatatxt/");
+
+        const folder = await fs.readdir(paths);
+        const format = /^[\n]|[\r\n]/g
+        const datafile = await fs.readFile(paths + "fileaddpackagesms.txt", "utf8")
+        if (datafile.toString().length > 0) {
+
+            const datas = datafile.split(format);
+            console.log(datas)
+            if (datas.length > 0) {
+
+                for (var i = 0; i < datas.length; i++){
+                    let linecol = datas[i].split("|");
+                    console.log(linecol.length)
+                  if(linecol.length == 11){
+                      model.push({Msisdn : linecol[0] , ProductNumber : linecol[1] , CounterName : linecol[2] , StartTime : linecol[3] , ExpiryTime : linecol[4] , headermsg : linecol[5] , contentmsg : linecol[6] , status : linecol[7] , code : linecol[8] , statussms : linecol[9] , datetimelog : linecol[10]});
+                  }
+                }
+            }
+           console.log(model)
+
+        }
+        return res.status(200).json({ status: true, code: 0, message: "log_fileaddpackagesms_success", result: model })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ status: false, code: 0, message: "cannot_get_logfile", result: [] })
+    }
+});
 
 
 const sendsmsaddpackage = async (datas) => {
