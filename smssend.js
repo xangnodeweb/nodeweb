@@ -410,30 +410,6 @@ const sendsmsaddpackage = async (datas) => {
 }
 
 
-app.post("/addlogpackage", async (req, res) => {
-    try {
-
-        const paths = path.join("./filedatatxt/")
-        const folder = await fs.readdir(paths);
-        let data = `${datetime() + "|" + "addpackage"}`
-
-        await fs.appendFile(paths + "fileaddpackage.txt", data, (err) => {
-
-            if (err) {
-                console.log(data);
-                console.log("cannot write log file")
-            }
-
-        })
-
-        return res.status(200).json(folder);
-
-    } catch (error) {
-        console.log(error);
-    }
-
-})
-
 const adddatafile = async (resdata) => {
     try {
         if (resdata.length > 0) {
@@ -441,7 +417,7 @@ const adddatafile = async (resdata) => {
             for (var i = 0; i < resdata.length; i++) {
                 let data = `${resdata[i].Msisdn + "|" + resdata[i].ProductNumber + "|" + resdata[i].CounterName + "|" + resdata[i].StartTime + "|" + resdata[i].ExpiryTime + "|" + resdata[i].headermsg + "|" + resdata[i].contentmsg + "|" + resdata[i].status + "|" + resdata[i].code + "|" + resdata[i].statussms + "|" + date}\n`
                 const folderpath = path.join("./filedatatxt/")
-                await fs.appendFile(folderpath + "fileaddpackage.txt", data, (err) => {
+                await fs.appendFile(folderpath + "fileaddpackagesms.txt", data, (err) => {
                     if (err) {
                         console.log(resdata);
                         console.log("cannot write log fileaddpackage.")
