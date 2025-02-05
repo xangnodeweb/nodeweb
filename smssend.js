@@ -73,7 +73,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                 const bodyaddpackages = await bodyaddpackage(body[i].Msisdn, body[i].CounterName, body[i].StartTime, body[i].ExpiryTime, body[i].refillstoptime); // body request add package
 
 
-                // console.log(bodyaddpackages)
+                console.log(bodyaddpackages)
 
 
                 const headers = {
