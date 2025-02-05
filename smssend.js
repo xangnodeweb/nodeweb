@@ -7,10 +7,7 @@ const { parseString } = require("xml2js")
 
 const fs = require("fs/promises");
 const path = require("path");
-const { chownSync } = require("fs");
-const { response } = require("express");
-const { JavascriptModulesPlugin } = require("webpack");
-const { Console } = require("console");
+
 
 
 app.post("/sendsms", async (req, res) => {
@@ -73,9 +70,8 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                 const bodyaddpackages = await bodyaddpackage(body[i].Msisdn, body[i].CounterName, body[i].StartTime, body[i].ExpiryTime, body[i].refillstoptime); // body request add package
 
                 const phone = body[i].Msisdn.toString();
-                console.log(bodyaddpackages)
-                console.log(phone)
-
+                // console.log(bodyaddpackages)
+             
 
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8'
@@ -105,15 +101,15 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
 
                             if (countersuccess.length > 0) {
 
-                                console.log(countersuccess)
-                                console.log(countersuccess[0].Msisdn[0])
+                                // console.log(countersuccess)
+                                // console.log(countersuccess[0].Msisdn[0])
 
 
                                 modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
                                 // let data = { Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] };
                                 let sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
-                                await sleep(50);
+
 
                                 if (sendsmss == true) {
 
@@ -145,23 +141,23 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                         }
                     }
                 });
-                console.log("modelinfo check errorconnectiontimeout")
-                console.log(modelInfo);
+            
                 const index = modelInfo.findIndex(x => Boolean(x.status) == false && x.code == 2);
                 if (index != -1) { // break for then timeout 
                     break;
                 }
             }
-            console.log("response add package model")
-            console.log(modelInfo);
 
             if (modelInfo.length > 0) {
                 const indexresponse = modelInfo.filter(x => Boolean(x.status) == false && x.code == 2);
                 if (indexresponse.length == 0) { // check response have timeout
+
+                    await adddatafile(modelInfo)
                     return res.status(200).json({ status: true, code: 0, message: "add package success", result: modelInfo })
                 } else {
                     const status = indexresponse.length == 0 ? 1 : 2;
                     const message = indexresponse.length > 0 ? "cannot add package data ConnectionTimeOutError" : "cannot add package data";
+                    await adddatafile(modelInfo)
                     return res.status(400).json({ status: false, code: status, message: message, result: modelInfo });
                 }
             }
@@ -414,12 +410,66 @@ const sendsmsaddpackage = async (datas) => {
 }
 
 
+app.post("/addlogpackage", async (req, res) => {
+    try {
 
-const sleep = (ms) => {
+        const paths = path.join("./filedatatxt/")
+        const folder = await fs.readdir(paths);
+        let data = `${datetime() + "|" + "addpackage"}`
 
-    return new Promise(res => setTimeout(res, ms));
+        await fs.appendFile(paths + "fileaddpackage.txt", data, (err) => {
+
+            if (err) {
+                console.log(data);
+                console.log("cannot write log file")
+            }
+
+        })
+
+        return res.status(200).json(folder);
+
+    } catch (error) {
+        console.log(error);
+    }
+
+})
+
+const adddatafile = async (resdata) => {
+    try {
+        if (resdata.length > 0) {
+            let date = datetime();
+            for (var i = 0; i < resdata.length; i++) {
+                let data = `${resdata[i].Msisdn + "|" + resdata[i].ProductNumber + "|" + resdata[i].CounterName + "|" + resdata[i].StartTime + "|" + resdata[i].ExpiryTime + "|" + resdata[i].headermsg + "|" + resdata[i].contentmsg + "|" + resdata[i].status + "|" + resdata[i].code + "|" + resdata[i].statussms + "|" + date}\n`
+                const folderpath = path.join("./filedatatxt/")
+                await fs.appendFile(folderpath + "fileaddpackage.txt", data, (err) => {
+                    if (err) {
+                        console.log(resdata);
+                        console.log("cannot write log fileaddpackage.")
+                    }
+                })
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
 
 }
 
+const sleep = (ms) => {
+    return new Promise(res => setTimeout(res, ms));
+}
+const datetime = () => {
+    try {
+
+        const date = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", hour12: false }).format(new Date());
+        const time = new Intl.DateTimeFormat("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Bangkok" }).format(new Date());
+
+        return date + "-" + time;
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 
 module.exports = app;
