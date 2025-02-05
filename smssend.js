@@ -61,7 +61,6 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
         let model = [];
         let modelInfo = [];
 
-
         if (body.length > 0) {
             console.log(body);
 
@@ -105,14 +104,19 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
 
                             if (countersuccess.length > 0) {
                                 // console.log(countersuccess)
-                                // modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
-                                let data = { Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] };
-                                const sendsmss = await sendsmsaddpackage(body[i]);
+                                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
+                                // let data = { Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] };
+                                let sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
                                 if (sendsmss == true) {
-                                    data.statussms = true
+                                    const index = modelInfo.findIndex(x => x.Msisdn.toString() == body[i].Msisdn);
+                                    if (index != -1) {
+                                        modelInfo[index].statussms = true;
+
+                                    }
                                 }
-                                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: data.statussms, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] });
+
+                                // modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: data.statussms, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] });
 
                                 // console.log(sendsmss)
                                 console.log(modelInfo)
@@ -135,11 +139,16 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                         }
                     }
                 });
+                console.log("modelinfo check errorconnectiontimeout")
+                console.log(modelInfo);
                 const index = modelInfo.findIndex(x => Boolean(x.status) == false && x.code == 2);
                 if (index != -1) { // break for then timeout 
                     break;
                 }
             }
+            console.log("response add package model")
+            console.log(modelInfo);
+
             if (modelInfo.length > 0) {
                 const indexresponse = modelInfo.filter(x => Boolean(x.status) == false && x.code == 2);
                 if (indexresponse.length == 0) { // check response have timeout
