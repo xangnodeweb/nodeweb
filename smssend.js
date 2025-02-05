@@ -118,7 +118,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                         } else {
                             console.log(responsesuccess);
                             console.log(responsesuccess.Description[0]);
-                            const data = { Msisdn: body[i].Msisdn, ProductNumber: "not found data", CounterName: "not found data", StartTime: "not found data", ExpiryTime: "not found data", status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: false };
+                            const data = { Msisdn: body[i].Msisdn, ProductNumber: "not found data", CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: false };
                             modelInfo.push(data)
                         }
                     });
@@ -354,30 +354,70 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
     try {
 
         const filename = req.params.filename;
+        const datestart = req.query.datestart;
+        const dateend = req.query.dateend;
         let model = [];
+        let modelpackagename = [];
+        let modeldate = [];
         const paths = path.join(__dirname, "./filedatatxt/");
 
         const folder = await fs.readdir(paths);
         const format = /^[\n]|[\r\n]/g
         const datafile = await fs.readFile(paths + "fileaddpackagesms.txt", "utf8")
+
         if (datafile.toString().length > 0) {
 
             const datas = datafile.split(format);
             console.log(datas)
+            console.log(filename, datestart, dateend);
             if (datas.length > 0) {
 
-                for (var i = 0; i < datas.length; i++){
+                for (var i = 0; i < datas.length; i++) {
                     let linecol = datas[i].split("|");
                     console.log(linecol.length)
-                  if(linecol.length == 11){
-                      model.push({Msisdn : linecol[0] , ProductNumber : linecol[1] , CounterName : linecol[2] , StartTime : linecol[3] , ExpiryTime : linecol[4] , headermsg : linecol[5] , contentmsg : linecol[6] , status : linecol[7] , code : linecol[8] , statussms : linecol[9] , datetimelog : linecol[10]});
-                  }
+                    if (linecol.length == 11) {
+                        model.push({ Msisdn: linecol[0], ProductNumber: linecol[1], CounterName: linecol[2], StartTime: linecol[3], ExpiryTime: linecol[4], headermsg: linecol[5], contentmsg: linecol[6], status: linecol[7], code: linecol[8], statussms: linecol[9], datetimelog: linecol[10] });
+                    }
+                }
+                if (model.length > 0) {
+                    console.log(model[0].datetimelog.toString().slice(0, 10));
+                    console.log(datestart)
+                    modeldate = model.filter(x => x.datetimelog.toString().slice(0, 10) == datestart);
+                    console.log("model date")
+                    console.log(modeldate);
+
+                    if (modeldate.length > 0) {
+
+                        for (var i = 0; i < modeldate.length; i++) {
+
+                            if (modelpackagename.length == 0) {
+                                modelpackagename.push({ CounterName: modeldate[i].CounterName, count: 1, datelog: modeldate[i].datetimelog });
+
+                            } else {
+                                console.log(modeldate[i].CounterName.toString())
+                                console.log(modelpackagename[0].CounterName)
+                                const index = modelpackagename.findIndex(x => x.CounterName == modeldate[i].CounterName);
+
+                                if (index == 1) {
+
+                                    modelpackagename[index].count = parseInt(modelpackagename[index].count) + 1;
+                                } else {
+                                    modelpackagename.push({ CounterName: modeldate[i].CounterName, count: 1, datelog: modeldate[i].datetimelog });
+                                }
+
+
+                            }
+                        }
+
+                    }
+
+
                 }
             }
-           console.log(model)
+            // console.log(model)
 
         }
-        return res.status(200).json({ status: true, code: 0, message: "log_fileaddpackagesms_success", result: model })
+        return res.status(200).json({ status: true, code: 0, message: "log_fileaddpackagesms_success", result: { modellog: modeldate, modelgrouplog: modelpackagename } });
 
     } catch (error) {
         console.log(error);
