@@ -75,7 +75,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                 const phone = body[i].Msisdn.toString();
                 console.log(bodyaddpackages)
                 console.log(phone)
-                
+
 
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8'
@@ -113,8 +113,8 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                                 // let data = { Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] };
                                 let sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
-                         
-                              
+                                await sleep(50);
+
                                 if (sendsmss == true) {
 
                                     let index = modelInfo.findIndex(x => x.Msisdn.toString() == phone);
@@ -415,7 +415,11 @@ const sendsmsaddpackage = async (datas) => {
 
 
 
+const sleep = (ms) => {
 
+    return new Promise(res => setTimeout(res, ms));
+
+}
 
 
 module.exports = app;
