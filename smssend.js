@@ -109,8 +109,9 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                                 let sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
                                 console.log("msisdn phone : " + body[i].Msisdn.toString());
+                                let phone = body[i].Msisdn.toString();
                                 if (sendsmss == true) {
-                                    const index = modelInfo.findIndex(x => x.Msisdn.toString() == body[i].Msisdn.toString());
+                                    let index = modelInfo.findIndex(x => x.Msisdn.toString() == phone);
                                     if (index != -1) {
                                         modelInfo[index].statussms = true;
 
