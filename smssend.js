@@ -140,7 +140,9 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                     break;
                 }
             }
+            console.log("model response : ")
             console.log(modelInfo)
+            console.log("model response .")
             if (modelInfo.length > 0) {
                 const indexresponse = modelInfo.filter(x => Boolean(x.status) == false && x.code == 2);
                 if (indexresponse.length == 0) { // check response have timeout
