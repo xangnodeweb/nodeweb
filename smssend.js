@@ -178,6 +178,9 @@ app.post("/getpackagelistphone", async (req, res) => {
             let modelresponse = [];  // item response
             for (let item of body) {
 
+                if (body.indexOf(item) == 1) {
+                  
+                }
                 console.log(item)
                 const bodyqueryphone = await bodyinquery(item.toString());
                 console.log(body)
@@ -196,33 +199,44 @@ app.post("/getpackagelistphone", async (req, res) => {
 
                     const modeldata = responsetext
                     parseString(modeldata, function (err, result) {
-
-
                         let data = JSON.stringify(result);
                         const datas = JSON.parse(data);
-
                         const model = datas["soap:Envelope"]["soap:Body"][0]["inquiryCounterResponse"][0]["inquiryCounterResult"][0]["CounterArray"][0]["CounterInfo"]
-
-                        for (var i = 0; i < model.length; i++) {
-                            console.log()
-
-                            modelresponse.push({ phone: model[i].Msisdn[0], productnumber: model[i].ProductNumber[0], countername: model[i].CounterName[0], starttime: model[i].StartTime[0], expirytime: model[i].ExpiryTime[0], refillstoptime: model[i].RefillStopTime[0]["$"]["xsi:nil"] })
+                        if (model.length > 0) {
+                            for (var i = 0; i < model.length; i++) {
+                                modelresponse.push({ phone: model[i].Msisdn[0], productnumber: model[i].ProductNumber[0], countername: model[i].CounterName[0], starttime: model[i].StartTime[0], expirytime: model[i].ExpiryTime[0], refillstoptime: model[i].RefillStopTime[0]["$"]["xsi:nil"], message: "", status: true, code: 0 })
+                            }
                         }
                         console.log(model)
                     })
                 }).catch(err => {
+                    const error = JSON.stringify(err);
+                    const errors = JSON.parse(error);
+                    if (err) {
+                        if (errors.code == "ETIMEDOUT") {
+                            modelresponse.push({ phone: item.toString(), productnumber: "not found data", countername: "not found data", starttime: "not found data", expirytime: "not found data", refillstoptime: "not found data", status: false, code: 2, mesage: "cannot query package ConnectTimeOutError" })
+                        }
+                    }
 
                     console.log(err)
                 })
+                const indexs = modelresponse.findIndex(x => x.status == false && x.code == 2);
+                if (indexs != -1) {
+                    break;
+                }
             }
-            return res.json({ status: true, code: 0, message: "get_package_listphone", result: modelresponse })
+
+            const modelindex = modelresponse.filter(x => x.status == false && x.code == 2); // model response then if status == false && code == 2
+            if (modelindex.length == 0) {
+                return res.status(200).json({ status: true, code: 0, message: "get_package_listphone", result: modelresponse })
+            } else {
+                return res.status(400).json({ status: false, code: 2, message: "cannot_query_package_timeoutError", result: modelresponse })
+            }
         }
-
-        return res.json({ status: false, code: 0, message: "get_package_failed", result: [] })
-
-
+        return res.status(400).json({ status: false, code: 0, message: "get_package_failed", result: [] })
     } catch (error) {
         console.log(error);
+        return res.status(400).json({ status: false, code: 0, message: "cannot_query_package_failed", result: [] })
     }
 
 })
