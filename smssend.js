@@ -105,6 +105,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                                 modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
                                 let sendsmss = await sendsmsaddpackage(body[i]);
                                 console.log("send sms : " + sendsmss)
+                                await sleep(100);
                                 if (sendsmss == true) {
                                     let index = modelInfo.findIndex(x => x.Msisdn.toString() == phone);
                                     console.log("index model find phone : " + index)
@@ -143,7 +144,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
             console.log("model response : ")
             console.log(modelInfo)
             console.log("model response .")
-            await sleep(150);
+            
             if (modelInfo.length > 0) {
                 const indexresponse = modelInfo.filter(x => Boolean(x.status) == false && x.code == 2);
                 if (indexresponse.length == 0) { // check response have timeout
