@@ -179,7 +179,7 @@ app.post("/getpackagelistphone", async (req, res) => {
             for (let item of body) {
 
                 if (body.indexOf(item) == 1) {
-                  
+
                 }
                 console.log(item)
                 const bodyqueryphone = await bodyinquery(item.toString());
@@ -259,8 +259,6 @@ app.post("/modifypackagehours", async (req, res) => {
                     'Content-Type': 'text/xml;charset=utf-8'
                 }
 
-
-
                 await fetch("http://10.0.10.35/vsmpltc/web/services/amfwebservice.asmx", {
                     method: "POST",
                     headers: header,
@@ -282,13 +280,12 @@ app.post("/modifypackagehours", async (req, res) => {
 
                         console.log(modelresdata["soap:Envelope"]["soap:Body"][0]["modifyCounterResponse"][0]["modifyCounterResult"][0])
 
-
                         const modeldata = modelresdata["soap:Envelope"]["soap:Body"][0]["modifyCounterResponse"][0]["modifyCounterResult"][0]
 
                         if (modeldata.IsSuccess[0] == "true") {
                             modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: item.starttime, expiretime: item.expiretime, status: true, description: modeldata.Description[0], transactionID: modeldata.TransactionID[0], code: modeldata.Code[0] });
                         } else {
-                            modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: item.starttime, expiretime: item.expiretime, status: false, description: modeldata.Description[0], transactionID: modeldata.TransactionID[0], code: modeldata.Code[0] });
+                            modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: null, expiretime: null, status: false, description: modeldata.Description[0], transactionID: modeldata.TransactionID[0], code: modeldata.Code[0] });
                         }
 
                     })
@@ -298,20 +295,22 @@ app.post("/modifypackagehours", async (req, res) => {
                     const errors = JSON.parse(error);
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: item.starttime, expiretime: item.expiretime, status: false, description: "not found data", transactionID: "not found data", code: 2 });
+                            modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: null, expiretime: null, status: false, description: "not found data", transactionID: "not found data", code: 2 });
                         }
                     }
                     console.log(err)
                 });
-                const index = modelresponse.findIndex(x => x.status == false && x.code == 2);
+                const index = modelresponse.findIndex(x => Boolean(x.status) == false && x.code == 2);
                 if (index != -1) {
                     break;
                 }
             }
-
-            const responseindex = modelresponse.filter(x => x.status == false && x.code == 2);
+            console.log("model response")
+            console.log(modelresponse)
+            const responseindex = modelresponse.filter(x => Boolean(x.status) == false && x.code == 2);
             if (responseindex.length == 0) {
 
+                console.log("model result")
                 return res.status(200).json({ status: true, code: 0, message: "modify_package_hours_success", result: modelresponse });
 
             } else {
