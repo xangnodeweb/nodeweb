@@ -253,6 +253,7 @@ app.post("/modifypackagehour", async (req, res) => {
                 // let  bodymodifield  
                 bodymodifield = bodymodiefieldhours(item.phone, item.productnumber, item.starttime, item.expiretime);
 
+             
                 const header = {
                     'Content-Type': 'text/xml;charset=utf-8'
                 }
@@ -281,9 +282,9 @@ app.post("/modifypackagehour", async (req, res) => {
                         const modeldata = modelresdata["soap:Envelope"]["soap:Body"][0]["modifyCounterResponse"][0]["modifyCounterResult"][0]
 
                         if (modeldata.IsSuccess[0] == "true") {
-                            modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: item.starttime, expiretime: item.expiretime, status: true, description: modeldata.Description[0], transactionID: modeldata.TransactionID[0], code: modeldata.Code[0] });
+                            modelresponse.push({ Msisdn: item.phone, ProductNumber: item.productnumber, CounterName: item.countername, StartTime: item.starttime, ExpiryTime: item.expiretime, status: true, description: modeldata.Description[0], TransactionID: modeldata.TransactionID[0], code: modeldata.Code[0] });
                         } else {
-                            modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: null, expiretime: null, status: false, description: modeldata.Description[0], transactionID: modeldata.TransactionID[0], code: modeldata.Code[0] });
+                            modelresponse.push({ Msisdn: item.phone, ProductNumber: item.productnumber, CounterName: item.countername, StartTime: null, ExpiryTime: null, status: false, description: modeldata.Description[0], TransactionID: modeldata.TransactionID[0], code: modeldata.Code[0] });
                         }
                     })
                 }).catch(err => {
@@ -291,7 +292,7 @@ app.post("/modifypackagehour", async (req, res) => {
                     const errors = JSON.parse(error);
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: null, expiretime: null, status: false, description: "not found data", transactionID: "not found data", code: 2 });
+                            modelresponse.push({ Msisdn: item.phone, ProductNumber: item.productnumber, CounterName: item.countername, StartTime: null, ExpiryTime: null, status: false, description: "not found data", TransactionID: null, code: 2 });
                         }
                     }
                     console.log(err)
