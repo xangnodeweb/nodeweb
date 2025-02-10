@@ -1,7 +1,7 @@
 const app = require("express").Router();
 const axios = require("axios");
 
-const { bodyaddpackage, bodymodiefieldhours, bodyinquery } = require("./modelbody");
+const { bodyaddpackage, bodymodiefieldhours, bodyinquery, bodymodiefield } = require("./modelbody");
 const fetch = require("node-fetch");
 const { parseString } = require("xml2js")
 
@@ -178,9 +178,6 @@ app.post("/getpackagelistphone", async (req, res) => {
             let modelresponse = [];  // item response
             for (let item of body) {
 
-                if (body.indexOf(item) == 1) {
-
-                }
                 console.log(item)
                 const bodyqueryphone = await bodyinquery(item.toString());
                 console.log(body)
@@ -242,7 +239,7 @@ app.post("/getpackagelistphone", async (req, res) => {
 })
 
 
-app.post("/modifypackagehours", async (req, res) => {
+app.post("/modifypackagehour", async (req, res) => {
     try {
 
         const body = req.body;
@@ -250,10 +247,11 @@ app.post("/modifypackagehours", async (req, res) => {
             let modelresponse = [];  // item response
 
             for (let item of body) {
-
+                let bodymodifield = "";
                 console.log(item.phone, item.productnumber, item.starttime, item.expiretime)
 
-                const bodymodifield = bodymodiefieldhours(item.phone, item.productnumber, item.starttime, item.expiretime);
+                // let  bodymodifield  
+                bodymodifield = bodymodiefieldhours(item.phone, item.productnumber, item.starttime, item.expiretime);
 
                 const header = {
                     'Content-Type': 'text/xml;charset=utf-8'
@@ -287,9 +285,7 @@ app.post("/modifypackagehours", async (req, res) => {
                         } else {
                             modelresponse.push({ phone: item.phone, productnumber: item.productnumber, countername: item.countername, starttime: null, expiretime: null, status: false, description: modeldata.Description[0], transactionID: modeldata.TransactionID[0], code: modeldata.Code[0] });
                         }
-
                     })
-
                 }).catch(err => {
                     const error = JSON.stringify(err);
                     const errors = JSON.parse(error);
