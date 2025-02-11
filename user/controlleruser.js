@@ -72,7 +72,7 @@ app.post("/login", async (req, res) => {
             createtime: user.rows[0].createtime,
             id: user.rows[0].id
         }, "SECRET_KEY_TEXT", {
-            expiresIn: "1d"
+            expiresIn: "1m"
         })
         return res.status(200).json({ status: true, code: 0, message: "login_success", result: token })
     } catch (error) {
