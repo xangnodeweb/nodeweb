@@ -7,8 +7,7 @@ const { parseString } = require("xml2js")
 
 const fs = require("fs/promises");
 const path = require("path");
-
-
+const auth = require("./user/auth");
 
 app.post("/sendsms", async (req, res) => {
     try {
@@ -49,7 +48,7 @@ app.post("/sendsms", async (req, res) => {
     }
 });
 
-app.post("/addpackagesms", async (req, res) => {  // add package send sms model
+app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sms model
     try {
 
         const body = req.body;
@@ -57,7 +56,7 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
 
         let model = [];
         let modelInfo = [];
-
+        let userid = req.user.userid
         if (body.length > 0) {
             console.log(body);
 
@@ -146,12 +145,12 @@ app.post("/addpackagesms", async (req, res) => {  // add package send sms model
                 const indexresponse = modelInfo.filter(x => Boolean(x.status) == false && x.code == 2);
                 if (indexresponse.length == 0) { // check response have timeout
 
-                    await adddatafile(modelInfo)
+                    await adddatafile(modelInfo, userid)
                     return res.status(200).json({ status: true, code: 0, message: "add package success", result: modelInfo })
                 } else {
                     const status = indexresponse.length == 0 ? 1 : 2;
                     const message = indexresponse.length > 0 ? "cannot add package data ConnectionTimeOutError" : "cannot add package data";
-                    await adddatafile(modelInfo)
+                    await adddatafile(modelInfo, userid)
                     return res.status(400).json({ status: false, code: status, message: message, result: modelInfo });
                 }
             }
@@ -253,7 +252,7 @@ app.post("/modifypackagehour", async (req, res) => {
                 // let  bodymodifield  
                 bodymodifield = bodymodiefieldhours(item.phone, item.productnumber, item.starttime, item.expiretime);
 
-             
+
                 const header = {
                     'Content-Type': 'text/xml;charset=utf-8'
                 }
@@ -466,12 +465,12 @@ const sendsmsaddpackage = async (datas) => {
 }
 
 
-const adddatafile = async (resdata) => {
+const adddatafile = async (resdata , userid) => {
     try {
         if (resdata.length > 0) {
             let date = datetime();
             for (var i = 0; i < resdata.length; i++) {
-                let data = `${resdata[i].Msisdn + "|" + resdata[i].ProductNumber + "|" + resdata[i].CounterName + "|" + resdata[i].StartTime + "|" + resdata[i].ExpiryTime + "|" + resdata[i].headermsg + "|" + resdata[i].contentmsg + "|" + resdata[i].status + "|" + resdata[i].code + "|" + resdata[i].statussms + "|" + date}\n`
+                let data = `${resdata[i].Msisdn + "|" + resdata[i].ProductNumber + "|" + resdata[i].CounterName + "|" + resdata[i].StartTime + "|" + resdata[i].ExpiryTime + "|" + resdata[i].headermsg + "|" + resdata[i].contentmsg + "|" + resdata[i].status + "|" + resdata[i].code + "|" + resdata[i].statussms + "|" + userid + "|" + date}\n`
                 const folderpath = path.join("./filedatatxt/")
                 await fs.appendFile(folderpath + "fileaddpackagesms.txt", data, (err) => {
                     if (err) {
