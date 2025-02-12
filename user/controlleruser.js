@@ -3,7 +3,7 @@ const Pool = require("pg").Pool;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const buffer = require("buffer").Buffer
-const { genaratepasswordhash, showpassword, configpg, getuserbyusername } = require("../user/usermodule");
+const { genaratepasswordhash, showpassword, configpg, getuserbyusername, getuseroptionby } = require("../user/usermodule");
 const auth = require("../user/auth")
 const pool = new Pool({
     user: "postgres",
@@ -24,8 +24,14 @@ app.post("/createuser", async (req, res) => {
         const usercheck = await getuserbyusername(req.body.username);
         // console.log(usercheck)
         if (usercheck.length > 0) {
-            return res.status(400).json({ status: false, code: 1, message: "username aleardy." });
+            return res.status(400).json({ status: true, code: 1, message: "username aleardy." });
         }
+        const useridcheck = await getuseroptionby("userid=$1", req.body.userid);
+
+        if (useridcheck.length > 0) {
+            return res.status(400).json({ status: true, code: 2, message : "user ID aleardy." });
+        }
+
         const date = new Intl.DateTimeFormat("US-en", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: '2-digit', timeZone: "Asia/Bangkok" }).format(new Date());
         const databody = [req.body.username, req.body.password, passgenarate, req.body.firstname, req.body.lastname, date, req.body.userid, req.body.role];
         const userquery = await pool.query('insert into smsuser (username , password , passwordhash , firstname , lastname , createtime, userid , role) values($1 , $2, $3 ,$4 , $5 , $6, $7 , $8)', databody)

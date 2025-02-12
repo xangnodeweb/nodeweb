@@ -29,9 +29,21 @@ exports.getuserbyusername = async (username) => {
     } catch (error) {
         console.log(error);
     }
-
 }
+exports.getuseroptionby = async (optionvalue , value) => {
+    try {
 
+        const pool = await this.configpg();
+        const user = await pool.query(`select * from smsuser where ${optionvalue}`, [value]);
+        if (user.rowCount > 0) {
+            return user.rows;
+        }
+        return [];
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 exports.genaratepasswordhash = (value) => {
     try {
