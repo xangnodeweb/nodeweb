@@ -238,13 +238,13 @@ app.post("/getpackagelistphone", async (req, res) => {
 })
 
 
-app.post("/modifypackagehour", async (req, res) => {
+app.post("/modifypackagehour", [auth], async (req, res) => {
     try {
 
         const body = req.body;
         if (body.length > 0) {
             let modelresponse = [];  // item response
-
+            let userid = req.user.userid;
             for (let item of body) {
                 let bodymodifield = "";
                 console.log(item.phone, item.productnumber, item.starttime, item.expiretime)
@@ -270,13 +270,13 @@ app.post("/modifypackagehour", async (req, res) => {
 
                     parseString(modelres, function (err, result) {
 
-                        console.log(result)
+                        // console.log(result)
 
                         const models = JSON.stringify(result);
                         const modelresdata = JSON.parse(models);
-                        console.log(modelresdata);
+                        // console.log(modelresdata);
 
-                        console.log(modelresdata["soap:Envelope"]["soap:Body"][0]["modifyCounterResponse"][0]["modifyCounterResult"][0])
+                        // console.log(modelresdata["soap:Envelope"]["soap:Body"][0]["modifyCounterResponse"][0]["modifyCounterResult"][0])
 
                         const modeldata = modelresdata["soap:Envelope"]["soap:Body"][0]["modifyCounterResponse"][0]["modifyCounterResult"][0]
 
@@ -301,18 +301,18 @@ app.post("/modifypackagehour", async (req, res) => {
                     break;
                 }
             }
-            console.log("model response")
-            console.log(modelresponse)
+            // console.log("model response")
+            // console.log(modelresponse)
             const responseindex = modelresponse.filter(x => Boolean(x.status) == false && x.code == 2);
             if (responseindex.length == 0) {
-
-                console.log("model result")
+                await modifielddatafile(modelresponse , userid)
+                // console.log("model result")
                 return res.status(200).json({ status: true, code: 0, message: "modify_package_hours_success", result: modelresponse });
 
             } else {
 
                 if (responseindex.length > 0) {
-
+                    await modifielddatafile(modelresponse,userid)
                     return res.status(400).json({ status: false, code: 2, message: "modify_package_ConnectionTimeOutError", result: modelresponse });
                 } else {
                     return res.status(400).json({ status: false, code: 0, message: "cannot_modify_package_hours", result: modelresponse });
@@ -465,7 +465,7 @@ const sendsmsaddpackage = async (datas) => {
 }
 
 
-const adddatafile = async (resdata , userid) => {
+const adddatafile = async (resdata, userid) => {
     try {
         if (resdata.length > 0) {
             let date = datetime();
@@ -483,7 +483,26 @@ const adddatafile = async (resdata , userid) => {
     } catch (error) {
         console.log(error)
     }
+}
+const modifielddatafile = async (resdata, userid) => {
+    try {
 
+        if (resdata.length > 0) {
+            let date = datetime();
+            for (var i = 0; i < resdata.length; i++) {
+                let data = `${resdata[i].Msisdn + "|" + resdata[i].ProductNumber + "|"  + resdata[i].StartTime + "|" + resdata[i].ExpiryTime + "|" + resdata[i].TransactionID + "|" + resdata[i].description + "|" + resdata[i].status + "|" + resdata[i].code + "|" + userid + "|" + date}\n`
+                const folderpath = path.join("./filedatatxt/")
+                await fs.appendFile(folderpath + "filemodifield.txt", data, (err) => {
+                    if (err) {
+                        console.log(resdata);
+                        console.log("cannot write log filemodifieldpackage.")
+                    }
+                })
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 const sleep = (ms) => {
