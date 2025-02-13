@@ -509,7 +509,7 @@ const sleep = (ms) => {
     return new Promise(res => setTimeout(res, ms));
 }
 const datetime = () => {
-    try {
+    try { 
 
         const date = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", hour12: false }).format(new Date());
         const time = new Intl.DateTimeFormat("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Bangkok" }).format(new Date());
