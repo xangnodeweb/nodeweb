@@ -1,2 +1,0 @@
-8562058177781|1398|Package Promotion 3GB 24hrs|2025-02-14T00:00:00.0700000+07:00|2025-02-15T23:59:59.0700000+07:00|Lao%2DTelecom|Thaqnk you your recive package 3GB|true|VSMP-00000000|false|admin|2025-02-14-13:53:33
-8562058177781|1399|Package Promotion 3GB 24hrs|2025-02-14T00:00:00.0700000+07:00|2025-02-15T23:59:59.0700000+07:00|Lao%2DTelecom|Thaqnk you your recive package 3GB|true|VSMP-00000000|false|admin|2025-02-14-14:00:15
