@@ -29,7 +29,7 @@ app.post("/createuser", async (req, res) => {
         const useridcheck = await getuseroptionby("userid=$1", req.body.userid);
 
         if (useridcheck.length > 0) {
-            return res.status(400).json({ status: true, code: 2, message : "user ID aleardy." });
+            return res.status(400).json({ status: true, code: 2, message: "user ID aleardy." });
         }
 
         const date = new Intl.DateTimeFormat("US-en", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: '2-digit', timeZone: "Asia/Bangkok" }).format(new Date());
@@ -83,7 +83,16 @@ app.post("/login", async (req, res) => {
         return res.status(200).json({ status: true, code: 0, message: "login_success", result: token })
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ status: false, code: 3, message: "login_failed", result: null });
+        const err = JSON.stringify(error);
+        const errs = JSON.parse(err);
+        console.log(errs)
+        if (error) {
+            if (errs.code == "ETIMEDOUT") {
+                return res.status(400).json({ status: false, code: 4    , message: "login_failed_ConnectTimeout", result: null });
+            } else {
+                return res.status(400).json({ status: false, code: 3, message: "login_failed", result: null });
+            }
+        }
     }
 });
 

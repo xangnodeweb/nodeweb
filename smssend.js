@@ -71,6 +71,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                 const phone = body[i].Msisdn.toString();
                 // console.log(bodyaddpackages)
 
+        
 
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8'
@@ -305,14 +306,14 @@ app.post("/modifypackagehour", [auth], async (req, res) => {
             // console.log(modelresponse)
             const responseindex = modelresponse.filter(x => Boolean(x.status) == false && x.code == 2);
             if (responseindex.length == 0) {
-                await modifielddatafile(modelresponse , userid)
+                await modifielddatafile(modelresponse, userid)
                 // console.log("model result")
                 return res.status(200).json({ status: true, code: 0, message: "modify_package_hours_success", result: modelresponse });
 
             } else {
 
                 if (responseindex.length > 0) {
-                    await modifielddatafile(modelresponse,userid)
+                    await modifielddatafile(modelresponse, userid)
                     return res.status(400).json({ status: false, code: 2, message: "modify_package_ConnectionTimeOutError", result: modelresponse });
                 } else {
                     return res.status(400).json({ status: false, code: 0, message: "cannot_modify_package_hours", result: modelresponse });
@@ -490,7 +491,7 @@ const modifielddatafile = async (resdata, userid) => {
         if (resdata.length > 0) {
             let date = datetime();
             for (var i = 0; i < resdata.length; i++) {
-                let data = `${resdata[i].Msisdn + "|" + resdata[i].ProductNumber + "|"  + resdata[i].StartTime + "|" + resdata[i].ExpiryTime + "|" + resdata[i].TransactionID + "|" + resdata[i].description + "|" + resdata[i].status + "|" + resdata[i].code + "|" + userid + "|" + date}\n`
+                let data = `${resdata[i].Msisdn + "|" + resdata[i].ProductNumber + "|" + resdata[i].StartTime + "|" + resdata[i].ExpiryTime + "|" + resdata[i].TransactionID + "|" + resdata[i].description + "|" + resdata[i].status + "|" + resdata[i].code + "|" + userid + "|" + date}\n`
                 const folderpath = path.join("./filedatatxt/")
                 await fs.appendFile(folderpath + "filemodifield.txt", data, (err) => {
                     if (err) {
@@ -509,7 +510,7 @@ const sleep = (ms) => {
     return new Promise(res => setTimeout(res, ms));
 }
 const datetime = () => {
-    try { 
+    try {
 
         const date = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", hour12: false }).format(new Date());
         const time = new Intl.DateTimeFormat("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Bangkok" }).format(new Date());
