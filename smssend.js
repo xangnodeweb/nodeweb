@@ -71,8 +71,6 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                 const phone = body[i].Msisdn.toString();
                 // console.log(bodyaddpackages)
 
-        
-
                 const headers = {
                     'Content-Type': 'text/xml;charset=utf-8'
                 }
@@ -159,6 +157,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
         return res.status(400).json({ status: true, code: 1, message: 'cannot add package', result: [] });
 
     } catch (error) {
+        console.log("error status ")
         console.log(error);
         return res.status(400).json({ status: false, code: 0, message: error.toString(), result: null })
     }
@@ -238,7 +237,80 @@ app.post("/getpackagelistphone", async (req, res) => {
 
 })
 
+app.post("/modifypackage", [auth], async (req, res) => {
+    try {
 
+        const body = req.body;
+        if (body != null) {
+
+            let userid = req.user.userid;
+            let bodymodifield = "";
+            let modifyres = {};
+             if (req.body.bodymodifield == 1) {
+                bodymodifield = bodymodiefield(req.body.phone, req.body.productnumber, req.body.expiretime)
+            } else {
+                bodymodifield = bodymodiefieldhours(req.body.phone, req.body.productnumber, req.body.starttime, req.body.expiretime);
+            }
+
+            const header = {
+                'Content-Type': 'text/xml;charset=utf-8'
+            }
+
+            await fetch("http://10.0.10.35/vsmpltc/web/services/amfwebservice.asmx", {
+                method: "POST",
+                headers: header,
+                body: bodymodifield
+            }).then(response => {
+                return response.text();
+
+            }).then(responsetext => {
+
+                const modelres = responsetext;
+
+                parseString(modelres, function (err, result) {
+
+
+                    const models = JSON.stringify(result);
+                    const modelresdata = JSON.parse(models);
+                    const modeldata = modelresdata["soap:Envelope"]["soap:Body"][0]["modifyCounterResponse"][0]["modifyCounterResult"][0]
+                    console.log(modeldata)
+                    if (modeldata.IsSuccess[0] == "true") {
+                        modifyres = { Msisdn: req.body.phone, ProductNumber: req.body.productnumber, CounterName: req.body.countername, StartTime: req.body.starttime, ExpiryTime: req.body.expiretime, status: true, description: modeldata.Description[0], TransactionID: modeldata.TransactionID[0], code: modeldata.Code[0] }
+                    } else {
+                        modifyres = { Msisdn: req.body.phone, ProductNumber: req.body.productnumber, CounterName: req.body.countername, StartTime: null, ExpiryTime: null, status: false, description: modeldata.Description[0], TransactionID: modeldata.TransactionID[0], code: modeldata.Code[0] };
+                    }
+                })
+            }).catch(err => {
+                const error = JSON.stringify(err);
+                const errors = JSON.parse(error);
+                if (err) {
+                    if (errors.code == "ETIMEDOUT") {
+                        modifyres = { Msisdn: req.body.phone, ProductNumber: req.body.productnumber, CounterName: req.body.countername, StartTime: null, ExpiryTime: null, status: false, description: "not found data", TransactionID: null, code: 2 };
+                    }
+                }
+                console.log(err)
+            });
+            if (modifyres.status == false && modifyres.code == 2) {
+                return res.status(200).json({ status: false, code: 2, message: "canot modify package Connect TimeOut", result: modifyres });
+            } else if (modifyres.status == false && modifyres.code == 0) {
+                return res.status(200).json({ status: false, code: 0, message: "canot modify package", result: modifyres });
+
+            } else {
+                const modellog = [];
+                modellog.push(modifyres);
+                await modifielddatafile(modellog , userid);
+                console.log(modellog)
+                return res.status(200).json({ status: true, code: 0, message: "", result: modifyres });
+            }
+        }
+
+
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ status: false, code: 0, message: "cannot modify package", result: [] });
+
+    }
+})
 app.post("/modifypackagehour", [auth], async (req, res) => {
     try {
 
@@ -251,8 +323,12 @@ app.post("/modifypackagehour", [auth], async (req, res) => {
                 console.log(item.phone, item.productnumber, item.starttime, item.expiretime)
 
                 // let  bodymodifield  
-                bodymodifield = bodymodiefieldhours(item.phone, item.productnumber, item.starttime, item.expiretime);
-
+                if (item.bodymodifield == 0) {
+                    bodymodifield = bodymodiefield(item.phone, item.productnumber, item.expiretime)
+                } else {
+                    bodymodifield = bodymodiefieldhours(item.phone, item.productnumber, item.starttime, item.expiretime);
+                }
+                console.log(item.bodymodifield)
 
                 const header = {
                     'Content-Type': 'text/xml;charset=utf-8'
@@ -329,7 +405,6 @@ app.post("/modifypackagehour", [auth], async (req, res) => {
         return res.status(400).json({ status: false, code: 0, message: "cannot_modify_package_hours", result: [] });
 
     }
-
 })
 
 app.post("/getpackagename", async (req, res) => {
@@ -422,7 +497,7 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
 
                 }
             }
-            // console.log(model)
+
 
         }
         return res.status(200).json({ status: true, code: 0, message: "log_fileaddpackagesms_success", result: { modellog: modeldate, modelgrouplog: modelpackagename } });

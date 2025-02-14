@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const auth = async (req, res, next) => {
     try {
         if (!req.headers.authorization) {
-            return res.status(400).json({ status: false, code : 4 , message : "request headers authorization. not found"})
+            return res.status(400).json({ status: false, code: 4, message: "request headers authorization. not found" })
         }
         let token = req.headers.authorization.split(" ");
         if (token.length >= 2) {
@@ -23,10 +23,17 @@ const auth = async (req, res, next) => {
         next();
 
     } catch (error) {
-        console.log(error);
-        return res.status(401).json({ status: false, code: 1, message: "unthorized login agian.", result: null });
+        if (error) {
+            const err = JSON.stringify(error);
+            const errs = JSON.parse(err);
+            console.log(errs)
+            if (errs.code == "ETIMEDOUT") {
+                return res.status(500).json({ status: false, code: 5    , message: "cannot connect database ConnectTimeout.", result: null });
+            } else {
+                return res.status(401).json({ status: false, code: 1, message: "unthorized login agian.", result: null });
+            }
+        }
     }
-
 }
 
 module.exports = auth;
