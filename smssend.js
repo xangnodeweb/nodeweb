@@ -461,8 +461,8 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
                 for (var i = 0; i < datas.length; i++) {
                     let linecol = datas[i].split("|");
                     console.log(linecol.length)
-                    if (linecol.length == 11) {
-                        model.push({ Msisdn: linecol[0], ProductNumber: linecol[1], CounterName: linecol[2], StartTime: linecol[3], ExpiryTime: linecol[4], headermsg: linecol[5], contentmsg: linecol[6], status: linecol[7], code: linecol[8], statussms: linecol[9], datetimelog: linecol[10] });
+                    if (linecol.length == 12) {
+                        model.push({ Msisdn: linecol[0], ProductNumber: linecol[1], CounterName: linecol[2], StartTime: linecol[3], ExpiryTime: linecol[4], headermsg: linecol[5], contentmsg: linecol[6], status: linecol[7], code: linecol[8], statussms: linecol[9], datetimelog:  linecol[11] , userid : linecol[10] });
                     }
                 }
                 if (model.length > 0) {
