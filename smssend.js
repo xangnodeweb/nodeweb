@@ -441,7 +441,7 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
 
         const filename = req.params.filename;
         const datestart = req.query.datestart;
-        const dateend = req.query.dateend;
+
         let model = [];
         let modelpackagename = [];
         let modeldate = [];
@@ -455,7 +455,7 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
 
             const datas = datafile.split(format);
             console.log(datas)
-            console.log(filename, datestart, dateend);
+            console.log(filename, datestart);
             if (datas.length > 0) {
 
                 for (var i = 0; i < datas.length; i++) {
@@ -487,18 +487,11 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
                                 } else {
                                     modelpackagename.push({ CounterName: modeldate[i].CounterName, count: 1, datelog: modeldate[i].datetimelog });
                                 }
-
-
                             }
                         }
-
                     }
-
-
                 }
             }
-
-
         }
         return res.status(200).json({ status: true, code: 0, message: "log_fileaddpackagesms_success", result: { modellog: modeldate, modelgrouplog: modelpackagename } });
 
