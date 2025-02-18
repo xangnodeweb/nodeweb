@@ -454,13 +454,13 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
         if (datafile.toString().length > 0) {
 
             const datas = datafile.split(format);
-            console.log(datas)
-            console.log(filename, datestart);
+            // console.log(datas)
+            // console.log(filename, datestart);
             if (datas.length > 0) {
 
                 for (var i = 0; i < datas.length; i++) {
                     let linecol = datas[i].split("|");
-                    console.log(linecol.length)
+                    // console.log(linecol.length)
                     if (linecol.length == 12) {
                         model.push({ Msisdn: linecol[0], ProductNumber: linecol[1], CounterName: linecol[2], StartTime: linecol[3], ExpiryTime: linecol[4], headermsg: linecol[5], contentmsg: linecol[6], status: linecol[7], code: linecol[8], statussms: linecol[9], datetimelog:  linecol[11] , userid : linecol[10] });
                     }
@@ -477,10 +477,10 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
                                 modelpackagename.push({ CounterName: modeldate[i].CounterName, count: 1, datelog: modeldate[i].datetimelog });
 
                             } else {
-                                console.log(modeldate[i].CounterName.toString())
-                                console.log(modelpackagename[0].CounterName)
+                                // console.log(modeldate[i].CounterName.toString())
+                                // console.log(modelpackagename[0].CounterName)
                                 const index = modelpackagename.findIndex(x => x.CounterName.toString() == modeldate[i].CounterName.toString());
-                                console.log(index)
+                                // console.log(index)
                                 if (index != -1) {
 
                                     modelpackagename[index].count = parseInt(modelpackagename[index].count) + 1;
