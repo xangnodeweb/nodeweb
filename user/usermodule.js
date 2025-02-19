@@ -6,10 +6,10 @@ exports.configpg = async (req, res) => {
         return new Pool({
             user: "postgres",
             password: "12345678",
-            host: "172.28.17.243",
+            host: "172.28.27.50",
             port: "5432",
             database: "smsuser"
-        })
+        });
 
     } catch (error) {
         console.log(error)
@@ -30,7 +30,7 @@ exports.getuserbyusername = async (username) => {
         console.log(error);
     }
 }
-exports.getuseroptionby = async (optionvalue , value) => {
+exports.getuseroptionby = async (optionvalue, value) => {
     try {
 
         const pool = await this.configpg();

@@ -8,7 +8,7 @@ const auth = require("../user/auth")
 const pool = new Pool({
     user: "postgres",
     password: "12345678",
-    host: "172.28.17.243",
+    host: "172.28.27.50",
     port: "5432",
     database: "smsuser"
 });
@@ -88,7 +88,7 @@ app.post("/login", async (req, res) => {
         console.log(errs)
         if (error) {
             if (errs.code == "ETIMEDOUT") {
-                return res.status(400).json({ status: false, code: 4    , message: "login_failed_ConnectTimeout", result: null });
+                return res.status(400).json({ status: false, code: 4, message: "login_failed_ConnectTimeout", result: null });
             } else {
                 return res.status(400).json({ status: false, code: 3, message: "login_failed", result: null });
             }
@@ -113,8 +113,8 @@ app.post("/updateuser/:userid", async (req, res) => {
     try {
 
         const body = req.body;
-        const userid = req.params.userid;
-        const user = await pool.query("select * from smsuser where userid=$1", [userid]);
+        const userid = req.params.userid; // field ==  id user
+        const user = await pool.query("select * from smsuser where id=$1", [userid]);
         const password = req.body.password;
         body.password = bcrypt.hashSync(password, 9);
         if (user.rowCount == 0) {
@@ -142,7 +142,7 @@ app.post("/updateuser/:userid", async (req, res) => {
             data.lastname = user.rows[0].lastname == req.body.lastname ? user.rows[0].lastname : req.body.lastname;
         }
         const modelbody = [userid, data.password, data.passwordhash, data.firstname, data.lastname]
-        const useredit = await pool.query('update smsuser set password=$2 , passwordhash=$3 , firstname=$4, lastname=$5 where userid=$1', modelbody)
+        const useredit = await pool.query('update smsuser set password=$2 , passwordhash=$3 , firstname=$4, lastname=$5 where id=$1', modelbody)
         // console.log(useredit)
         if (useredit.rowCount > 0) {
             return res.status(200).json({ status: true, code: 0, message: "update_success", result: data })
@@ -160,12 +160,11 @@ app.delete("/deleteuser/:userid", async (req, res) => {
 
         const userid = req.params.userid; // userid is username
         const pool = await configpg();
-        const usercheck = await getuserbyusername(userid);
+        const usercheck = await getuseroptionby(`id=$1`, userid);
         if (usercheck.length == 0) {
             return res.status(400).json({ status: false, code: 0, message: "username not found.", result: null });
-
         }
-        const user = await pool.query(`delete from smsuser where username='${userid}'`);
+        const user = await pool.query(`delete from smsuser where id='${userid}'`);
         if (user.rowCount > 0) {
             return res.status(200).json({ status: true, code: 0, message: "delete_user_success", result: user.rows })
         }
@@ -177,27 +176,6 @@ app.delete("/deleteuser/:userid", async (req, res) => {
 
 })
 
-
-// const genaratepasswordhash = (value) => {
-
-//     try {
-//         const password = buffer.from(value).toString("base64");
-//         return password;
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-// const showpassword = (value) => {
-//     try {
-//         const password = buffer.from(value, "base64").toString("ascii")
-
-//         return password;
-
-//     } catch (error) {
-//         console.log(error);
-//     }
-
-// }
 
 
 
