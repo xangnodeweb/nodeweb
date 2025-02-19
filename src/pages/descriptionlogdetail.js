@@ -164,7 +164,7 @@ export default function Descriptionlogpage() {
             setopenmodal(status);
 
             if (btnconfirm == 1) {
-                cleardatafile()
+                // cleardatafile()
             }
         } catch (error) {
             console.log(error);
@@ -218,7 +218,7 @@ export default function Descriptionlogpage() {
                         </FormControl>
                         <div className="d-flex mt-1">
                             <button className="btn mx-2 bg-default color-white" onClick={() => getdesclogpage()}> search </button>
-                            <button className="btn ml-1" onClick={(e) => openmodalconfirm({ status: true, btnconfirm: 0, msg: "you want delete data file ?" }, e)}> deletelog </button>
+                            <button className="btn ml-1" onClick={(e) => openmodalconfirm({ status: true, btnconfirm: 1, msg: "you cannot delete log detail" }, e)}> deletelog </button>
                         </div>
                     </div>
                 </div>
