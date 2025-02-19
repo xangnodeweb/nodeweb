@@ -6,7 +6,7 @@ exports.configpg = async (req, res) => {
         return new Pool({
             user: "postgres",
             password: "12345678",
-            host: "172.28.27.50",
+            host: "172.28.17.243",
             port: "5432",
             database: "smsuser"
         });
