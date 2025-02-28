@@ -246,7 +246,7 @@ app.post("/modifypackage", [auth], async (req, res) => {
             let userid = req.user.userid;
             let bodymodifield = "";
             let modifyres = {};
-             if (req.body.bodymodifield == 1) {
+            if (req.body.bodymodifield == 1) {
                 bodymodifield = bodymodiefield(req.body.phone, req.body.productnumber, req.body.expiretime)
             } else {
                 bodymodifield = bodymodiefieldhours(req.body.phone, req.body.productnumber, req.body.starttime, req.body.expiretime);
@@ -298,7 +298,7 @@ app.post("/modifypackage", [auth], async (req, res) => {
             } else {
                 const modellog = [];
                 modellog.push(modifyres);
-                await modifielddatafile(modellog , userid);
+                await modifielddatafile(modellog, userid);
                 console.log(modellog)
                 return res.status(200).json({ status: true, code: 0, message: "", result: modifyres });
             }
@@ -405,7 +405,51 @@ app.post("/modifypackagehour", [auth], async (req, res) => {
         return res.status(400).json({ status: false, code: 0, message: "cannot_modify_package_hours", result: [] });
 
     }
+});
+
+app.post("/refuncaddpackage", async (req, res) => {
+    try {
+
+        const body = req.body;
+        let model = [];
+        if (body.length > 0) {
+            let data = {
+                "headermsg": "",
+                "Msisdn": "",
+                "Content": ""
+            }
+            for (var i = 0; i < body.length; i++) {
+
+                data.headermsg = "Lao%2DTelecom";
+                data.Content = body[i].msgcontent;
+                data.Msisdn = body[i].Msisdn;
+
+                const sendsms = await sendsmsaddpackage(data);
+                console.log(sendsms);
+
+                model.push({ Msisdn: body[i].Msisdn, msgcontent: body[i].msgcontent, amount: body[i].amount, countername: body[i].countername, status: sendsms, statussms: sendsms })
+            }
+        } else {
+            return res.status(400).json({ status: false, code: 1, message: " request refunc not found cannot refunc failed." })
+        }
+
+        console.log(body);
+
+
+        return res.status(200).json({ status: true, code: 0, message: "refunc_addpackage_success", result: model });
+
+
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(400).json({ status: false, code: 0, message: "cannot_refunc_addpackag_failed", result: [] });
+    }
+
+
 })
+
+
 
 app.post("/getpackagename", async (req, res) => {
 
@@ -462,7 +506,7 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
                     let linecol = datas[i].split("|");
                     // console.log(linecol.length)
                     if (linecol.length == 12) {
-                        model.push({ Msisdn: linecol[0], ProductNumber: linecol[1], CounterName: linecol[2], StartTime: linecol[3], ExpiryTime: linecol[4], headermsg: linecol[5], contentmsg: linecol[6], status: linecol[7], code: linecol[8], statussms: linecol[9], datetimelog:  linecol[11] , userid : linecol[10] });
+                        model.push({ Msisdn: linecol[0], ProductNumber: linecol[1], CounterName: linecol[2], StartTime: linecol[3], ExpiryTime: linecol[4], headermsg: linecol[5], contentmsg: linecol[6], status: linecol[7], code: linecol[8], statussms: linecol[9], datetimelog: linecol[11], userid: linecol[10] });
                     }
                 }
                 if (model.length > 0) {

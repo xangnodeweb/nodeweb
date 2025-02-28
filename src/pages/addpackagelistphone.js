@@ -470,24 +470,6 @@ export default function Addpackagelistphone() {
                 </div>
 
                 <div className="w-100 box-shadow  px-3 py-4 d-flex flex-column">
-                    {/* <span className="mb-2">  phonenumber  </span>
-                <Phonenumber onChange={valuephone} value={phone} placeholder="(85620) 5xxxxxxx" helperText={iserr && ismsg == 5 ? "please enter format phone (85620) 5xxxxxxx" : iserr && ismsg == 6 ? "please enter 13 character phone (85620) 5xxxxxxx" : ""} error={iserr && ismsg == 5 || iserr && ismsg == 5 ? true : false} /> */}
-
-                    {/* <span className="mt-1"> countername </span> */}
-                    {/* <FormControl >
-                        <Select onChange={countnamevalue} value={countername} error={iserr && ismsg == 8 ? true : false}  >
-                            <MenuItem value={0}> disable package </MenuItem>
-                            <MenuItem value={1}> Prepaid_Staff_3GB </MenuItem>
-                            <MenuItem value={2}> Prepaid_Staff_5GB</MenuItem>
-                            <MenuItem value={3}> Prepaid_Staff_7GB </MenuItem>
-                            <MenuItem value={4}> Prepaid_Staff_10GB </MenuItem>
-                            <MenuItem value={5}>Prepaid_Staff_15GB </MenuItem>
-                            <MenuItem value={6}> Prepaid_Staff_25GB </MenuItem>
-                        </Select>
-                        <FormHelperText> {iserr && ismsg == 8 ? " please select package" : ""} </FormHelperText>
-                    </FormControl> */}
-
-
                     <span className="mt-2 mb-1"> startTime </span>
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
                         <DemoContainer components={['DatePicker']} className="pt-0">

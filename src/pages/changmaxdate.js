@@ -396,7 +396,7 @@ export default function ChangMaxDate() {
         try {
             const primaryvalues = e.target.value;
             setoldoffervalue(primaryvalues);
-            if (primaryvalues == 1) {
+            if (primaryvalues == 1) {oldoffervalue
 
                 if (modelfile.length > 0) {
 
@@ -543,8 +543,8 @@ export default function ChangMaxDate() {
 
             if (parseInt(valuechangemaxday) != 0) {
                 modelchangemaxdate.forEach(x => { x.phone = x.phone, x.balance = x.balance, x.datevalue = valuechangemaxday });
-
             }
+
             const modeldatavalues = modelchangemaxdate.findIndex(x => x.datevalue == 0);
             if (modeldatavalues != -1) {
 
@@ -670,6 +670,7 @@ export default function ChangMaxDate() {
                 setlinenum(3);
                 isvalidity.current.focus();
             }
+            
         } catch (error) {
             console.log(error);
         }
@@ -830,6 +831,7 @@ export default function ChangMaxDate() {
                         <span className="f-20-px f-weight-900 color-white"> 1 </span>
                     </div>
                 </div>
+                
                 <div className="w-100">
                     <div className="d-flex mb-1">
 
