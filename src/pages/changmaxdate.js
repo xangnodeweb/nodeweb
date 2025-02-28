@@ -396,7 +396,7 @@ export default function ChangMaxDate() {
         try {
             const primaryvalues = e.target.value;
             setoldoffervalue(primaryvalues);
-            if (primaryvalues == 1) {oldoffervalue
+            if (primaryvalues == 1) {
 
                 if (modelfile.length > 0) {
 
