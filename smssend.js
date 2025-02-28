@@ -422,7 +422,7 @@ app.post("/refuncaddpackage", async (req, res) => {
 
                 data.headermsg = "Lao%2DTelecom";
                 data.contentmsg = body[i].msgcontent;
-                data.Msisdn = body[i].Msisdn;
+                data.Msisdn = "856" + body[i].Msisdn;
 
                 const sendsms = await sendsmsaddpackage(data);
                 console.log(sendsms);
