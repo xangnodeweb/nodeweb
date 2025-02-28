@@ -416,12 +416,12 @@ app.post("/refuncaddpackage", async (req, res) => {
             let data = {
                 "headermsg": "",
                 "Msisdn": "",
-                "Content": ""
+                "contentmsg": ""
             }
             for (var i = 0; i < body.length; i++) {
 
                 data.headermsg = "Lao%2DTelecom";
-                data.Content = body[i].msgcontent;
+                data.contentmsg = body[i].msgcontent;
                 data.Msisdn = body[i].Msisdn;
 
                 const sendsms = await sendsmsaddpackage(data);
