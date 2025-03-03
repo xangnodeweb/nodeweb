@@ -420,7 +420,7 @@ app.post("/refuncaddpackage", async (req, res) => {
                 "Msisdn": "",
                 "contentmsg": ""
             }
-            let date = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date())
+            let date = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date())
 
             for (var i = 0; i < body.length; i++) {
 
@@ -428,7 +428,7 @@ app.post("/refuncaddpackage", async (req, res) => {
                 body[i].msgcontent = body[i].msgcontent.toString().replace("_phone_", `${body[i].Msisdn}`)
                 body[i].msgcontent = body[i].msgcontent.toString().replace("_kip_", `${body[i].amount}`)
 
-                body[i].msgcontent = body[i].msgcontent.toString().replace("_date_", `${date.toString()}`)
+                body[i].msgcontent = body[i].msgcontent.toString().replace("_date_", `${date.toString().slice(0,10)}`)
 
                 data.headermsg = "Lao%2DTelecom";
                 data.contentmsg = body[i].msgcontent;
