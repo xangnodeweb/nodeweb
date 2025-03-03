@@ -315,6 +315,7 @@ app.post("/modifypackagehour", [auth], async (req, res) => {
     try {
 
         const body = req.body;
+        console.log(body.length);
         if (body.length > 0) {
             let modelresponse = [];  // item response
             let userid = req.user.userid;
@@ -412,18 +413,27 @@ app.post("/refuncaddpackage", async (req, res) => {
 
         const body = req.body;
         let model = [];
+        console.log(body)
         if (body.length > 0) {
             let data = {
                 "headermsg": "",
                 "Msisdn": "",
                 "contentmsg": ""
             }
+            let date = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date())
+
             for (var i = 0; i < body.length; i++) {
+
+                const format = /[^0-9]+/g
+                body[i].msgcontent = body[i].msgcontent.toString().replace("_phone_", `${body[i].Msisdn}`)
+                body[i].msgcontent = body[i].msgcontent.toString().replace("_kip_", `${body[i].amount}`)
+
+                body[i].msgcontent = body[i].msgcontent.toString().replace("_date_", `${date.toString()}`)
 
                 data.headermsg = "Lao%2DTelecom";
                 data.contentmsg = body[i].msgcontent;
-                data.Msisdn = "856" + body[i].Msisdn;
-
+                data.Msisdn = body[i].Msisdn;
+                console.log(data)
                 const sendsms = await sendsmsaddpackage(data);
                 console.log(sendsms);
 
