@@ -420,7 +420,7 @@ app.post("/refuncaddpackage", async (req, res) => {
                 "Msisdn": "",
                 "contentmsg": ""
             }
-            let date = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date())
+            let date = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit"  , timeZone : "Asia/Bangkok"}).format(new Date())
 
             for (var i = 0; i < body.length; i++) {
 
