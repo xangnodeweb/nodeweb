@@ -408,47 +408,54 @@ app.post("/modifypackagehour", [auth], async (req, res) => {
     }
 });
 
-app.post("/refuncaddpackage", async (req, res) => {
+app.post("/refuncaddpackage", [auth], async (req, res) => {
     try {
 
         const body = req.body;
         let model = [];
-        console.log(body)
+        // console.log(body)
         if (body.length > 0) {
             let data = {
                 "headermsg": "",
                 "Msisdn": "",
-                "contentmsg": ""
+                "contentmsg": "",
+                "amount": "",
+                "statussms": ""
             }
-            let date = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit"  , timeZone : "Asia/Bangkok"}).format(new Date())
+            let date = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Bangkok" }).format(new Date())
 
             for (var i = 0; i < body.length; i++) {
 
                 const format = /[^0-9]+/g
-                body[i].msgcontent = body[i].msgcontent.toString().replace("_phone_", `${body[i].Msisdn}`)
+                body[i].msgcontent = body[i].msgcontent.toString().replace("_phone_", `${body[i].Msisdn}`) // replace content format
                 body[i].msgcontent = body[i].msgcontent.toString().replace("_kip_", `${body[i].amount}`)
-
-                body[i].msgcontent = body[i].msgcontent.toString().replace("_date_", `${date.toString().slice(0,10)}`)
+                body[i].msgcontent = body[i].msgcontent.toString().replace("_date_", `${date.toString().slice(0, 10)}`)
 
                 data.headermsg = "Lao%2DTelecom";
                 data.contentmsg = body[i].msgcontent;
-                data.Msisdn = body[i].Msisdn;
-                console.log(data)
-                const sendsms = await sendsmsaddpackage(data);
-                console.log(sendsms);
+                data.amount = body[i].amount;
+                data.Msisdn = body[i].Msisdn
+    
 
-                model.push({ Msisdn: body[i].Msisdn, msgcontent: body[i].msgcontent, amount: body[i].amount, countername: body[i].countername, status: sendsms, statussms: sendsms })
+                const sendsms = await sendsmsaddpackage(data);
+                if (sendsms.status == false && sendsms.code == 1) {
+                    model.push({ Msisdn: body[i].Msisdn, msgcontent: body[i].msgcontent, amount: body[i].amount, countername: body[i].countername, status: false, statussms: sendsms.status, code: 2 })
+                    break;
+                }
+                data.statussms = sendsms.status;
+                await addsmslogfile(data, req.user.userid); // write log send sms
+                model.push({ Msisdn: body[i].Msisdn, msgcontent: body[i].msgcontent, amount: body[i].amount, countername: body[i].countername, status: sendsms, statussms: sendsms.status, code: 0 })
             }
         } else {
             return res.status(400).json({ status: false, code: 1, message: " request refunc not found cannot refunc failed." })
         }
 
-        console.log(body);
-
+        const index = model.findIndex(x => x.status == false && x.code == 2);
+        if (index != -1) {
+            return res.status(400).json({ status: false, code: 2, message: "cannot_sendsms", result: model });
+        }
 
         return res.status(200).json({ status: true, code: 0, message: "refunc_addpackage_success", result: model });
-
-
 
     } catch (error) {
         console.log(error);
@@ -571,19 +578,22 @@ const sendsmsaddpackage = async (datas) => {
             "CONTENT": datas.contentmsg
         }
         console.log(reqsms)
-        const data = await axios.post("http://10.30.6.26:10080", reqsms);
+        const data = await axios.post("http://10.30.6.26:10080", reqsms , {timeout : 15000});
         console.log(data.data)
         if (data.status == 200) {
             if (data.data.resultCode.toString() == "20000") {
-                return true;
+                return { status: true, code: 0 };
             }
         }
         // console.log("send add package : " + false);
-        return false;
+        return { status: false, code: 0 };
     } catch (error) {
         console.log(error);
         console.log("send add package failed : " + false);
-        return false;
+        const err = JSON.stringify(error);
+        const errs = JSON.parse(err);
+        console.log(errs);
+        return { status: false, code: 1 };
     }
 }
 
@@ -627,6 +637,30 @@ const modifielddatafile = async (resdata, userid) => {
         console.log(error)
     }
 }
+
+const addsmslogfile = async (data, userid) => {
+    try {
+
+        if (data) {
+
+            let date = datetime();
+            date = date.replace(new RegExp("-", "g"), "");
+            let linedata = `${data.Msisdn}|${data.amount}|${data.contentmsg}|${data.statussms}|${userid}|${date}\n`
+            const pathfile = path.join("./filedatatxt/")
+            await fs.appendFile(pathfile + "filesendsms.txt", linedata, (err) => {
+
+                if (err) {
+                    console.log(linedata);
+                    console.log(err);
+                }
+            });
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 
 const sleep = (ms) => {
     return new Promise(res => setTimeout(res, ms));
