@@ -8,6 +8,7 @@ const { parseString } = require("xml2js")
 const fs = require("fs/promises");
 const path = require("path");
 const auth = require("./user/auth");
+const { requestFormReset } = require("react-dom");
 
 app.post("/sendsms", async (req, res) => {
     try {
@@ -464,7 +465,7 @@ app.post("/refuncaddpackage", [auth], async (req, res) => {
     }
 })
 
-app.post("/sendsmscontent", [auth], async (req, res) => {
+app.post("/sendsmscontent", [auth], async (req, res) => { // send sms
     try {
 
         const body = req.body;
@@ -494,10 +495,9 @@ app.post("/sendsmscontent", [auth], async (req, res) => {
         console.log(error);
         return res.status(400).json({ status: false, code: 1, message: error.toString(), result: [] })
     }
-
 })
 
-app.post("/getpackagename", async (req, res) => {
+app.post("/getpackagename", async (req, res) => { // package name
 
     try {
 
@@ -514,9 +514,9 @@ app.post("/getpackagename", async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-})
+});
 
-app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
+app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add package
     try {
 
         const filename = req.params.filename;
@@ -580,6 +580,97 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => {
         return res.status(400).json({ status: false, code: 0, message: "cannot_get_logfile", result: [] })
     }
 });
+
+app.post("/createcontentsms", async (req, res) => {
+    try {
+
+        const body = req.body;
+        let contentmsg = body.contentmsg;
+
+        console.log(body.contentmsg)
+        if (body.contentmsg == '') {
+            return res.status(400).json({ status: false, code: 1, message: "please enter contentmsg", result: null })
+        }
+        const indexamount = body.contentmsg.indexOf("_kip_")
+        if (indexamount != -1) {
+            contentmsg = contentmsg.replace("_kip_", "1000")
+        }
+
+        const indexphone = body.contentmsg.indexOf("_phone_")
+        if (indexphone != -1) {
+            contentmsg = contentmsg.replace("_phone_", "856205xxxxxxx")
+        }
+
+        let datenow = new Intl.DateTimeFormat("en-US", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date());
+        datenow = datenow.toString().slice(0, 10)
+        const indexdate = body.contentmsg.indexOf("_date_")
+        if (indexdate != -1) {
+            contentmsg = contentmsg.replace("_date_", `${datenow}`)
+        }
+        const modelcontent = await filecontent();
+        console.log(modelcontent.length)
+        let linedata = `${body.contentmsg}|${contentmsg}|${modelcontent.length + 1}\n`;
+        const paths = path.join(__dirname, "./filedatatxt/");
+        let data = { id: body.contentmsg, value: contentmsg }
+        await fs.appendFile(paths + "contentsms.txt", linedata, (err) => {
+            if (err) {
+                console.log(linedata);
+                console.log(err);
+                return res.status(400).json({ stauts: false, code: 2, message: "cannot create content message", result: null })
+            }
+        })
+        return res.status(200).json({ status: true, code: 0, message: "create content success", result: data })
+
+    } catch (error) {
+        console.log(error);
+    }
+})
+app.post("/getfilecontentmsg", async (req, res) => {
+    try {
+        const filedata = await filecontent();
+        return res.status(200).json({ status: true, code: 0, message: "", result: filedata })
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+app.delete("/deletemsgcontent/:contentid", async (req, res) => {
+    try {
+
+        const id = req.params.contentid;
+        const paths = path.join(__dirname, "./filedatatxt/")
+        let model = await filecontent();
+        const models = model.filter(x => x.index != id);
+        if (models.length > 0) {
+
+            await fs.truncate(paths + "contentsms.txt", 0, function () {
+                console.log("contentsms edit")
+            })
+
+            for (var i = 0; i < models.length; i++) {
+                let linedata = `${models[i].id}|${models[i].value}|${models[i].index}\n`;
+
+                await fs.appendFile(paths + "contentsms.txt", linedata, (err) => {
+                    if (err) {
+                        console.log(linedata);
+                        console.log(err);
+                        return res.status(400).json({ stauts: false, code: 2, message: "cannot create content message", result: null })
+                    }
+                })
+            }
+        }else{
+            await fs.truncate(paths + "contentsms.txt", 0, function () {
+                console.log("delete contentsms")
+            })
+        }
+        return res.status(200).json({ status: true, code: 0, message: "delete contentmsg success", result: id })
+
+    } catch (error) {
+        console.log(error);
+    }
+
+})
+
 
 
 const sendsmsaddpackage = async (datas) => {
@@ -698,6 +789,32 @@ const sendsmslog = async (data, userid) => {
         }
     } catch (error) {
         console.log(error);
+
+    }
+}
+
+const filecontent = async () => {
+    try {
+
+        const paths = path.join(__dirname, "./filedatatxt/")
+        const filedata = await fs.readFile(paths + "contentsms.txt", "utf8");
+        console.log(filedata)
+        let datafile = filedata.toString().split("\n")
+        let model = [];
+
+        if (datafile.length > 0) {
+            for (var i = 0; i < datafile.length; i++) {
+                let line = datafile[i].toString().split("|")
+                if (line.length == 3) {
+                    model.push({ id: line[0], value: line[1], index: line[2] });
+                }
+            }
+        }
+
+        return model;
+    } catch (error) {
+        console.log(error);
+        return []
     }
 }
 

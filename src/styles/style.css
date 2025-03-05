@@ -1,6 +1,6 @@
 button:hover {
     /* background-color: #5f5f5f; */
-   
+
     color: #FFF;
 }
 
@@ -147,7 +147,7 @@ div.lb-record.disable {
     width: 100px;
 }
 
-.w-110-px{
+.w-110-px {
     width: 110px;
 }
 
@@ -205,6 +205,10 @@ div.lb-record.disable {
 
 .h-400-px {
     height: 400px;
+}
+
+.h-340-px {
+    height: 340px;
 }
 
 .h-325-px {
@@ -681,7 +685,7 @@ div.lb-record.disable {
     padding-right: 16px;
 }
 
-.pr-3{
+.pr-3 {
     padding-right: 12px;
 }
 
@@ -837,9 +841,11 @@ div.lb-record.disable {
 .top-14-px-l {
     top: -14px;
 }
+
 .top-15-px-l {
     top: -15px;
 }
+
 .top-92-px {
     top: 92px;
 }
