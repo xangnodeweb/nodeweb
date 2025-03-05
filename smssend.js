@@ -492,6 +492,7 @@ app.post("/sendsmscontent", [auth], async (req, res) => {
 
     } catch (error) {
         console.log(error);
+        return res.status(400).json({ status: false, code: 1, message: error.toString(), result: [] })
     }
 
 })
