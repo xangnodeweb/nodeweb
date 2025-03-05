@@ -435,7 +435,7 @@ app.post("/refuncaddpackage", [auth], async (req, res) => {
                 data.contentmsg = body[i].msgcontent;
                 data.amount = body[i].amount;
                 data.Msisdn = body[i].Msisdn
-    
+
 
                 const sendsms = await sendsmsaddpackage(data);
                 if (sendsms.status == false && sendsms.code == 1) {
@@ -462,36 +462,54 @@ app.post("/refuncaddpackage", [auth], async (req, res) => {
 
         return res.status(400).json({ status: false, code: 0, message: "cannot_refunc_addpackag_failed", result: [] });
     }
-
-
 })
 
+app.post("/sendsmscontent", [auth], async (req, res) => {
+    try {
 
+        const body = req.body;
+        let userid = req.user;
+        let model = [];
+        console.log(body)
+        if (body.length > 0) {
+
+            let headermsg = "Lao%2DTelecom"
+            for (var i = 0; i < body.length; i++) {
+
+                let linedata = { Msisdn: body[i].Msisdn, contentmsg: body[i].contentmsg, headermsg: headermsg, status: false }
+
+                const sendsms = await sendsmsaddpackage(linedata)
+                if (sendsms.status == true) {
+                    body[i].status = sendsms.status;
+                }
+                await sendsmslog(body[i], userid.userid);
+                model.push({ Msisdn: body[i].Msisdn, contentmsg: body[i].contentmsg, status: body[i].status })
+            }
+
+            return res.status(200).json({ status: true, code: 0, message: "", result: model })
+        }
+
+
+    } catch (error) {
+        console.log(error);
+    }
+
+})
 
 app.post("/getpackagename", async (req, res) => {
 
     try {
 
         const bosdy = req.body;
-
         const paths = path.join(__dirname, "./filedatatxt/packagename.txt");
-
         const filedata = await fs.readFile(paths, "utf8");
         let model = [];
-
         if (filedata.length < 15) {
-
-
             return;
         }
-
         const datafile = filedata.split(/\r?\n/);
-
         console.log(datafile);
-
-
         return res.status(200).json({ status: true, code: 0, message: "", result: datafile });
-
     } catch (error) {
         console.log(error);
     }
@@ -578,7 +596,7 @@ const sendsmsaddpackage = async (datas) => {
             "CONTENT": datas.contentmsg
         }
         console.log(reqsms)
-        const data = await axios.post("http://10.30.6.26:10080", reqsms , {timeout : 15000});
+        const data = await axios.post("http://10.30.6.26:10080", reqsms, { timeout: 15000 });
         console.log(data.data)
         if (data.status == 200) {
             if (data.data.resultCode.toString() == "20000") {
@@ -660,7 +678,27 @@ const addsmslogfile = async (data, userid) => {
     }
 }
 
+const sendsmslog = async (data, userid) => {
+    try {
 
+        if (data) {
+
+            let date = datetime();
+            date = date.replace(new RegExp("-", "g"), "");
+            let linedata = `${data.Msisdn}|${data.contentmsg}|${data.status}|${userid}|${date}\n`
+            const pathfile = path.join("./filedatatxt/")
+            await fs.appendFile(pathfile + "filesmscontent.txt", linedata, (err) => {
+
+                if (err) {
+                    console.log(linedata);
+                    console.log(err);
+                }
+            });
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 const sleep = (ms) => {
     return new Promise(res => setTimeout(res, ms));
