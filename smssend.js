@@ -471,7 +471,7 @@ app.post("/sendsmscontent", [auth], async (req, res) => { // send sms
         const body = req.body;
         let userid = req.user;
         let model = [];
-        console.log(body)
+        console.log(body) // content then enter value content
         if (body.length > 0) {
 
             let headermsg = "Lao%2DTelecom"
