@@ -1,6 +1,6 @@
 const app = require("express").Router();
 
-const { changemainoffering, changemaxdate, bodysetvalidity } = require("./modelbody");
+const { changemainoffering, changemaxdate, bodysetvalidity, querybalance } = require("./modelbody");
 
 const { parseString } = require("xml2js");
 const fetch = require("node-fetch");
@@ -334,7 +334,65 @@ app.post("/setvalidity", async (req, res) => {
 
 })
 
+app.post("/querybalance", async (req, res) => {
+    try {
 
+        const body = req.body;
+
+        let model = [];
+        if (body.length > 0) {
+            let headers = {
+                'Content-Type': 'text/xml;charset=UTF-8'
+            }
+            for (var i = 0; i < body.length; i++) {
+
+
+                let uuid = v4();
+
+                let bodyquery = await querybalance(body[i].Msisdn, uuid);
+                model.push(bodyquery)
+                const data = await axios.post("http://172.28.236.57:8080/services/ArServices/", bodyquery, { headers: headers })
+                console.log(data.data)
+                if (data.status == 200) {
+
+
+                    parseString(data.data, function (err, result) {
+
+                        let datas = JSON.stringify(result);
+
+                        let dataqs = JSON.parse(datas);
+                        console.log(dataqs)
+
+                        const databalancestatus = dataqs["soapenv:Envelope"]["soapenv:Body"][0]["ars:QueryBalanceResultMsg"][0]["ResultHeader"]
+
+                        const databalanceresult = dataqs["soapenv:Envelope"]["soapenv:Body"][0]["ars:QueryBalanceResultMsg"][0]["QueryBalanceResult"][0]["ars:AcctList"][0]
+                    console.log(databalancestatus)
+                        console.log(databalanceresult)
+
+                        model.push({})
+
+
+                    })
+
+
+                }
+
+
+
+
+            }
+
+        }
+
+
+
+        return res.status(200).json({ status: true, code: 0, message: "", result: model })
+
+    } catch (error) {
+        console.log(error);
+    }
+
+})
 
 
 

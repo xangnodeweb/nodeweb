@@ -289,6 +289,49 @@ exports.bodysetvalidity = (phone, validityincrement) => {
    }
 }
 
+exports.querybalance = async (phone , uuid) => {
+   try {
+
+      const dates = `"${"yyyyMMddHHmmss"}"`
+      const datess = `(new java.text.SimpleDateFormat(${dates}`
+
+      const messageone = ")).format(new Date())}"
+      // ${=(new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())}${=(int)(Math.random()*1000)}
+      const message = "${=(int)(Math.random()*1000)}"
+      const datadateformat = "${=" + datess + "" + messageone + message
+      // console.log(datadateformat)
+      const data = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ars="http://www.huawei.com/bme/cbsinterface/arservices" xmlns:cbs="http://www.huawei.com/bme/cbsinterface/cbscommon" xmlns:arc="http://cbs.huawei.com/ar/wsservice/arcommon">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ars:QueryBalanceRequestMsg>
+         <RequestHeader>
+            <cbs:Version>1</cbs:Version>
+            <cbs:BusinessCode>Query Balance</cbs:BusinessCode>
+            <cbs:MessageSeq>${uuid}</cbs:MessageSeq>
+            <cbs:AccessSecurity>
+               <cbs:LoginSystemCode>APIGEEAPI</cbs:LoginSystemCode>
+               <cbs:Password>cdVOUWF+57KsMd57vH8D3H+ykq4CbeLtc8wCapSScPhjazQDDuTrFUP4sDBpyX+q</cbs:Password>
+            </cbs:AccessSecurity>
+         </RequestHeader>
+         <QueryBalanceRequest>
+            <ars:QueryObj>
+               <ars:SubAccessCode>
+                  <arc:PrimaryIdentity>${phone}</arc:PrimaryIdentity>
+               </ars:SubAccessCode>
+            </ars:QueryObj>
+          <ars:BalanceType>C_MAIN_ACCOUNT</ars:BalanceType>
+         </QueryBalanceRequest>
+      </ars:QueryBalanceRequestMsg>
+   </soapenv:Body>
+</soapenv:Envelope>`
+      return data;
+
+   } catch (error) {
+      console.log(error)
+   }
+}
+
+
 
 const path = require("path");
 const fs = require("fs");
