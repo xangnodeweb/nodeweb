@@ -10,6 +10,7 @@ const path = require("path");
 const axios = require("axios")
 const https = require("https");
 
+
 app.post("/changemainoffering", async (req, res) => {
     try {
         const body = req.body;
@@ -347,49 +348,71 @@ app.post("/querybalance", async (req, res) => {
             for (var i = 0; i < body.length; i++) {
 
 
+                // console.log(body[i])
                 let uuid = v4();
 
-                let bodyquery = await querybalance(body[i].Msisdn, uuid);
-                model.push(bodyquery)
-                const data = await axios.post("http://172.28.236.57:8080/services/ArServices/", bodyquery, { headers: headers })
-                console.log(data.data)
-                if (data.status == 200) {
+                let bodyquery = await querybalance(body[i].phone, uuid);
+                let phone = body[i].phone
 
-
-                    parseString(data.data, function (err, result) {
+                await fetch("http://172.28.236.57:8080/services/ArServices/", {
+                    method: "POST",
+                    headers: headers,
+                    body: bodyquery
+                }).then(response => {
+                    return response.text();
+                }).then(responsetext => {
+                    // console.log(responsetext)
+                    parseString(responsetext, async function (err, result) {
 
                         let datas = JSON.stringify(result);
+                        let dataqs = JSON.parse(datas); // response data query
 
-                        let dataqs = JSON.parse(datas);
-                        console.log(dataqs)
+                        const balancestatus = dataqs["soapenv:Envelope"]["soapenv:Body"]
 
-                        const databalancestatus = dataqs["soapenv:Envelope"]["soapenv:Body"][0]["ars:QueryBalanceResultMsg"][0]["ResultHeader"]
+                        if (balancestatus) {
 
-                        const databalanceresult = dataqs["soapenv:Envelope"]["soapenv:Body"][0]["ars:QueryBalanceResultMsg"][0]["QueryBalanceResult"][0]["ars:AcctList"][0]
-                    console.log(databalancestatus)
-                        console.log(databalanceresult)
+                            let statusbn = balancestatus[0]["ars:QueryBalanceResultMsg"][0]["ResultHeader"]
+                            // console.log(statusbn[0]["cbs:ResultCode"][0])
+                            if (statusbn[0]["cbs:ResultCode"][0].toString() == "0") {
 
-                        model.push({})
+                                const dataeresult = dataqs["soapenv:Envelope"]["soapenv:Body"][0]["ars:QueryBalanceResultMsg"]
+                                if (dataeresult.length > 0) {
 
-
+                                    if (dataeresult[0]["QueryBalanceResult"]) {
+                                        let result = dataeresult[0]["QueryBalanceResult"][0]["ars:AcctList"][0]["ars:BalanceResult"][0]
+                                        let lastupdatetime = result["arc:BalanceDetail"].length > 0 ? result["arc:BalanceDetail"][0]["arc:LastUpdateTime"][0] : ""
+                                        if (dataeresult[0]["QueryBalanceResult"].length > 0) {
+                                            if (dataeresult[0]["QueryBalanceResult"][0]["ars:AcctList"]) {
+                                                if (dataeresult[0]["QueryBalanceResult"][0]["ars:AcctList"].length != 0) {
+                                                    if (dataeresult[0]["QueryBalanceResult"][0]["ars:AcctList"][0]["ars:BalanceResult"]) {
+                                                        model.push({ Msisdn: body[i].phone, totalamount: result["arc:TotalAmount"][0], lastupdatetime: lastupdatetime, status: true, code: "" })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        model.push({ Msisdn: body[i].phone, totalamount: 0, status: false, code: 0 })
+                                    }
+                                }
+                            } else {
+                                await sleep(50)
+                                model.push({ Msisdn: body[i].phone, totalamount: 0, status: false, code: 0 })
+                            }
+                        }
                     })
 
-
-                }
-
-
-
+                })
 
             }
 
         }
-
-
+        // console.log(model.length)
 
         return res.status(200).json({ status: true, code: 0, message: "", result: model })
 
     } catch (error) {
         console.log(error);
+        return res.status(400).json({ status: false, code: 0, message: "", result: [] });
     }
 
 })
