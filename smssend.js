@@ -103,8 +103,9 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                                 // console.log(countersuccess)
                                 modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
 
-                                let packagename = countersuccess[0].CounterName[0].toString().slice(0, 12).toLowerCase();
+                                let packagename = countersuccess[0].CounterName[0].toString().slice(0, 13).toLowerCase();
                                 console.log(packagename)
+                                console.log(packagename.length);
                                 if (packagename != "prepaid_staff") {
 
                                     let sendsmss = await sendsmsaddpackage(body[i]);
