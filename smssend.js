@@ -110,7 +110,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                                     let sendsmss = await sendsmsaddpackage(body[i]);
                                     console.log("send sms : " + sendsmss)
 
-                                    if (sendsmss == true) {
+                                    if (sendsmss.status == true) {
                                         let index = modelInfo.findIndex(x => x.Msisdn.toString() == phone);
                                         console.log("index model find phone : " + index)
                                         if (index != -1) {
