@@ -102,17 +102,23 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
 
                                 // console.log(countersuccess)
                                 modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
-                                let sendsmss = await sendsmsaddpackage(body[i]);
-                                console.log("send sms : " + sendsmss)
 
-                                if (sendsmss == true) {
-                                    let index = modelInfo.findIndex(x => x.Msisdn.toString() == phone);
-                                    console.log("index model find phone : " + index)
-                                    if (index != -1) {
-                                        modelInfo[index].statussms = true;
+                                let packagename = countersuccess[0].CounterName[0].toString().slice(0, 12).toLowerCase();
+                                console.log(packagename)
+                                if (packagename != "prepaid_staff") {
+
+                                    let sendsmss = await sendsmsaddpackage(body[i]);
+                                    console.log("send sms : " + sendsmss)
+
+                                    if (sendsmss == true) {
+                                        let index = modelInfo.findIndex(x => x.Msisdn.toString() == phone);
+                                        console.log("index model find phone : " + index)
+                                        if (index != -1) {
+                                            modelInfo[index].statussms = true;
+                                        }
                                     }
+                                    console.log(modelInfo)
                                 }
-                                console.log(modelInfo)
                             }
 
                         } else {
@@ -657,7 +663,7 @@ app.delete("/deletemsgcontent/:contentid", async (req, res) => {
                     }
                 })
             }
-        }else{
+        } else {
             await fs.truncate(paths + "contentsms.txt", 0, function () {
                 console.log("delete contentsms")
             })
