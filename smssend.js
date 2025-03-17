@@ -405,7 +405,6 @@ app.post("/modifypackagehour", [auth], async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(400).json({ status: false, code: 0, message: "cannot_modify_package_hours", result: [] });
-
     }
 });
 
