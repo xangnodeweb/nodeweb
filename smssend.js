@@ -539,7 +539,7 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
         let filelogname = optionlog == 0 ? "fileaddpackagesms.txt" : optionlog == 1 ? "filesmscontent.txt" : ""
         console.log(body);
         let datafile = await fs.readFile(paths + filelogname, "utf8")
-
+        console.log(datafile)
         if (optionlog == 0) {
             const folder = await fs.readdir(paths);
             const format = /^[\n]|[\r\n]/g
