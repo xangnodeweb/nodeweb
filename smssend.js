@@ -183,6 +183,7 @@ app.post("/getpackagelistphone", async (req, res) => {
             let model = []
             let modelbody = [];
             let modelresponse = [];  // item response
+            let modelgroup = [];
             for (let item of body) {
 
                 console.log(item)
@@ -206,12 +207,39 @@ app.post("/getpackagelistphone", async (req, res) => {
                         let data = JSON.stringify(result);
                         const datas = JSON.parse(data);
                         const model = datas["soap:Envelope"]["soap:Body"][0]["inquiryCounterResponse"][0]["inquiryCounterResult"][0]["CounterArray"][0]["CounterInfo"]
+                        // console.log(model);
+
                         if (model.length > 0) {
+
                             for (var i = 0; i < model.length; i++) {
-                                modelresponse.push({ phone: model[i].Msisdn[0], productnumber: model[i].ProductNumber[0], countername: model[i].CounterName[0], starttime: model[i].StartTime[0], expirytime: model[i].ExpiryTime[0], refillstoptime: model[i].RefillStopTime[0]["$"]["xsi:nil"], message: "", status: true, code: 0 })
+                                modelresponse.push({ phone: model[i].Msisdn[0], productnumber: model[i].ProductNumber[0], countername: model[i].CounterName[0], starttime: model[i].StartTime[0], expirytime: model[i].ExpiryTime[0], refillstoptime: model[i].RefillStopTime[0]["$"]["xsi:nil"], message: "", status: true, code: 0, packagegroup: false })
+                            }
+                            if (modelresponse.length > 0) {
+                                let namegroup = 1;
+                                for (var i = 0; i < modelresponse.length; i++) {
+                                    // console.log(modelresponse[i].countername.toString().slice(0, 13))
+                                    if (modelgroup.length > 0) {
+                                        const indexgroup = modelgroup.findIndex(x => x.countername.toString().slice(0, 13).toLowerCase() == modelresponse[i].countername.toString().slice(0, 13).toLowerCase());
+                                        if (indexgroup != -1) {
+                                            namegroup += 1;
+                                        }
+                                    }
+                                    modelgroup.push({ countername: modelresponse[i].countername, countgroup: namegroup })
+                                } // CHECK NAME FIND 13 LENGTH MODEL PACKAGE NAME
+                            }
+                 
+                            if (modelresponse.length > 0) { // package group // 
+                                for (var i = 0; i < modelresponse.length; i++) {
+                                    const index = modelgroup.findIndex(x => x.countername.toString().toLowerCase().slice(0, 13) == modelresponse[i].countername.toString().toLowerCase().slice(0, 13) && parseInt(x.countgroup) > 1);
+                                    console.log(modelresponse[i].countername.toString().slice(0, 13).toLowerCase())
+                                  
+                                    if (index !=  -1) {
+                                        modelresponse[i].packagegroup = true;
+                                    }
+                                }
                             }
                         }
-                        console.log(model)
+                        // console.log(model)
                     })
                 }).catch(err => {
                     const error = JSON.stringify(err);
@@ -229,7 +257,7 @@ app.post("/getpackagelistphone", async (req, res) => {
                     break;
                 }
             }
-
+            console.log(modelresponse)
             const modelindex = modelresponse.filter(x => x.status == false && x.code == 2); // model response then if status == false && code == 2
             if (modelindex.length == 0) {
                 return res.status(200).json({ status: true, code: 0, message: "get_package_listphone", result: modelresponse })
