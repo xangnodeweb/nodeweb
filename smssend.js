@@ -471,7 +471,7 @@ app.post("/refuncaddpackage", [auth], async (req, res) => {
     }
 })
 
-app.post("/sendsmscontent", [auth], async (req, res) => { // send sms
+app.post("/sendsmscontent", [auth], async (req, res) => { // send sms model req
     try {
 
         const body = req.body;
@@ -486,7 +486,10 @@ app.post("/sendsmscontent", [auth], async (req, res) => { // send sms
                 let linedata = { Msisdn: body[i].Msisdn, contentmsg: body[i].contentmsg, headermsg: headermsg, status: false }
 
                 const sendsms = await sendsmsaddpackage(linedata)
+
                 if (sendsms.status == true) {
+                    body[i].status = sendsms.status;
+                } else {
                     body[i].status = sendsms.status;
                 }
                 await sendsmslog(body[i], userid.userid);
@@ -524,7 +527,7 @@ app.post("/getpackagename", async (req, res) => { // package name
 
 app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add package
     try {
-
+        const body = req.body;
         const filename = req.params.filename;
         const datestart = req.query.datestart;
 
@@ -532,54 +535,86 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
         let modelpackagename = [];
         let modeldate = [];
         const paths = path.join(__dirname, "./filedatatxt/");
+        let optionlog = req.body.optionlog;
+        let filelogname = optionlog == 0 ? "fileaddpackagesms.txt" : optionlog == 1 ? "filesmscontent.txt" : ""
+        console.log(body);
+        let datafile = await fs.readFile(paths + filelogname, "utf8")
 
-        const folder = await fs.readdir(paths);
-        const format = /^[\n]|[\r\n]/g
-        const datafile = await fs.readFile(paths + "fileaddpackagesms.txt", "utf8")
+        if (optionlog == 0) {
+            const folder = await fs.readdir(paths);
+            const format = /^[\n]|[\r\n]/g
 
-        if (datafile.toString().length > 0) {
+            if (datafile.toString().length > 0) {
 
-            const datas = datafile.split(format);
-            // console.log(datas)
-            // console.log(filename, datestart);
-            if (datas.length > 0) {
+                const datas = datafile.split(format);
+                if (datas.length > 0) {
 
-                for (var i = 0; i < datas.length; i++) {
-                    let linecol = datas[i].split("|");
-                    // console.log(linecol.length)
-                    if (linecol.length == 12) {
-                        model.push({ Msisdn: linecol[0], ProductNumber: linecol[1], CounterName: linecol[2], StartTime: linecol[3], ExpiryTime: linecol[4], headermsg: linecol[5], contentmsg: linecol[6], status: linecol[7], code: linecol[8], statussms: linecol[9], datetimelog: linecol[11], userid: linecol[10] });
+                    for (var i = 0; i < datas.length; i++) {
+                        let linecol = datas[i].split("|");
+                        if (linecol.length == 12) {
+                            model.push({ Msisdn: linecol[0], ProductNumber: linecol[1], CounterName: linecol[2], StartTime: linecol[3], ExpiryTime: linecol[4], headermsg: linecol[5], contentmsg: linecol[6], status: linecol[7], code: linecol[8], statussms: linecol[9], datetimelog: linecol[11], userid: linecol[10] });
+                        }
                     }
-                }
-                if (model.length > 0) {
-                    // console.log(model[0].datetimelog.toString().slice(0, 10));
-                    // console.log(datestart)
-                    modeldate = model.filter(x => x.datetimelog.toString().slice(0, 10) == datestart);
-                    if (modeldate.length > 0) {
+                    if (model.length > 0) {
 
-                        for (var i = 0; i < modeldate.length; i++) {
-                            console.log(modeldate[i])
-                            if (modelpackagename.length == 0) {
-                                modelpackagename.push({ CounterName: modeldate[i].CounterName, count: 1, datelog: modeldate[i].datetimelog });
+                        modeldate = model.filter(x => x.datetimelog.toString().slice(0, 10) == datestart);
+                        if (modeldate.length > 0) {
 
-                            } else {
-                                // console.log(modeldate[i].CounterName.toString())
-                                // console.log(modelpackagename[0].CounterName)
-                                const index = modelpackagename.findIndex(x => x.CounterName.toString() == modeldate[i].CounterName.toString());
-                                // console.log(index)
-                                if (index != -1) {
-
-                                    modelpackagename[index].count = parseInt(modelpackagename[index].count) + 1;
-                                } else {
+                            for (var i = 0; i < modeldate.length; i++) {
+                                console.log(modeldate[i])
+                                if (modelpackagename.length == 0) {
                                     modelpackagename.push({ CounterName: modeldate[i].CounterName, count: 1, datelog: modeldate[i].datetimelog });
+                                } else {
+                                    const index = modelpackagename.findIndex(x => x.CounterName.toString() == modeldate[i].CounterName.toString());
+                                    if (index != -1) {
+
+                                        modelpackagename[index].count = parseInt(modelpackagename[index].count) + 1;
+                                    } else {
+                                        modelpackagename.push({ CounterName: modeldate[i].CounterName, count: 1, datelog: modeldate[i].datetimelog });
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+            return res.status(200).json({ status: true, code: 0, message: "log_fileaddpackagesms_success", result: { modellog: modeldate, modelgrouplog: modelpackagename } });
+
+        } else if (optionlog == 1) {
+            let model = [];
+            if (datafile.length > 0) {
+
+                const datamodel = datafile.toString().split(/^[\n]|[\r\n]/g) // log file stringfy json
+                console.log(datamodel)
+                if (datamodel.length > 0) {
+
+                    for (var i = 0; i < datamodel.length; i++) {
+
+                        if (datamodel[i] != '') {
+
+                            const dataline = datamodel[i].toString().split("|");
+                            if (dataline.length > 0) {
+                                const date = dataline[4].toString().replace(new RegExp(":", "g"), "")
+                                model.push({ Msisdn: dataline[0], content: dataline[1], status: dataline[2], userid: dataline[3], datetime: date });
+
+
+                            }
+
+                        }
+
+                    }
+                }
+
+
+            }
+            console.log(datafile)
+
+            return res.status(200).json({ status: true, code: 0, messgae: "log_smscontent", result: model })
+        } else if (optionlog == 2) {
+
+            return res.status(200).json({ status: true, code: 0, message: "modify_log_success", result: [] })
         }
-        return res.status(200).json({ status: true, code: 0, message: "log_fileaddpackagesms_success", result: { modellog: modeldate, modelgrouplog: modelpackagename } });
+
 
     } catch (error) {
         console.log(error);
@@ -782,7 +817,7 @@ const sendsmslog = async (data, userid) => {
         if (data) {
 
             let date = datetime();
-            date = date.replace(new RegExp("-", "g"), "");
+            date = date.replace(new RegExp("-", "g"), "")
             let linedata = `${data.Msisdn}|${data.contentmsg}|${data.status}|${userid}|${date}\n`
             const pathfile = path.join("./filedatatxt/")
             await fs.appendFile(pathfile + "filesmscontent.txt", linedata, (err) => {
