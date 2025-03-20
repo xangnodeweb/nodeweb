@@ -556,18 +556,14 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
                         }
                     }
                     if (model.length > 0) {
-
                         modeldate = model.filter(x => x.datetimelog.toString().slice(0, 10) == datestart);
                         if (modeldate.length > 0) {
-
                             for (var i = 0; i < modeldate.length; i++) {
-                                console.log(modeldate[i])
                                 if (modelpackagename.length == 0) {
                                     modelpackagename.push({ CounterName: modeldate[i].CounterName, count: 1, datelog: modeldate[i].datetimelog });
                                 } else {
                                     const index = modelpackagename.findIndex(x => x.CounterName.toString() == modeldate[i].CounterName.toString());
                                     if (index != -1) {
-
                                         modelpackagename[index].count = parseInt(modelpackagename[index].count) + 1;
                                     } else {
                                         modelpackagename.push({ CounterName: modeldate[i].CounterName, count: 1, datelog: modeldate[i].datetimelog });
@@ -583,38 +579,30 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
         } else if (optionlog == 1) {
             let model = [];
             if (datafile.length > 0) {
-
                 const datamodel = datafile.toString().split(/^[\n]|[\r\n]/g) // log file stringfy json
-                console.log(datamodel)
                 if (datamodel.length > 0) {
-
                     for (var i = 0; i < datamodel.length; i++) {
-
                         if (datamodel[i] != '') {
-
                             const dataline = datamodel[i].toString().split("|");
                             if (dataline.length > 0) {
                                 const date = dataline[4].toString().replace(new RegExp(":", "g"), "")
                                 model.push({ Msisdn: dataline[0], content: dataline[1], status: dataline[2], userid: dataline[3], datetime: date });
-
-
                             }
-
                         }
+                    }
+                    if (model.length > 0) {
 
+                        if (model.length > 0) {
+                            model.sort((a, b) => b.datetime - a.datetime)
+                        }
                     }
                 }
+                return res.status(200).json({ status: true, code: 0, messgae: "log_smscontent", result: model })
+            } else if (optionlog == 2) {
 
-
+                return res.status(200).json({ status: true, code: 0, message: "modify_log_success", result: [] })
             }
-            console.log(datafile)
-
-            return res.status(200).json({ status: true, code: 0, messgae: "log_smscontent", result: model })
-        } else if (optionlog == 2) {
-
-            return res.status(200).json({ status: true, code: 0, message: "modify_log_success", result: [] })
         }
-
 
     } catch (error) {
         console.log(error);
