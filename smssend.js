@@ -580,6 +580,7 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
             let model = [];
             if (datafile.length > 0) {
                 const datamodel = datafile.toString().split(/^[\n]|[\r\n]/g) // log file stringfy json
+                console.log(datamodel)
                 if (datamodel.length > 0) {
                     for (var i = 0; i < datamodel.length; i++) {
                         if (datamodel[i] != '') {
@@ -597,11 +598,12 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
                         }
                     }
                 }
-                return res.status(200).json({ status: true, code: 0, messgae: "log_smscontent", result: model })
-            } else if (optionlog == 2) {
-
-                return res.status(200).json({ status: true, code: 0, message: "modify_log_success", result: [] })
             }
+            return res.status(200).json({ status: true, code: 0, messgae: "log_smscontent", result: model })
+
+        } else if (optionlog == 2) {
+
+            return res.status(200).json({ status: true, code: 0, message: "modify_log_success", result: [] })
         }
 
     } catch (error) {
