@@ -8,7 +8,6 @@ const { parseString } = require("xml2js")
 const fs = require("fs/promises");
 const path = require("path");
 const auth = require("./user/auth");
-const { requestFormReset } = require("react-dom");
 
 app.post("/sendsms", async (req, res) => {
     try {
@@ -212,28 +211,61 @@ app.post("/getpackagelistphone", async (req, res) => {
                         if (model.length > 0) {
 
                             for (var i = 0; i < model.length; i++) {
+
                                 modelresponse.push({ phone: model[i].Msisdn[0], productnumber: model[i].ProductNumber[0], countername: model[i].CounterName[0], starttime: model[i].StartTime[0], expirytime: model[i].ExpiryTime[0], refillstoptime: model[i].RefillStopTime[0]["$"]["xsi:nil"], message: "", status: true, code: 0, packagegroup: false })
-                            }
-                            if (modelresponse.length > 0) {
+                                let packagename = model[i].CounterName[0].toString().length >= 13 ? model[i].CounterName[0].toString().slice(0, 13) : model[i].CounterName[0].toString();
                                 let namegroup = 1;
-                                for (var i = 0; i < modelresponse.length; i++) {
-                                    // console.log(modelresponse[i].countername.toString().slice(0, 13))
-                                    if (modelgroup.length > 0) {
-                                        const indexgroup = modelgroup.findIndex(x => x.countername.toString().slice(0, 13).toLowerCase() == modelresponse[i].countername.toString().slice(0, 13).toLowerCase());
+
+                                // if (modelresponse.length > 0) {
+
+                                if (modelgroup.length > 0) {
+
+                                    if (model[i].CounterName[0].toString().length >= 13) {
+                                        let indexgroup = modelgroup.findIndex(x => x.countername.toString().slice(0, 13).toLowerCase() == model[i].CounterName[0].toString().slice(0, 13).toLowerCase());
                                         if (indexgroup != -1) {
-                                            namegroup += 1;
+                                            let groupcount = parseInt(modelgroup[indexgroup].countgroup) + 1;
+                                            modelgroup[indexgroup].countgroup = groupcount;
+                                        }
+                                        else {
+                                            modelgroup.push({ countername: packagename, countgroup: namegroup })
+                                        }
+
+                                    } else {
+                                        let indexgroup = modelgroup.findIndex(x => x.countername.toString().toLowerCase() == model[i].CounterName[0].toString().toLowerCase());
+                                        if (indexgroup != -1) {
+                                            let groupcount = parseInt(modelgroup[indexgroup].countgroup) + 1;
+                                            modelgroup[indexgroup].countgroup = groupcount;
+                                        } else {
+                                            modelgroup.push({ countername: model[i].CounterName.toString(), countgroup: namegroup })
                                         }
                                     }
-                                    modelgroup.push({ countername: modelresponse[i].countername, countgroup: namegroup })
-                                } // CHECK NAME FIND 13 LENGTH MODEL PACKAGE NAME
+                                    // const indexgroup = modelgroup.findIndex(x => x.countername.toString().slice(0, 13).toLowerCase() == model[i].CounterName[0].toString().slice(0, 13).toLowerCase());
+
+                                } else {
+                                    if (model[0].CounterName.toString().length >= 13) {
+                                        modelgroup.push({ countername: packagename, countgroup: namegroup })
+                                    } else {
+                                        modelgroup.push({ countername: model[i].CounterName.toString(), countgroup: namegroup })
+                                    }
+
+                                }
+
+                                // } else {
+                                //     if (model[i].CounterName[0].toString().length >= 13) {
+                                //         modelgroup.push({ countername: packagename, countgroup: namegroup })
+                                //     } else {
+                                //         modelgroup.push({ countername: model[i].CounterName.toString(), countgroup: namegroup })
+                                //     }
+                                // }   
+                                // CHECK NAME FIND 13 LENGTH MODEL PACKAGE NAME
+                                //  modelgroup countername group key == countername substr 13 length
                             }
-                 
+
+                            console.log(modelgroup);
                             if (modelresponse.length > 0) { // package group // 
                                 for (var i = 0; i < modelresponse.length; i++) {
                                     const index = modelgroup.findIndex(x => x.countername.toString().toLowerCase().slice(0, 13) == modelresponse[i].countername.toString().toLowerCase().slice(0, 13) && parseInt(x.countgroup) > 1);
-                                    console.log(modelresponse[i].countername.toString().slice(0, 13).toLowerCase())
-                                  
-                                    if (index !=  -1) {
+                                    if (index != -1) {
                                         modelresponse[i].packagegroup = true;
                                     }
                                 }
@@ -542,12 +574,51 @@ app.post("/getpackagename", async (req, res) => { // package name
         const paths = path.join(__dirname, "./filedatatxt/packagename.txt");
         const filedata = await fs.readFile(paths, "utf8");
         let model = [];
+        let modelpackagename = [];
         if (filedata.length < 15) {
             return;
         }
         const datafile = filedata.split(/\r?\n/);
         console.log(datafile);
-        return res.status(200).json({ status: true, code: 0, message: "", result: datafile });
+
+        if (datafile.length > 0) {
+
+            for (var i = 0; i < datafile.length; i++) {
+                if (datafile[i] != '') {
+
+                    if (model.length > 0) {
+                        if (datafile[i].toString().length >= 13) {
+                            const index = model.findIndex(x => x.toString().slice(0, 13) == datafile[i].toString().slice(0, 13));
+                            if (index == -1) {
+                                model.push(datafile[i].toString().slice(0, 13));
+                                modelpackagename.push(datafile[i].toString())
+                            }
+                        } else {
+                            model.push(datafile[i].toString())
+                            modelpackagename.push(datafile[i].toString())
+                        }
+
+                    } else {
+                        if (datafile[i].toString().length >= 13) {
+                            model.push(datafile[i].toString().slice(0, 13));
+                            modelpackagename.push(datafile[i].toString());
+                        } else {
+                            model.push(datafile[i]);
+                            modelpackagename.push(datafile[i].toString());
+                        }
+
+                    }
+                }
+
+            }
+            console.log(modelpackagename);
+        }
+        let pkaname = {
+            packagename: datafile,
+            packagegroupname: modelpackagename
+        }
+
+        return res.status(200).json({ status: true, code: 0, message: "", result: pkaname });
     } catch (error) {
         console.log(error);
     }
@@ -745,6 +816,9 @@ const sendsmsaddpackage = async (datas) => {
             "CODE": "45140377001",
             "CTYPE": "UTF-8",
             "CONTENT": datas.contentmsg
+        }
+        if (datas.headermsg == '') {
+            return { status: false, code: 0 }
         }
         console.log(reqsms)
         const data = await axios.post("http://10.30.6.26:10080", reqsms, { timeout: 15000 });
