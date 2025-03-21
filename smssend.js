@@ -314,6 +314,7 @@ app.post("/modifypackage", [auth], async (req, res) => {
             let userid = req.user.userid;
             let bodymodifield = "";
             let modifyres = {};
+            console.log(body);
             if (req.body.bodymodifield == 1) {
                 bodymodifield = bodymodiefield(req.body.phone, req.body.productnumber, req.body.expiretime)
             } else {
@@ -606,10 +607,8 @@ app.post("/getpackagename", async (req, res) => { // package name
                             model.push(datafile[i]);
                             modelpackagename.push(datafile[i].toString());
                         }
-
                     }
                 }
-
             }
             console.log(modelpackagename);
         }
