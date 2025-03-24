@@ -506,7 +506,7 @@ app.post("/refuncaddpackage", [auth], async (req, res) => {
                 data.Msisdn = body[i].Msisdn
 
 
-                const sendsms = await sendsmsaddpackage(data , userid);
+                const sendsms = await sendsmsaddpackage(data, userid);
                 if (sendsms.status == false && sendsms.code == 1) {
                     model.push({ Msisdn: body[i].Msisdn, msgcontent: body[i].msgcontent, amount: body[i].amount, countername: body[i].countername, status: false, statussms: sendsms.status, code: 2 })
                     break;
@@ -554,7 +554,7 @@ app.post("/sendsmscontent", [auth], async (req, res) => { // send sms model req
                 } else {
                     body[i].status = sendsms.status;
                 }
-                // await sendsmslog(body[i], userid.userid);
+                await sendsmslog(body[i], sendsms.smid, userid.userid);
                 model.push({ Msisdn: body[i].Msisdn, contentmsg: body[i].contentmsg, status: body[i].status })
             }
 
@@ -803,9 +803,9 @@ app.delete("/deletemsgcontent/:contentid", async (req, res) => {
 
 
 
-const sendsmsaddpackage = async (datas, userid) => {
+const sendsmsaddpackage = async (datas) => {
     try {
-     
+
         const reqsms = {
             "CMD": "SENDMSG",
             "FROM": datas.headermsg,
@@ -826,19 +826,17 @@ const sendsmsaddpackage = async (datas, userid) => {
         if (data.status == 200) {
             if (data.data.resultCode.toString() == "20000") {
                 datas.status = true;
-                await sendsmslog(datas, data.data.SMID , userid)
-                return { status: true, code: 0 };
+                return { status: true, code: 0, smid: data.data.SMID };
             }
         }
         // console.log("send add package : " + false);
-        return { status: false, code: 0 };
+        return { status: false,  code: 0 , smid : data.data.SMID };
     } catch (error) {
         console.log(error);
         console.log("send add package failed : " + false);
         const err = JSON.stringify(error);
         const errs = JSON.parse(err);
         console.log(errs);
-        await sendsmslog(datas, errs.SMID , userid)
         return { status: false, code: 1 };
     }
 }
