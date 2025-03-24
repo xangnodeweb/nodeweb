@@ -805,7 +805,7 @@ app.delete("/deletemsgcontent/:contentid", async (req, res) => {
 
 const sendsmsaddpackage = async (datas, userid) => {
     try {
-        headermsg.headermsg = "";
+        datas.headermsg = "";
         const reqsms = {
             "CMD": "SENDMSG",
             "FROM": datas.headermsg,
