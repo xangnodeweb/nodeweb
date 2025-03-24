@@ -805,7 +805,7 @@ app.delete("/deletemsgcontent/:contentid", async (req, res) => {
 
 const sendsmsaddpackage = async (datas, userid) => {
     try {
-        datas.headermsg = "";
+     
         const reqsms = {
             "CMD": "SENDMSG",
             "FROM": datas.headermsg,
@@ -815,7 +815,7 @@ const sendsmsaddpackage = async (datas, userid) => {
             "CHARGE": "8562052199062",
             "CODE": "45140377001",
             "CTYPE": "UTF-8",
-            "CONTENT": datas.contentmsg
+            "CONTENT": datas.contentmsgs
         }
         if (datas.headermsg == '') {
             return { status: false, code: 0 }
