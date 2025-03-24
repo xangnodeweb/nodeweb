@@ -815,7 +815,7 @@ const sendsmsaddpackage = async (datas, userid) => {
             "CHARGE": "8562052199062",
             "CODE": "45140377001",
             "CTYPE": "UTF-8",
-            "CONTENT": datas.contentmsgs
+            "CONTENT": datas.contentmsg
         }
         if (datas.headermsg == '') {
             return { status: false, code: 0 }
