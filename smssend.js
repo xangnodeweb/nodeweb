@@ -107,7 +107,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                                 console.log(packagename.length);
                                 if (packagename != "prepaid_staff") {
 
-                                    let sendsmss = await sendsmsaddpackage(body[i]);
+                                    let sendsmss = await sendsmsaddpackage(body[i], userid);
                                     console.log("send sms : " + sendsmss)
 
                                     if (sendsmss.status == true) {
@@ -481,6 +481,7 @@ app.post("/refuncaddpackage", [auth], async (req, res) => {
 
         const body = req.body;
         let model = [];
+        let userid = req.user.userid;
         // console.log(body)
         if (body.length > 0) {
             let data = {
@@ -505,7 +506,7 @@ app.post("/refuncaddpackage", [auth], async (req, res) => {
                 data.Msisdn = body[i].Msisdn
 
 
-                const sendsms = await sendsmsaddpackage(data);
+                const sendsms = await sendsmsaddpackage(data , userid);
                 if (sendsms.status == false && sendsms.code == 1) {
                     model.push({ Msisdn: body[i].Msisdn, msgcontent: body[i].msgcontent, amount: body[i].amount, countername: body[i].countername, status: false, statussms: sendsms.status, code: 2 })
                     break;
@@ -546,14 +547,14 @@ app.post("/sendsmscontent", [auth], async (req, res) => { // send sms model req
 
                 let linedata = { Msisdn: body[i].Msisdn, contentmsg: body[i].contentmsg, headermsg: headermsg, status: false }
 
-                const sendsms = await sendsmsaddpackage(linedata)
+                const sendsms = await sendsmsaddpackage(linedata, userid.userid);
 
                 if (sendsms.status == true) {
                     body[i].status = sendsms.status;
                 } else {
                     body[i].status = sendsms.status;
                 }
-                await sendsmslog(body[i], userid.userid);
+                // await sendsmslog(body[i], userid.userid);
                 model.push({ Msisdn: body[i].Msisdn, contentmsg: body[i].contentmsg, status: body[i].status })
             }
 
@@ -588,7 +589,7 @@ app.post("/getpackagename", async (req, res) => { // package name
                 if (datafile[i] != '') {
 
                     if (model.length > 0) {
-                        if (datafile[i].toString().length >= 13) {
+                        if (datafile[i].toString().length >= 13) { // pacakge name group 
                             const index = model.findIndex(x => x.toString().slice(0, 13) == datafile[i].toString().slice(0, 13));
                             if (index == -1) {
                                 model.push(datafile[i].toString().slice(0, 13));
@@ -802,9 +803,9 @@ app.delete("/deletemsgcontent/:contentid", async (req, res) => {
 
 
 
-const sendsmsaddpackage = async (datas) => {
+const sendsmsaddpackage = async (datas, userid) => {
     try {
-
+        headermsg.headermsg = "";
         const reqsms = {
             "CMD": "SENDMSG",
             "FROM": datas.headermsg,
@@ -820,10 +821,12 @@ const sendsmsaddpackage = async (datas) => {
             return { status: false, code: 0 }
         }
         console.log(reqsms)
-        const data = await axios.post("http://10.30.6.26:10080", reqsms, { timeout: 15000 });
+        const data = await axios.post("http://10.30.6.26:10080", reqsms, { timeout: 25000 });
         console.log(data.data)
         if (data.status == 200) {
             if (data.data.resultCode.toString() == "20000") {
+                datas.status = true;
+                await sendsmslog(datas, data.data.SMID , userid)
                 return { status: true, code: 0 };
             }
         }
@@ -835,6 +838,7 @@ const sendsmsaddpackage = async (datas) => {
         const err = JSON.stringify(error);
         const errs = JSON.parse(err);
         console.log(errs);
+        await sendsmslog(datas, errs.SMID , userid)
         return { status: false, code: 1 };
     }
 }
@@ -902,14 +906,14 @@ const addsmslogfile = async (data, userid) => {
     }
 }
 
-const sendsmslog = async (data, userid) => {
+const sendsmslog = async (data, smid, userid) => {
     try {
 
         if (data) {
 
             let date = datetime();
             date = date.replace(new RegExp("-", "g"), "")
-            let linedata = `${data.Msisdn}|${data.contentmsg}|${data.status}|${userid}|${date}\n`
+            let linedata = `${data.Msisdn}|${data.contentmsg}|${smid}|${data.status}|${userid}|${date}\n`
             const pathfile = path.join("./filedatatxt/")
             await fs.appendFile(pathfile + "filesmscontent.txt", linedata, (err) => {
 
