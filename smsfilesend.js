@@ -100,7 +100,7 @@ app.post("/smssendfile", [auth], async (req, res) => {
                 return res.status(400).json({ status: false, code: 0, message: "model_notfound_sendsms_failed" })
             }
             console.log(model);
-            return res.status(200).json({ status: true, code: 0, message: "", result: model })
+
         } else {
 
             if (body.smsbody.length > 0) {
