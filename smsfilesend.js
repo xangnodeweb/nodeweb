@@ -58,7 +58,7 @@ app.post("/smssendfile", [auth], async (req, res) => {
                             contentmsg = contentmsg.replace(new RegExp("_date_", "g"), date.toString());
                         }
                         // console.log(contentmsg)
-                        model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, msgcontent: contentmsg, statussms: false, code: 0, status: false, message: "" })
+                        model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, contentmsg: contentmsg, statussms: false, code: 0, status: false, message: "" })
 
                     } else {
 
@@ -67,7 +67,7 @@ app.post("/smssendfile", [auth], async (req, res) => {
                         let indexamount = contentmsg.indexOf("_amount_")
                         if (indexamount != -1) {
 
-                            model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, msgcontent: contentmsg, statussms: false, code: 1, status: false, message: "content_format_incorrent." })
+                            model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, contentmsg: contentmsg, statussms: false, code: 1, status: false, message: "content_format_incorrent." })
                             break;
                         }
 
@@ -85,7 +85,7 @@ app.post("/smssendfile", [auth], async (req, res) => {
                         if (indexdate != -1) {
                             contentmsg = contentmsg.replace(new RegExp("_date_", "g"), date.toString());
                         }
-                        model.push({ Msisdn: body.smsbody[i].Msisdn, amount: '', msgcontent: contentmsg, statussms: false, code: 0, status: false, message: "" })
+                        model.push({ Msisdn: body.smsbody[i].Msisdn, amount: '', contentmsg: contentmsg, statussms: false, code: 0, status: false, message: "" })
                     }
 
                 }
@@ -106,7 +106,7 @@ app.post("/smssendfile", [auth], async (req, res) => {
             if (body.smsbody.length > 0) {
                 for (var i = 0; i < body.smsbody.length; i++) {
                     let contentmsg = "";
-                    model.push({ Msisdn: body.smsbody[i].Msisdn, amount: '', msgcontent: body.smsbody[i].msgcontent, statussms: false, code: 0, status: false, message: "" })
+                    model.push({ Msisdn: body.smsbody[i].Msisdn, amount: '', contentmsg: body.smsbody[i].msgcontent, statussms: false, code: 0, status: false, message: "" })
 
                 }
             }
@@ -128,7 +128,7 @@ app.post("/smssendfile", [auth], async (req, res) => {
                         "CHANGE": "8562052199062",
                         "CODE": "45140377001",
                         "CTYPE": "UTF-8",
-                        "CONTENT": model[i].msgcontent.toString()
+                        "CONTENT": model[i].contentmsg.toString()
                     }
 
                     console.log(datas);
@@ -179,7 +179,7 @@ const logsendsms = async (data, smid, userid) => {
 
         date = date.toString().replace(new RegExp("-", "g"), "") + "" + time.toString().replace(new RegExp(":", "g"), "");
         console.log(time.toString())
-        let line = `${data.Msisdn}|${data.msgcontent}|${smid}|${data.statussms}|${userid}|${date}\n`;
+        let line = `${data.Msisdn}|${data.contentmsg}|${smid}|${data.statussms}|${userid}|${date}\n`;
         await fs.appendFile(paths + "filesmscontent.txt", line, (err) => {
 
             if (err) {
