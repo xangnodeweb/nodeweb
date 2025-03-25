@@ -687,8 +687,8 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
                         if (datamodel[i] != '') {
                             const dataline = datamodel[i].toString().split("|");
                             if (dataline.length > 0) {
-                                const date = dataline[4].toString().replace(new RegExp(":", "g"), "")
-                                model.push({ Msisdn: dataline[0], content: dataline[1], status: dataline[2], userid: dataline[3], datetime: date });
+                                const date = dataline[5].toString().replace(new RegExp(":", "g"), "")
+                                model.push({ Msisdn: dataline[0], content: dataline[1], status: dataline[3], smid: dataline[2], userid: dataline[4], datetime: date });
                             }
                         }
                     }
