@@ -139,13 +139,17 @@ app.post("/smssendfile", [auth], async (req, res) => {
                     if (data.status == 200) {
 
                         if (data.data.SMID) {
-                            if (data.data.SMID == "20000") {
+                            if (data.data.resultCode == "20000") {
                                 model[i].statussms = true;
                             } else {
                                 model[i].statussms = false;
                             }
-                            await logsendsms(model[i], userid)
+                            await logsendsms(model[i], data.data.SMID, userid)
+                        } else {
+                            await logsendsms(model[i], null, userid)
                         }
+                    } else {
+                        await logsendsms(model[i], null, userid)
                     }
                 } catch (error) {
 
