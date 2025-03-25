@@ -566,7 +566,9 @@ app.post("/sendsmscontent", [auth], async (req, res) => { // send sms model req
         console.log(error);
         return res.status(400).json({ status: false, code: 1, message: error.toString(), result: [] })
     }
-})
+});
+
+
 
 app.post("/getpackagename", async (req, res) => { // package name
 
@@ -830,7 +832,7 @@ const sendsmsaddpackage = async (datas) => {
             }
         }
         // console.log("send add package : " + false);
-        return { status: false,  code: 0 , smid : data.data.SMID };
+        return { status: false, code: 0, smid: data.data.SMID };
     } catch (error) {
         console.log(error);
         console.log("send add package failed : " + false);
