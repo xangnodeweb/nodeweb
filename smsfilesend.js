@@ -154,6 +154,7 @@ app.post("/smssendfile", [auth], async (req, res) => {
                 } catch (error) {
 
                     await logsendsms(model[i], null, userid)
+                    console.log("log error")
                     console.log(error);
                 }
             }
@@ -175,7 +176,9 @@ const logsendsms = async (data, smid, userid) => {
         const paths = path.join(__dirname, "./filedatatxt/")
         let date = new Intl.DateTimeFormat("fr-CA", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "Asia/Bangkok" }).format(new Date());
         let time = new Intl.DateTimeFormat("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Bangkok" }).format(new Date());
-        date = date.toString() + "" + time;
+
+        date = date.toString().replace(new RegExp("-", "g"), "") + "" + time.toString().replace(new RegExp(":", "g"), "");
+        console.log(time.toString())
         let line = `${data.Msisdn}|${data.msgcontent}|${smid}|${data.statussms}|${userid}|${date}\n`;
         await fs.appendFile(paths + "filesmscontent.txt", line, (err) => {
 
