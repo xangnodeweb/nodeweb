@@ -218,7 +218,6 @@ app.post("/getpackagelistphone", async (req, res) => {
                                 let packagename = model[i].CounterName[0].toString().length >= 13 ? model[i].CounterName[0].toString().slice(0, 13) : model[i].CounterName[0].toString();
                                 let namegroup = 1;
 
-                                // if (modelresponse.length > 0) {
 
                                 if (modelgroup.length > 0) {
 
@@ -681,17 +680,36 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
 
         } else if (optionlog == 1) {
             let model = [];
+            let optionsearch = req.body.optionsearch;
             if (datafile.length > 0) {
                 const datamodel = datafile.toString().split(/^[\n]|[\r\n]/g) // log file stringfy json
                 console.log(datamodel)
                 if (datamodel.length > 0) {
                     for (var i = 0; i < datamodel.length; i++) {
-                        if (datamodel[i] != '') {
-                            const dataline = datamodel[i].toString().split("|");
-                            if (dataline.length > 0) {
+                        if (optionsearch == 0) {
+                            if (datamodel[i] != '') {
+                                const dataline = datamodel[i].toString().split("|");
+                                if (dataline.length > 0) {
+                                    const date = dataline[5].toString().replace(new RegExp(":", "g"), "")
+                                    model.push({ Msisdn: dataline[0], content: dataline[1], status: dataline[3], smid: dataline[2], userid: dataline[4], datetime: date });
+                                }
+                            }
+                        } else {
+                            if (datamodel[i] != '') {
+                                const dataline = datamodel[i].toString().split("|");
+                                if (dataline.length == 6) {
+                                    let datestarts = req.body.datestart;
+                                    let dateend = req.body.dateend;
+                                    if (dataline[5].toString() >= datestarts) {
+                                        const date = dataline[5].toString().replace(new RegExp(":", "g"), "");
+                                        model.push({ Msisdn: dataline[0], content: dataline[1], status: dataline[3], smid: dataline[2], userid: dataline[4], datetime: date });
 
-                                const date = dataline[5].toString().replace(new RegExp(":", "g"), "")
-                                model.push({ Msisdn: dataline[0], content: dataline[1], status: dataline[3], smid: dataline[2], userid: dataline[4], datetime: date });
+                                        if (parseInt(dataline[5].toString()) == dateend) {
+                                            break;
+                                        }
+                                    }
+                                    console.log(dataline.length)
+                                }
                             }
                         }
                     }
