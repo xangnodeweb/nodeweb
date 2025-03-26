@@ -20,8 +20,6 @@ app.post("/smssendfile", [auth], async (req, res) => {
         console.log(body.optionselectfile)
         if (optionselectfile == 0) {
 
-            let msgcontent = body.msgcontent;
-
             if (body.smsbody.length > 0) {
 
                 for (var i = 0; i < body.smsbody.length; i++) {
@@ -101,7 +99,7 @@ app.post("/smssendfile", [auth], async (req, res) => {
             }
             console.log(model);
 
-        } else {
+        } else { // select option 2
 
             if (body.smsbody.length > 0) {
                 for (var i = 0; i < body.smsbody.length; i++) {
@@ -111,7 +109,6 @@ app.post("/smssendfile", [auth], async (req, res) => {
                 }
             }
         }
-
 
         if (model.length > 0) {
 
@@ -152,7 +149,9 @@ app.post("/smssendfile", [auth], async (req, res) => {
                         await logsendsms(model[i], null, userid)
                     }
                 } catch (error) {
-
+                    const err = JSON.stringify(error);
+                    const errs = JSON.parse(err)
+                    console.log(errs)
                     await logsendsms(model[i], null, userid)
                     console.log("log error")
                     console.log(error);
@@ -165,7 +164,7 @@ app.post("/smssendfile", [auth], async (req, res) => {
         console.log(err);
         return res.status(400).json({ status: false, code: 1, message: "cannot_sendsms_failed" })
     }
-})
+});
 
 
 const logsendsms = async (data, smid, userid) => {
@@ -187,12 +186,9 @@ const logsendsms = async (data, smid, userid) => {
                 console.log("cannot write log sendsms");
             }
         })
-
-
     } catch (error) {
         console.log(error);
     }
-
 }
 
 

@@ -100,7 +100,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                             if (countersuccess.length > 0) {
 
                                 // console.log(countersuccess)
-                                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"] })
+                                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"], smid: "" })
 
                                 let packagename = countersuccess[0].CounterName[0].toString().slice(0, 13).toLowerCase();
                                 console.log(packagename)
@@ -115,7 +115,10 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                                         console.log("index model find phone : " + index)
                                         if (index != -1) {
                                             modelInfo[index].statussms = true;
+                                            modelInfo[index].smid = sendsmss.smid;
                                         }
+                                    } else {
+                                        modelInfo[index].smid = sendsmss.smid;
                                     }
                                     console.log(modelInfo)
                                 }
@@ -124,7 +127,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                         } else {
                             console.log(responsesuccess);
                             console.log(responsesuccess.Description[0]);
-                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: false })
+                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: false, smid: "" })
                         }
                     });
 
@@ -134,8 +137,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                     console.log(err)
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-
-                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: null });
+                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: null, smid: "" });
                         }
                     }
                 });
@@ -687,7 +689,7 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
                         if (datamodel[i] != '') {
                             const dataline = datamodel[i].toString().split("|");
                             if (dataline.length > 0) {
-                          
+
                                 const date = dataline[5].toString().replace(new RegExp(":", "g"), "")
                                 model.push({ Msisdn: dataline[0], content: dataline[1], status: dataline[3], smid: dataline[2], userid: dataline[4], datetime: date });
                             }
@@ -714,50 +716,6 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
     }
 });
 
-app.post("/createcontentsms", async (req, res) => {
-    try {
-
-        const body = req.body;
-        let contentmsg = body.contentmsg;
-
-        console.log(body.contentmsg)
-        if (body.contentmsg == '') {
-            return res.status(400).json({ status: false, code: 1, message: "please enter contentmsg", result: null })
-        }
-        const indexamount = body.contentmsg.indexOf("_kip_")
-        if (indexamount != -1) {
-            contentmsg = contentmsg.replace("_kip_", "1000")
-        }
-
-        const indexphone = body.contentmsg.indexOf("_phone_")
-        if (indexphone != -1) {
-            contentmsg = contentmsg.replace("_phone_", "856205xxxxxxx")
-        }
-
-        let datenow = new Intl.DateTimeFormat("en-US", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date());
-        datenow = datenow.toString().slice(0, 10)
-        const indexdate = body.contentmsg.indexOf("_date_")
-        if (indexdate != -1) {
-            contentmsg = contentmsg.replace("_date_", `${datenow}`)
-        }
-        const modelcontent = await filecontent();
-        console.log(modelcontent.length)
-        let linedata = `${body.contentmsg}|${contentmsg}|${modelcontent.length + 1}\n`;
-        const paths = path.join(__dirname, "./filedatatxt/");
-        let data = { id: body.contentmsg, value: contentmsg }
-        await fs.appendFile(paths + "contentsms.txt", linedata, (err) => {
-            if (err) {
-                console.log(linedata);
-                console.log(err);
-                return res.status(400).json({ stauts: false, code: 2, message: "cannot create content message", result: null })
-            }
-        })
-        return res.status(200).json({ status: true, code: 0, message: "create content success", result: data })
-
-    } catch (error) {
-        console.log(error);
-    }
-})
 app.post("/getfilecontentmsg", async (req, res) => {
     try {
         const filedata = await filecontent();
@@ -767,39 +725,37 @@ app.post("/getfilecontentmsg", async (req, res) => {
     }
 })
 
-app.delete("/deletemsgcontent/:contentid", async (req, res) => {
+app.post("/deletemsgcontent/:contentid", async (req, res) => {
     try {
 
-        const id = req.params.contentid;
+        const id = req.params.contentid; // content
         const paths = path.join(__dirname, "./filedatatxt/")
         let model = await filecontent();
-        const models = model.filter(x => x.index != id);
-        if (models.length > 0) {
 
-            await fs.truncate(paths + "contentsms.txt", 0, function () {
-                console.log("contentsms edit")
-            })
-
-            for (var i = 0; i < models.length; i++) {
-                let linedata = `${models[i].id}|${models[i].value}|${models[i].index}\n`;
-
-                await fs.appendFile(paths + "contentsms.txt", linedata, (err) => {
-                    if (err) {
-                        console.log(linedata);
-                        console.log(err);
-                        return res.status(400).json({ stauts: false, code: 2, message: "cannot create content message", result: null })
-                    }
-                })
-            }
-        } else {
-            await fs.truncate(paths + "contentsms.txt", 0, function () {
-                console.log("delete contentsms")
-            })
+        // check file folder dir file
+        const folderfile = await fs.readdir(paths);
+        console.log(folderfile)
+        if (folderfile.length == 0) {
+            return res.status(400).json({ status: false, code: 0, message: "cannot delete file filename not found.", result: null })
         }
-        return res.status(200).json({ status: true, code: 0, message: "delete contentmsg success", result: id })
+
+        const fileindex = folderfile.findIndex(x => x.toString() == id);
+
+        if (fileindex != -1) {
+
+            const data = await fs.truncate(paths + "contentsms.txt", 0)
+            console.log(data)
+            return res.status(200).json({ status: true, code: 0, message: "delete file data success" });
+        }
+        if (fileindex == -1) {
+            return res.status(400).json({ status: false, code: 0, message: "cannot delete file filename not found ", result: "" })
+        }
+
+
 
     } catch (error) {
         console.log(error);
+        return res.status(400).json({ status: false, code: 0, message: "cannot delete data file" })
     }
 
 })
@@ -840,7 +796,7 @@ const sendsmsaddpackage = async (datas) => {
         const err = JSON.stringify(error);
         const errs = JSON.parse(err);
         console.log(errs);
-        return { status: false, code: 1 };
+        return { status: false, code: 1, smid: null };
     }
 }
 
@@ -850,7 +806,7 @@ const adddatafile = async (resdata, userid) => {
         if (resdata.length > 0) {
             let date = datetime();
             for (var i = 0; i < resdata.length; i++) {
-                let data = `${resdata[i].Msisdn + "|" + resdata[i].ProductNumber + "|" + resdata[i].CounterName + "|" + resdata[i].StartTime + "|" + resdata[i].ExpiryTime + "|" + resdata[i].headermsg + "|" + resdata[i].contentmsg + "|" + resdata[i].status + "|" + resdata[i].code + "|" + resdata[i].statussms + "|" + userid + "|" + date}\n`
+                let data = `${resdata[i].Msisdn + "|" + resdata[i].ProductNumber + "|" + resdata[i].CounterName + "|" + resdata[i].StartTime + "|" + resdata[i].ExpiryTime + "|" + resdata[i].headermsg + "|" + resdata[i].contentmsg + "|" + resdata[i].status + "|" + resdata[i].code + "|" + resdata[i].statussms + "|" + resdata[i].smid + "|" + userid + "|" + date}\n`
                 const folderpath = path.join("./filedatatxt/")
                 await fs.appendFile(folderpath + "fileaddpackagesms.txt", data, (err) => {
                     if (err) {
