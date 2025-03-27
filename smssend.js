@@ -214,7 +214,7 @@ app.post("/addpackage", async (req, res) => {
                 let datas = JSON.parse(data);
 
                 console.log(datas)
-                model.push(datas)
+                model.push(datas["soap:Envelope"]["$"]["soap:Body"][0])
 
 
 
