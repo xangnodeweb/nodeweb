@@ -198,7 +198,9 @@ app.post("/addpackage", async (req, res) => {
         const headers = {
             'Content-Type': 'text/xml;charset=utf-8'
         }
-
+        if (body) {
+            await logaddpackage(body, null, 0)
+        }
 
         await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
             method: "POST",
@@ -225,11 +227,11 @@ app.post("/addpackage", async (req, res) => {
 
                 if (responsesuccess.IsSuccess[0] == 'true') {
 
-                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: countersuccess[0].ProductNumber[0] , expirytime : refillstoptime , status : responsesuccess.IsSuccess[0]  })
+                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: countersuccess[0].ProductNumber[0], starttime: countersuccess[0].StartTime[0], expirytime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0] })
 
                 } else {
 
-                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: countersuccess[0].ProductNumber[0] , starttime : countersuccess[0].StartTime[0] , expirytime : refillstoptime , status : responsesuccess.IsSuccess[0]    })
+                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: '', starttime: '', expirytime: refillstoptime, status: responsesuccess.IsSuccess[0] })
 
                 }
             });
@@ -240,15 +242,15 @@ app.post("/addpackage", async (req, res) => {
             console.log(err)
             if (err) {
                 if (errors.code == "ETIMEDOUT") {
-                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: '' , starttime : '' , expirytime : refillstoptime , status : false  })
-    }
+                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: '', starttime: '', expirytime: refillstoptime, status: false })
+                }
             }
         });
 
-
-
-console.log(modelrespose)
-
+        console.log(modelrespose)
+        if (modelrespose.length > 0) {
+            await logaddpackage(null, modelrespose[0], 1);
+        }
 
 
 
@@ -287,7 +289,7 @@ console.log(modelrespose)
 
         //         })
 
- return res.status(200).json({status : true , code : 0 ,message : "" ,result : modelrespose})
+        return res.status(200).json({ status: true, code: 0, message: "", result: modelrespose })
 
     } catch (error) {
         console.log(error);
@@ -1025,6 +1027,38 @@ const sendsmslog = async (data, smid, userid) => {
         console.log(error);
 
     }
+}
+
+const logaddpackage = async (datareq, dataresponse, optionlog) => {
+    try {
+
+        const paths = path.join(__dirname, "./filedatatxt/");
+
+        if (optionlog == 0) {
+
+            let line = `${datareq.Msisdn}|${datareq.countername}|${datareq.refillstoptime}|${0}\n`
+            await fs.appendFile(paths + "addpackagefile.txt", line, function (err) {
+                if (err) {
+                    console.log("cannot log write file addpackage")
+                    console.log(line);
+                }
+            })
+        } else {
+
+            let line = `${dataresponse.Msisdn}|${dataresponse.countername}|${dataresponse.productnumber}|${dataresponse.starttime}|${dataresponse.expirytime}|1\n`
+            await fs.appendFile(paths + "addpackagefile.txt", line, function (err) {
+                if (err) {
+                    console.log("cannot log write file response package")
+                    console.log(line);
+                }
+            })
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+
+
 }
 
 const filecontent = async () => {
