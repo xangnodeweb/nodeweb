@@ -184,7 +184,7 @@ app.post("/addpackage", async (req, res) => {
         const refillstoptime = req.body.refillstoptime;
         const userid = req.body.userid;
 
-        let databody = addpackagebody(phone, countername, refillstoptime, userid);
+        let databody = await addpackagebody(phone, countername, refillstoptime, userid);
 console.log(databody)
         let model = [];
         // const headers = {
