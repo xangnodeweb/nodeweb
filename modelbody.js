@@ -367,10 +367,10 @@ exports.addpackagebody = async (phone, countername, refilltoptime ,userid) => {
          <web:ReplenishValue></web:ReplenishValue>
       </web:AddCounter>
    </soapenv:Body>
-</soapenv:Envelope>`;
+</soapenv:Envelope>`
 
 
-      return data;
+      return data
 
    } catch (error) {
       console.log(error);
