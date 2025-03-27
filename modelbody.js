@@ -341,8 +341,7 @@ exports.addpackagebody = async (phone, countername, refilltoptime ,userid) => {
    try {
 
 
-      const data = `
-  <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://vsmp.ais.co.th/webservices/">
+      const data = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://vsmp.ais.co.th/webservices/">
    <soapenv:Header/>
    <soapenv:Body>
       <web:AddCounter>
