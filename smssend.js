@@ -1,7 +1,7 @@
 const app = require("express").Router();
 const axios = require("axios");
 
-const { bodyaddpackage, bodymodiefieldhours, bodyinquery, bodymodiefield } = require("./modelbody");
+const { bodyaddpackage, bodymodiefieldhours, bodyinquery, bodymodiefield, addpackagebody } = require("./modelbody");
 const fetch = require("node-fetch");
 const { parseString } = require("xml2js")
 
@@ -171,6 +171,65 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
         return res.status(400).json({ status: false, code: 0, message: error.toString(), result: null })
     }
 });
+
+
+
+app.post("/addpackage", async (req, res) => {
+
+    try {
+        const body = req.body;
+
+        const phone = req.body.phone;
+        const countername = req.body.countername;
+        const refillstoptime = req.body.refillstoptime;
+        const userid = req.body.userid;
+
+        const databody = addpackagebody(phone, countername, refillstoptime, userid);
+
+        let model = [];
+        const headers = {
+            "Content-Type": 'text/xml;charset=utf-8'
+        }
+
+
+        await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
+
+            method: "POST",
+            headers: headers,
+            body: databody
+
+        }).then(response => {
+
+            return response.text();
+
+        }).then(responseText => {
+
+            const modeldata = responseText;
+            console.log(modeldata)
+            parseString(modeldata, async function (err, result) {
+
+
+
+                let data = JSON.stringify(result)
+                let datas = JSON.parse(data);
+
+                console.log(datas)
+                model.push(datas)
+
+
+
+            })
+
+
+        })
+
+
+
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 
 
 app.post("/getpackagelistphone", async (req, res) => {

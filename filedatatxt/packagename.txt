@@ -6,3 +6,4 @@ Prepaid_Staff_20GB
 Prepaid_Staff_25GB
 Package Promotion 3GB 24hrs
 5G LTC Staff
+Tourist Sim 10GB 5Days
