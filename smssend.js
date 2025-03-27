@@ -184,12 +184,17 @@ app.post("/addpackage", async (req, res) => {
         const refillstoptime = req.body.refillstoptime;
         const userid = req.body.userid;
 
-        const databody = addpackagebody(phone, countername, refillstoptime, userid);
+        let databody = addpackagebody(phone, countername, refillstoptime, userid);
 console.log(databody)
         let model = [];
+        // const headers = {
+        //     'Content-Type': 'text/xml;charset=utf-8'
+           
+        // }
+
+
         const headers = {
             'Content-Type': 'text/xml;charset=utf-8'
-           
         }
 
 
@@ -197,36 +202,84 @@ console.log(databody)
             method: "POST",
             headers: headers,
             body: databody
-
         }).then(response => {
-
             return response.text();
-
         }).then(responseText => {
 
             const modeldata = responseText;
-            console.log(modeldata)
+            // console.log(modeldata)
+
             parseString(modeldata, async function (err, result) {
+                let data = JSON.stringify(result);
+                const datas = JSON.parse(data);
+
+                model.push(datas['soap:Envelope']['soap:Body'])
+                const responsesuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['OperationStatus'][0]; // operation status
+                const countersuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['CounterArray'][0]['CounterInfo']; // counterinfo data
+ console.log(responsesuccess)
+ console.log(countersuccess)
+                if (responsesuccess.IsSuccess[0] == 'true') {
+
+                    
+
+                } else {
+            
+            
+                }
+            });
+
+        }).catch(err => {
+            const error = JSON.stringify(err);
+            const errors = JSON.parse(error);
+            console.log(err)
+            if (err) {
+                if (errors.code == "ETIMEDOUT") {
+                    modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: null, smid: "" });
+                }
+            }
+        });
+
+     
+    
 
 
 
-                let data = JSON.stringify(result)
-                let datas = JSON.parse(data);
-
-                console.log(datas)
-                model.push(datas["soap:Envelope"]["soap:Body"][0])
-                console.log(datas["soap:Envelope"]["soap:Body"])
-const responsestatus = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["OperationStatus"][0];
-const responsesuccess = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["CounterArray"][0]["CounterInfo"];
 
 
-console.log(responsestatus)
-console.log(responsesuccess)
+//         await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
+//             method: "POST",
+//             headers: headers,
+//             body: databody
 
-            })
+//         }).then(response => {
+
+//             return response.text();
+
+//         }).then(responseText => {
+
+//             const modeldata = responseText;
+//             console.log(modeldata)
+//             parseString(modeldata, async function (err, result) {
 
 
-        })
+
+//                 let data = JSON.stringify(result)
+//                 let datas = JSON.parse(data);
+
+//                 console.log(datas)
+//                 model.push(datas["soap:Envelope"]["soap:Body"][0])
+//                 console.log(datas["soap:Envelope"]["soap:Body"])
+// const responsestatus = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["OperationStatus"][0];
+// const responsesuccess = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["CounterArray"][0]["CounterInfo"];
+
+
+// console.log(responsestatus)
+// console.log(responsesuccess)
+
+//             })
+
+
+//         })
 
 
 
