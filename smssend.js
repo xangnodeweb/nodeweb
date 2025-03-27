@@ -192,8 +192,7 @@ console.log(databody)
         }
 
 
-        await fetch("http://10.0.10.35/vsmpltc/web/services/amfwebservice.asmx", {
-
+        await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
             method: "POST",
             headers: headers,
             body: databody
