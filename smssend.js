@@ -185,11 +185,12 @@ app.post("/addpackage", async (req, res) => {
         const userid = req.body.userid;
 
         let databody = await addpackagebody(phone, countername, refillstoptime, userid);
-console.log(databody)
+        console.log(databody)
         let model = [];
+        let modelrespose = [];
         // const headers = {
         //     'Content-Type': 'text/xml;charset=utf-8'
-           
+
         // }
 
 
@@ -216,15 +217,19 @@ console.log(databody)
                 model.push(datas['soap:Envelope']['soap:Body'])
                 const responsesuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['OperationStatus'][0]; // operation status
                 const countersuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['CounterArray'][0]['CounterInfo']; // counterinfo data
- console.log(responsesuccess)
- console.log(countersuccess)
+                console.log(responsesuccess)
+                console.log(countersuccess)
+
+                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"], smid: "" })
+
                 if (responsesuccess.IsSuccess[0] == 'true') {
 
-                    
+                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: countersuccess[0].ProductNumber[0] , expirytime : refillstoptime , status : responsesuccess.IsSuccess[0]  })
 
                 } else {
-            
-            
+
+                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: countersuccess[0].ProductNumber[0] , starttime : countersuccess[0].StartTime[0] , expirytime : refillstoptime , status : responsesuccess.IsSuccess[0]    })
+
                 }
             });
 
@@ -234,54 +239,54 @@ console.log(databody)
             console.log(err)
             if (err) {
                 if (errors.code == "ETIMEDOUT") {
-                    modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: null, smid: "" });
-                }
+                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: '' , starttime : '' , expirytime : refillstoptime , status : false  })
+    }
             }
         });
 
-     
-    
 
 
 
 
 
-//         await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
-//             method: "POST",
-//             headers: headers,
-//             body: databody
-
-//         }).then(response => {
-
-//             return response.text();
-
-//         }).then(responseText => {
-
-//             const modeldata = responseText;
-//             console.log(modeldata)
-//             parseString(modeldata, async function (err, result) {
 
 
+        //         await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
+        //             method: "POST",
+        //             headers: headers,
+        //             body: databody
 
-//                 let data = JSON.stringify(result)
-//                 let datas = JSON.parse(data);
+        //         }).then(response => {
 
-//                 console.log(datas)
-//                 model.push(datas["soap:Envelope"]["soap:Body"][0])
-//                 console.log(datas["soap:Envelope"]["soap:Body"])
-// const responsestatus = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["OperationStatus"][0];
-// const responsesuccess = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["CounterArray"][0]["CounterInfo"];
+        //             return response.text();
 
+        //         }).then(responseText => {
 
-// console.log(responsestatus)
-// console.log(responsesuccess)
-
-//             })
-
-
-//         })
+        //             const modeldata = responseText;
+        //             console.log(modeldata)
+        //             parseString(modeldata, async function (err, result) {
 
 
+
+        //                 let data = JSON.stringify(result)
+        //                 let datas = JSON.parse(data);
+
+        //                 console.log(datas)
+        //                 model.push(datas["soap:Envelope"]["soap:Body"][0])
+        //                 console.log(datas["soap:Envelope"]["soap:Body"])
+        // const responsestatus = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["OperationStatus"][0];
+        // const responsesuccess = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["CounterArray"][0]["CounterInfo"];
+
+
+        // console.log(responsestatus)
+        // console.log(responsesuccess)
+
+        //             })
+
+
+        //         })
+
+ return res.status(200).json({status : true , code : 0 ,message : "" ,result : modelrespose})
 
     } catch (error) {
         console.log(error);
