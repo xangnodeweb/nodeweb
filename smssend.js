@@ -188,6 +188,7 @@ app.post("/addpackage", async (req, res) => {
         console.log(databody)
         let model = [];
         let modelrespose = [];
+        let modelInfo = [];
         // const headers = {
         //     'Content-Type': 'text/xml;charset=utf-8'
 
@@ -220,7 +221,7 @@ app.post("/addpackage", async (req, res) => {
                 console.log(responsesuccess)
                 console.log(countersuccess)
 
-                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"], smid: "" })
+                // modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"], smid: "" })
 
                 if (responsesuccess.IsSuccess[0] == 'true') {
 
@@ -246,7 +247,7 @@ app.post("/addpackage", async (req, res) => {
 
 
 
-
+console.log(modelrespose)
 
 
 
