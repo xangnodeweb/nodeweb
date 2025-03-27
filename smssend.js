@@ -215,6 +215,7 @@ console.log(databody)
 
                 console.log(datas)
                 model.push(datas["soap:Envelope"]["soap:Body"][0])
+                console.log(datas["soap:Envelope"]["soap:Body"])
 const responsestatus = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["OperationStatus"][0];
 const responsesuccess = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["CounterArray"][0]["CounterInfo"];
 
