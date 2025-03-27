@@ -185,7 +185,7 @@ app.post("/addpackage", async (req, res) => {
         const userid = req.body.userid;
 
         const databody = addpackagebody(phone, countername, refillstoptime, userid);
-
+console.log(databody)
         let model = [];
         const headers = {
             "Content-Type": 'text/xml;charset=utf-8'
@@ -214,9 +214,13 @@ app.post("/addpackage", async (req, res) => {
                 let datas = JSON.parse(data);
 
                 console.log(datas)
-                model.push(datas["soap:Envelope"]["$"]["soap:Body"][0])
+                model.push(datas["soap:Envelope"]["soap:Body"][0])
+const responsestatus = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["OperationStatus"][0];
+const responsesuccess = datas["soap:Envelope"]["soap:Body"][0]["AddCounterResponse"][0]["AddCounterResult"][0]["CounterArray"][0]["CounterInfo"];
 
 
+console.log(responsestatus)
+console.log(responsesuccess)
 
             })
 
