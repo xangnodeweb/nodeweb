@@ -716,30 +716,52 @@ app.post("/getpackagename", async (req, res) => { // package name
             for (var i = 0; i < datafile.length; i++) {
                 if (datafile[i] != '') {
 
+                  
+                    const pkname = datafile[i].toLowerCase().toString().replace(new RegExp("_", "g"), "").replace(new RegExp(" ", "g"), "")
+                    const pknamemodel = datafile[i].toString() // default
+                    const pknames = pkname.match(/[0-9]+gb/gi);
+                    const pknamemodels = pknamemodel.match(/[0-9]+gb/gi);
+                    const indexpk = pkname.indexOf(pknames);
+                    const indexpks = pknamemodel.indexOf(pknamemodels); // index default name package
+                    let namepackage = "";
+                    let packagename = "";
+                    if (indexpk != -1) {
+                        namepackage = pkname.slice(0, indexpk)
+                    }
+
+                    if (indexpks != -1) {
+                        packagename = pknamemodel.slice(0, indexpks).replace(new RegExp("_" , "g") , " ")
+                    } else {
+                        packagename = pknamemodel.toString().replace(new RegExp("_" , "g") , " ")
+                    }
+
                     if (model.length > 0) {
                         if (datafile[i].toString().length >= 13) { // pacakge name group 
-                            const index = model.findIndex(x => x.toString().slice(0, 13) == datafile[i].toString().slice(0, 13));
+                            const index = model.findIndex(x => x.toString() == namepackage);
                             if (index == -1) {
-                                model.push(datafile[i].toString().slice(0, 13));
-                                modelpackagename.push(datafile[i].toString())
+                                model.push(namepackage);
+                                modelpackagename.push(packagename)
                             }
                         } else {
-                            model.push(datafile[i].toString())
-                            modelpackagename.push(datafile[i].toString())
+                            namepackage = namepackage.toString() == '' ? datafile[i].toString() : namepackage
+                            model.push(namepackage.toString())
+                            modelpackagename.push(packagename)
                         }
-
                     } else {
+
                         if (datafile[i].toString().length >= 13) {
-                            model.push(datafile[i].toString().slice(0, 13));
-                            modelpackagename.push(datafile[i].toString());
-                        } else {
-                            model.push(datafile[i]);
-                            modelpackagename.push(datafile[i].toString());
+                            model.push(namepackage);
+                            modelpackagename.push(packagename);
+                        }
+                        else {
+                            model.push(namepackage);
+                            modelpackagename.push(packagename);
                         }
                     }
                 }
             }
             console.log(modelpackagename);
+            console.log(model)
         }
         let pkaname = {
             packagename: datafile,
