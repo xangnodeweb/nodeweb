@@ -694,7 +694,41 @@ app.post("/sendsmscontent", [auth], async (req, res) => { // send sms model req
     }
 });
 
+app.post("/sendsmschecksmid", async (req, res) => { // verify smid
+    try {
 
+        const body = req.body;
+        const phone = req.body.phone;
+        const smid = req.body.smid;
+        if (!phone || !smid) {
+            return res.status(400).json({ status: false, code: 0, message: `please set body request check smid { phone : "856205xxxxxxx" , smid : "" }`, result: null })
+        }
+
+        let header = {
+            "apikey": "stAFBzh3P7H59j5Y3P0fa1tSxR2J4BPW",
+            "Content-Type": "application/json"
+        }
+
+        let datas = {
+            "SMID": req.body.smid,
+            "PhoneNumber": req.body.phone
+        }
+
+        const data = await axios.post("https://apicenter.laotel.com:9443/api/sms_center/verify_sms", datas, { headers: header })
+
+        if (data.status == 200) {
+
+            return res.status(200).json({ status: true, code: 0, message: "", result: data.data })
+        }
+
+        return res.status(400).json({ status: false, code: 0, messagee: "", result: data.data })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ status: false, code: 0, message: "", result: null });
+    }
+
+})
 
 app.post("/getpackagename", async (req, res) => { // package name
 
@@ -716,7 +750,7 @@ app.post("/getpackagename", async (req, res) => { // package name
             for (var i = 0; i < datafile.length; i++) {
                 if (datafile[i] != '') {
 
-                  
+
                     const pkname = datafile[i].toLowerCase().toString().replace(new RegExp("_", "g"), "").replace(new RegExp(" ", "g"), "")
                     const pknamemodel = datafile[i].toString() // default
                     const pknames = pkname.match(/[0-9]+gb/gi);
@@ -730,9 +764,9 @@ app.post("/getpackagename", async (req, res) => { // package name
                     }
 
                     if (indexpks != -1) {
-                        packagename = pknamemodel.slice(0, indexpks).replace(new RegExp("_" , "g") , " ")
+                        packagename = pknamemodel.slice(0, indexpks).replace(new RegExp("_", "g"), " ")
                     } else {
-                        packagename = pknamemodel.toString().replace(new RegExp("_" , "g") , " ")
+                        packagename = pknamemodel.toString().replace(new RegExp("_", "g"), " ")
                     }
 
                     if (model.length > 0) {
