@@ -684,7 +684,7 @@ app.post("/sendsmscontent", [auth], async (req, res) => { // send sms model req
                 model.push({ Msisdn: body[i].Msisdn, contentmsg: body[i].contentmsg, status: body[i].status })
             }
 
-            return res.status(200).json({ status: true, code: 0, message: "", result: model })
+            return res.status(200).json({ status: true, code: 0, message: "send_sms_success", result: model })
         }
 
 
