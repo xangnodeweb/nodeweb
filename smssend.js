@@ -820,7 +820,7 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
         const paths = path.join(__dirname, "./filedatatxt/");
         let optionlog = req.body.optionlog;
         let filelogname = optionlog == 0 ? "fileaddpackagesms.txt" : optionlog == 1 ? "filesmscontent.txt" : ""
-        console.log(body);
+        // console.log(body);
         let datafile = await fs.readFile(paths + filelogname, "utf8")
         console.log(datafile)
         if (optionlog == 0) {
@@ -864,7 +864,7 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
             let optionsearch = req.body.optionsearch;
             if (datafile.length > 0) {
                 const datamodel = datafile.toString().split(/^[\n]|[\r\n]/g) // log file stringfy json
-                console.log(datamodel)
+                // console.log(datamodel)
                 if (datamodel.length > 0) {
                     for (var i = 0; i < datamodel.length; i++) {
                         if (optionsearch == 0) {
@@ -881,18 +881,20 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
                                 if (dataline.length == 6) {
                                     let datestarts = req.body.datestart;
                                     let dateend = req.body.dateend;
-                                    if (dataline[5].toString() >= datestarts) {
-                                        const date = dataline[5].toString().replace(new RegExp(":", "g"), "");
-                                        model.push({ Msisdn: dataline[0], content: dataline[1], status: dataline[3], smid: dataline[2], userid: dataline[4], datetime: date });
+                                    if (dataline[5].toString() != '') {
+                                        if (parseInt(dataline[5].replace(new RegExp(":", "g"), "").toString()) >= parseInt(datestarts) && parseInt(dataline[5].toString().replace(new RegExp(":", "g"), "")) <= parseInt(dateend)) {
+                                            const date = dataline[5].toString().replace(new RegExp(":", "g"), "");
 
-                                        if (parseInt(dataline[5].toString()) == dateend) {
-                                            break;
+                                            if (parseInt(date) > parseInt(dateend)) {
+                                                break;
+                                            }
+                                            model.push({ Msisdn: dataline[0], content: dataline[1], status: dataline[3], smid: dataline[2], userid: dataline[4], datetime: date });
                                         }
                                     }
-                                    console.log(dataline.length)
                                 }
                             }
                         }
+                        // console.log(model.length);
                     }
                     if (model.length > 0) {
 

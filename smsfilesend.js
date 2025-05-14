@@ -26,37 +26,69 @@ app.post("/smssendfile", [auth], async (req, res) => {
 
                     let amount = '';
                     let contentmsg = '';
+                    let msgcontent = '';
                     amount = body.smsbody[i].amount;
 
                     if (body.smsbody[i].amount != '') {
 
                         // index phone 
-                        contentmsg = body.msgcontent;
+                        msgcontent = body.msgcontent;
 
-                        let indexphone = contentmsg.indexOf("_phone_");
+                        let indexphone = msgcontent.indexOf("_phone_");
                         // console.log(indexphone)
                         if (indexphone != -1) {
-
-                            contentmsg = contentmsg.replace(new RegExp("_phone_", "g"), body.smsbody[i].Msisdn);
+                            contentmsg = msgcontent.replace(new RegExp("_phone_", "g"), body.smsbody[i].Msisdn);
                         }
 
                         // amount 
 
-                        let indexamount = contentmsg.indexOf("_amount_");
+                        let indexamount = msgcontent.indexOf("_amount_");
                         if (indexamount != -1) {
-                            contentmsg = contentmsg.replace(new RegExp("_amount_", "g"), body.smsbody[i].amount);
+                            contentmsg = msgcontent.replace(new RegExp("_amount_", "g"), body.smsbody[i].amount);
+
                         }
 
                         // index date
-
                         let date = new Intl.DateTimeFormat("en-US", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "Asia/Bangkok" }).format(new Date());
                         date = date.toString().slice(0, 10);
-                        let indexdate = contentmsg.indexOf("_date_");
+
+                        let indexdate = msgcontent.indexOf("_date_");
                         if (indexdate != -1) {
-                            contentmsg = contentmsg.replace(new RegExp("_date_", "g"), date.toString());
+                            contentmsg = msgcontent.replace(new RegExp("_date_", "g"), date.toString());
                         }
+
+                        if (indexphone != -1 && indexamount != -1) {
+                            contentmsg = msgcontent.replace(new RegExp("_phone_", "g"), body.smsbody[i].Msisdn).replace(new RegExp("_amount_", "g"), body.smsbody[i].amount)
+                        }
+
+                        if (indexphone != -1 && indexdate != -1) {
+                            contentmsg = msgcontent.replace(new RegExp("_phone_", "g"), body.smsbody[i].Msisdn).replace(new RegExp("_date_", "g"), date.toString());
+                        }
+
+                        if (indexamount != -1 && indexdate != -1) {
+                            contentmsg = msgcontent.replace(new RegExp("_amount_", "g"), body.smsbody[i].amount).replace(new RegExp("_date_", "g"), date.toString());
+                        }
+
+                        if (indexphone != -1 && indexamount != -1 && indexdate != -1) {
+                            contentmsg = msgcontent.replace(new RegExp("_phone_", "g"), body.smsbody[i].Msisdn).replace(new RegExp("_amount_", "g"), body.smsbody[i].amount).replace(new RegExp("_date_", "g"), date.toString());
+                        }
+
+                        if (body.smsbody[i].msgcontent != '') {
+                            // validate body msgcontent == contentmsg
+                            let validatemsgcontent = contentmsg.replace(new RegExp(" ", "g"), "")
+                            if (contentmsg.replace(new RegExp(" ", "g"), "") == body.smsbody[i].msgcontent) {
+
+                                model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, contentmsg: contentmsg, statussms: false, code: 0, status: false, message: "" })
+                            } else {
+                                model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, contentmsg: contentmsg, statussms: false, code: 1, status: false, message: "" })
+
+                            }
+                        } else {
+                            model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, contentmsg: contentmsg, statussms: false, code: 0, status: false, message: "" })
+
+                        }
+
                         // console.log(contentmsg)
-                        model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, contentmsg: contentmsg, statussms: false, code: 0, status: false, message: "" })
 
                     } else {
 
