@@ -74,14 +74,13 @@ app.post("/smssendfile", [auth], async (req, res) => {
                         }
 
                         if (body.smsbody[i].msgcontent != '') {
+
                             // validate body msgcontent == contentmsg
-                            let validatemsgcontent = contentmsg.replace(new RegExp(" ", "g"), "")
-                            if (contentmsg.replace(new RegExp(" ", "g"), "") == body.smsbody[i].msgcontent) {
+                            if (contentmsg.replace(new RegExp(" ", "g"), "") == body.smsbody[i].msgcontent.replace(new RegExp(" ", 'g'), "")) {
 
                                 model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, contentmsg: contentmsg, statussms: false, code: 0, status: false, message: "" })
                             } else {
                                 model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, contentmsg: contentmsg, statussms: false, code: 1, status: false, message: "" })
-
                             }
                         } else {
                             model.push({ Msisdn: body.smsbody[i].Msisdn, amount: amount, contentmsg: contentmsg, statussms: false, code: 0, status: false, message: "" })
