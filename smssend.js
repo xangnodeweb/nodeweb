@@ -1,7 +1,7 @@
 const app = require("express").Router();
 const axios = require("axios");
 
-const { bodyaddpackage, bodymodiefieldhours, bodyinquery, bodymodiefield, addpackagebody } = require("./modelbody");
+const { bodyaddpackage, bodymodiefieldhours, bodyinquery, bodymodiefield, addpackagebody , addpackagenamebody } = require("./modelbody");
 const fetch = require("node-fetch");
 const { parseString } = require("xml2js")
 
@@ -308,7 +308,8 @@ app.post("/addpackagename", async (req, res) => {
         const refillstoptime = req.body.refillstoptime;
         const userid = req.body.userid;
 
-        let databody = await addpackagebody(phone, countername, refillstoptime, userid);
+        let date = await datetime();
+        let databody = await addpackagenamebody(phone, countername, refillstoptime, date);
         console.log(databody)
         let model = [];
         let modelrespose = [];
@@ -1261,7 +1262,7 @@ const logaddpackage = async (datareq, dataresponse, optionlog) => {
             })
         } else {
 
-            let line = `${dataresponse.Msisdn}|${dataresponse.countername}|${dataresponse.productnumber}|${dataresponse.starttime}|${dataresponse.expirytime}|1\n`
+            let line = `${dataresponse.Msisdn}|${dataresponse.countername}|${dataresponse.productnumber}|${dataresponse.starttime}|${dataresponse.expirytime}|${dataresponse.status}|1\n`
             await fs.appendFile(paths + "addpackagefile.txt", line, function (err) {
                 if (err) {
                     console.log("cannot log write file response package")

@@ -379,6 +379,48 @@ exports.addpackagebody = async (phone, countername, refilltoptime ,userid) => {
 }
 
 
+exports.addpackagenamebody = async (phone, countername, refilltoptime ,date) => {
+
+   try {
+
+
+      const data = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://vsmp.ais.co.th/webservices/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:AddCounter>
+         <!--Optional:-->
+         <web:Username>ISD</web:Username>
+         <!--Optional:-->
+         <web:OrderRef>Testrefunc${date}</web:OrderRef>
+         <!--Optional:-->
+         <web:OrderDesc>TestDatausage</web:OrderDesc>
+         <!--Optional:-->
+         <web:Msisdn>${phone}</web:Msisdn>
+         <!--Optional:-->
+         <web:CounterName>${countername}</web:CounterName>
+         <!--Optional:-->
+         <web:RefillStopTime>${refilltoptime}T23:59:59.0000000+07:00</web:RefillStopTime>
+         <!--Optional:-->
+         <web:StartTime></web:StartTime>
+         <!--Optional:-->
+         <web:ExpiryTime></web:ExpiryTime>
+         <!--Optional:-->
+         <web:CounterState></web:CounterState>
+         <!--Optional:-->
+         <web:ReplenishValue></web:ReplenishValue>
+      </web:AddCounter>
+   </soapenv:Body>
+</soapenv:Envelope>`
+
+
+      return data
+
+   } catch (error) {
+      console.log(error);
+   }
+
+}
+
 
 
 
