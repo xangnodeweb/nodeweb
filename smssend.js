@@ -1,7 +1,7 @@
 const app = require("express").Router();
 const axios = require("axios");
 
-const { bodyaddpackage, bodymodiefieldhours, bodyinquery, bodymodiefield, addpackagebody , addpackagenamebody } = require("./modelbody");
+const { bodyaddpackage, bodymodiefieldhours, bodyinquery, bodymodiefield, addpackagebody, addpackagenamebody } = require("./modelbody");
 const fetch = require("node-fetch");
 const { parseString } = require("xml2js")
 
@@ -314,7 +314,7 @@ app.post("/addpackagename", async (req, res) => {
         let model = [];
         let modelrespose = [];
         let modelInfo = [];
-      
+
 
         const headers = {
             'Content-Type': 'text/xml;charset=utf-8'
@@ -322,7 +322,7 @@ app.post("/addpackagename", async (req, res) => {
         if (body) {
             await logaddpackage(body, null, 0)
         }
-   
+
         await fetch("http://10.0.10.32/vsmpltc/web/services/amfwebservice.asmx", {
             method: "POST",
             headers: headers,
@@ -980,9 +980,9 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
         let optionlog = req.body.optionlog;
         let filelogname = optionlog == 0 ? "fileaddpackagesms.txt" : optionlog == 1 ? "filesmscontent.txt" : ""
         console.log(body);
-        console.log(datestart)
+        // console.log(datestart)
         let datafile = await fs.readFile(paths + filelogname, "utf8")
-        console.log(datafile)
+        // console.log(datafile)
         if (optionlog == 0) {
             const folder = await fs.readdir(paths);
             const format = /^[\n]|[\r\n]/g
@@ -994,10 +994,11 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
 
                     for (var i = 0; i < datas.length; i++) {
                         let linecol = datas[i].split("|");
-                        if (linecol.length == 12) {
-                            model.push({ Msisdn: linecol[0], ProductNumber: linecol[1], CounterName: linecol[2], StartTime: linecol[3], ExpiryTime: linecol[4], headermsg: linecol[5], contentmsg: linecol[6], status: linecol[7], code: linecol[8], statussms: linecol[9], datetimelog: linecol[11], userid: linecol[10] });
+                        if (linecol.length == 13) {
+                            model.push({ Msisdn: linecol[0], ProductNumber: linecol[1], CounterName: linecol[2], StartTime: linecol[3], ExpiryTime: linecol[4], headermsg: linecol[5], contentmsg: linecol[6], status: linecol[7], code: linecol[8], statussms: linecol[9], smid: linecol[10], datetimelog: linecol[12], userid: linecol[11] });
                         }
                     }
+                    // console.log(model)
                     if (model.length > 0) {
                         modeldate = model.filter(x => x.datetimelog.toString().slice(0, 10) == datestart);
                         if (modeldate.length > 0) {
@@ -1017,6 +1018,7 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
                     }
                 }
             }
+
             return res.status(200).json({ status: true, code: 0, message: "log_fileaddpackagesms_success", result: { modellog: modeldate, modelgrouplog: modelpackagename } });
 
         } else if (optionlog == 1) {
