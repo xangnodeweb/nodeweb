@@ -201,8 +201,8 @@ app.post("/addpackage", async (req, res) => {
         if (body) {
             await logaddpackage(body, null, 0)
         }
-
-        await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
+    // await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
+        await fetch("http://10.0.10.32/vsmpltc/web/services/amfwebservice.asmx", {
             method: "POST",
             headers: headers,
             body: databody
@@ -288,6 +288,89 @@ app.post("/addpackage", async (req, res) => {
 
 
         //         })
+
+        return res.status(200).json({ status: true, code: 0, message: "", result: modelrespose })
+
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+
+
+app.post("/addpackagename", async (req, res) => {
+
+    try {
+        const body = req.body;
+
+        const phone = req.body.Msisdn;
+        const countername = req.body.countername;
+        const refillstoptime = req.body.refillstoptime;
+        const userid = req.body.userid;
+
+        let databody = await addpackagebody(phone, countername, refillstoptime, userid);
+        console.log(databody)
+        let model = [];
+        let modelrespose = [];
+        let modelInfo = [];
+      
+
+        const headers = {
+            'Content-Type': 'text/xml;charset=utf-8'
+        }
+        if (body) {
+            await logaddpackage(body, null, 0)
+        }
+   
+        await fetch("http://10.0.10.32/vsmpltc/web/services/amfwebservice.asmx", {
+            method: "POST",
+            headers: headers,
+            body: databody
+        }).then(response => {
+            return response.text();
+        }).then(responseText => {
+
+            const modeldata = responseText;
+            // console.log(modeldata)
+
+            parseString(modeldata, async function (err, result) {
+                let data = JSON.stringify(result);
+                const datas = JSON.parse(data);
+
+                model.push(datas['soap:Envelope']['soap:Body'])
+                const responsesuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['OperationStatus'][0]; // operation status
+                const countersuccess = datas['soap:Envelope']['soap:Body'][0]['AddCounterResponse'][0]['AddCounterResult'][0]['CounterArray'][0]['CounterInfo']; // counterinfo data
+                console.log(responsesuccess)
+                console.log(countersuccess)
+
+                // modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"], smid: "" })
+
+                if (responsesuccess.IsSuccess[0] == 'true') {
+
+                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: countersuccess[0].ProductNumber[0], starttime: countersuccess[0].StartTime[0], expirytime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0] })
+
+                } else {
+
+                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: '', starttime: '', expirytime: refillstoptime, status: responsesuccess.IsSuccess[0] })
+
+                }
+            });
+
+        }).catch(err => {
+            const error = JSON.stringify(err);
+            const errors = JSON.parse(error);
+            console.log(err)
+            if (err) {
+                if (errors.code == "ETIMEDOUT") {
+                    modelrespose.push({ Msisdn: phone, countername: countername, productnumber: '', starttime: '', expirytime: refillstoptime, status: false })
+                }
+            }
+        });
+
+        console.log(modelrespose)
+        if (modelrespose.length > 0) {
+            await logaddpackage(null, modelrespose[0], 1);
+        }
 
         return res.status(200).json({ status: true, code: 0, message: "", result: modelrespose })
 
@@ -794,8 +877,8 @@ app.post("/getpackagename", async (req, res) => { // package name
                     }
                 }
             }
-            console.log(modelpackagename);
-            console.log(model)
+            // console.log(modelpackagename);
+            // console.log(model)
         }
         let pkaname = {
             packagename: datafile,
@@ -807,6 +890,81 @@ app.post("/getpackagename", async (req, res) => { // package name
         console.log(error);
     }
 });
+
+app.post("/getpackagenamepage", async (req, res) => { // addpackagepage Or packagepagename  package name 
+
+    try {
+
+        const bosdy = req.body;
+        const paths = path.join(__dirname, "./filedatatxt/packagenamepage.txt");
+        const filedata = await fs.readFile(paths, "utf8");
+        let model = [];
+        let modelpackagename = [];
+        if (filedata.length < 15) {
+            return;
+        }
+        const datafile = filedata.split(/\r?\n/);
+        if (datafile.length > 0) {
+
+            for (var i = 0; i < datafile.length; i++) {
+                if (datafile[i] != '') {
+                    const pkname = datafile[i].toLowerCase().toString().replace(new RegExp("_", "g"), "").replace(new RegExp(" ", "g"), "")
+                    const pknamemodel = datafile[i].toString() // default
+                    const pknames = pkname.match(/[0-9]+gb/gi);
+                    const pknamemodels = pknamemodel.match(/[0-9]+gb/gi);
+                    const indexpk = pkname.indexOf(pknames);
+                    const indexpks = pknamemodel.indexOf(pknamemodels); // index default name package
+                    let namepackage = "";
+                    let packagename = "";
+                    if (indexpk != -1) {
+                        namepackage = pkname.slice(0, indexpk)
+                    }
+
+                    if (indexpks != -1) {
+                        packagename = pknamemodel.slice(0, indexpks).replace(new RegExp("_", "g"), " ")
+                    } else {
+                        packagename = pknamemodel.toString().replace(new RegExp("_", "g"), " ")
+                    }
+
+                    if (model.length > 0) {
+                        if (datafile[i].toString().length >= 13) { // pacakge name group 
+                            const index = model.findIndex(x => x.toString() == namepackage);
+                            if (index == -1) {
+                                model.push(namepackage);
+                                modelpackagename.push(packagename)
+                            }
+                        } else {
+                            namepackage = namepackage.toString() == '' ? datafile[i].toString() : namepackage
+                            model.push(namepackage.toString())
+                            modelpackagename.push(packagename)
+                        }
+                    } else {
+
+                        if (datafile[i].toString().length >= 13) {
+                            model.push(namepackage);
+                            modelpackagename.push(packagename);
+                        }
+                        else {
+                            model.push(namepackage);
+                            modelpackagename.push(packagename);
+                        }
+                    }
+                }
+            }
+            // console.log(modelpackagename);
+            // console.log(model)
+        }
+        let pkaname = {
+            packagename: datafile,
+            packagegroupname: modelpackagename
+        }
+
+        return res.status(200).json({ status: true, code: 0, message: "", result: pkaname });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 
 app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add package
     try {
