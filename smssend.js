@@ -201,7 +201,7 @@ app.post("/addpackage", async (req, res) => {
         if (body) {
             await logaddpackage(body, null, 0)
         }
-    // await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
+        // await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
         await fetch("http://10.0.10.32/vsmpltc/web/services/amfwebservice.asmx", {
             method: "POST",
             headers: headers,
@@ -979,7 +979,8 @@ app.post("/getlogfileaddpackagesms/:filename", async (req, res) => { // log add 
         const paths = path.join(__dirname, "./filedatatxt/");
         let optionlog = req.body.optionlog;
         let filelogname = optionlog == 0 ? "fileaddpackagesms.txt" : optionlog == 1 ? "filesmscontent.txt" : ""
-        // console.log(body);
+        console.log(body);
+        console.log(datestart)
         let datafile = await fs.readFile(paths + filelogname, "utf8")
         console.log(datafile)
         if (optionlog == 0) {
