@@ -201,8 +201,8 @@ app.post("/addpackage", async (req, res) => {
         if (body) {
             await logaddpackage(body, null, 0)
         }
-        await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
-        // await fetch("http://10.0.10.32/vsmpltc/web/services/amfwebservice.asmx", {
+        // 10.0.10.31 == ip use money || 10.0.31.32 == ip refunc 
+        await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {  
             method: "POST",
             headers: headers,
             body: databody
