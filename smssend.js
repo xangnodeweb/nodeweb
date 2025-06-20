@@ -57,6 +57,8 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
         let model = [];
         let modelInfo = [];
         let userid = req.user.userid
+        let startdate = new Intl.DateTimeFormat("fr-CA", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Bangkok" }).format(new Date());
+
         if (body.length > 0) {
             console.log(body);
 
@@ -64,9 +66,9 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
             for (var i = 0; i < body.length; i++) {
 
                 // console.log(body[i])
-
+             
                 // body[i].packagename = "Package Promotion 3GB 24hrs"
-                const bodyaddpackages = await bodyaddpackage(body[i].Msisdn, body[i].CounterName, body[i].StartTime, body[i].ExpiryTime, body[i].refillstoptime); // body request add package
+                const bodyaddpackages = await bodyaddpackage(body[i].Msisdn, body[i].CounterName, startdate, body[i].ExpiryTime, body[i].daterefillstoptime); // body request add package
 
                 const phone = body[i].Msisdn.toString();
                 // console.log(bodyaddpackages)
@@ -100,7 +102,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                             if (countersuccess.length > 0) {
 
                                 // console.log(countersuccess)
-                                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"], smid: "" })
+                                modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"], daterefillstoptime: body[i].daterefillstoptime, smid: "" })
 
                                 let packagename = countersuccess[0].CounterName[0].toString().slice(0, 13).toLowerCase();
                                 console.log(packagename)
@@ -127,7 +129,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                         } else {
                             console.log(responsesuccess);
                             console.log(responsesuccess.Description[0]);
-                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: false, smid: "" })
+                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: false , daterefillstoptime : body[i].daterefillstoptime, smid: "" })
                         }
                     });
 
@@ -137,7 +139,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                     console.log(err)
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: null, smid: "" });
+                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: null , daterefillstoptime : body[i].daterefillstoptime, smid: "" });
                         }
                     }
                 });
@@ -202,7 +204,7 @@ app.post("/addpackage", async (req, res) => {
             await logaddpackage(body, null, 0)
         }
         // 10.0.10.31 == ip use money || 10.0.31.32 == ip refunc 
-        await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {  
+        await fetch("http://10.0.10.31/vsmpltc/web/services/amfwebservice.asmx", {
             method: "POST",
             headers: headers,
             body: databody
