@@ -66,7 +66,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
             for (var i = 0; i < body.length; i++) {
 
                 // console.log(body[i])
-             
+            
                 // body[i].packagename = "Package Promotion 3GB 24hrs"
                 const bodyaddpackages = await bodyaddpackage(body[i].Msisdn, body[i].CounterName, startdate, body[i].ExpiryTime, body[i].daterefillstoptime); // body request add package
 
@@ -103,33 +103,34 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
 
                                 // console.log(countersuccess)
                                 modelInfo.push({ Msisdn: countersuccess[0].Msisdn[0], ProductNumber: countersuccess[0].ProductNumber[0], CounterName: countersuccess[0].CounterName[0], StartTime: countersuccess[0].StartTime[0], ExpiryTime: countersuccess[0].ExpiryTime[0], status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: countersuccess[0].RefillStopTime[0]["$"]["xsi:nil"], daterefillstoptime: body[i].daterefillstoptime, smid: "" })
+                          
+                                if (body[i].contentmsg != "" && body[i].headermsg != "") {
+                                    let packagename = countersuccess[0].CounterName[0].toString().length > 13 ? countersuccess[0].CounterName[0].toString().slice(0, 13).toLowerCase() : "";
+                                    console.log(packagename)
+                                    console.log(packagename.length);
+                                    if (packagename != "prepaid_staff") {
+                                        let sendsmss = await sendsmsaddpackage(body[i], userid);
+                                        console.log("send sms : " + sendsmss)
 
-                                let packagename = countersuccess[0].CounterName[0].toString().slice(0, 13).toLowerCase();
-                                console.log(packagename)
-                                console.log(packagename.length);
-                                if (packagename != "prepaid_staff") {
-
-                                    let sendsmss = await sendsmsaddpackage(body[i], userid);
-                                    console.log("send sms : " + sendsmss)
-
-                                    if (sendsmss.status == true) {
-                                        let index = modelInfo.findIndex(x => x.Msisdn.toString() == phone);
-                                        console.log("index model find phone : " + index)
-                                        if (index != -1) {
-                                            modelInfo[index].statussms = true;
+                                        if (sendsmss.status == true) {
+                                            let index = modelInfo.findIndex(x => x.Msisdn.toString() == phone);
+                                            console.log("index model find phone : " + index)
+                                            if (index != -1) {
+                                                modelInfo[index].statussms = true;
+                                                modelInfo[index].smid = sendsmss.smid;
+                                            }
+                                        } else {
                                             modelInfo[index].smid = sendsmss.smid;
                                         }
-                                    } else {
-                                        modelInfo[index].smid = sendsmss.smid;
+                                        console.log(modelInfo)
                                     }
-                                    console.log(modelInfo)
                                 }
                             }
 
                         } else {
                             console.log(responsesuccess);
                             console.log(responsesuccess.Description[0]);
-                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: false , daterefillstoptime : body[i].daterefillstoptime, smid: "" })
+                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: responsesuccess.IsSuccess[0], code: responsesuccess.Code[0], message: responsesuccess.Description[0], statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: false, daterefillstoptime: body[i].daterefillstoptime, smid: "" })
                         }
                     });
 
@@ -139,7 +140,7 @@ app.post("/addpackagesms", [auth], async (req, res) => {  // add package send sm
                     console.log(err)
                     if (err) {
                         if (errors.code == "ETIMEDOUT") {
-                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: null , daterefillstoptime : body[i].daterefillstoptime, smid: "" });
+                            modelInfo.push({ Msisdn: body[i].Msisdn, ProductNumber: body[i].ProductNumber, CounterName: body[i].CounterName, StartTime: body[i].StartTime, ExpiryTime: body[i].ExpiryTime, status: false, code: 2, message: "cannot add package ConnectTimeoutError", statussms: false, contentmsg: body[i].contentmsg, headermsg: body[i].headermsg, refillstoptime: null, daterefillstoptime: body[i].daterefillstoptime, smid: "" });
                         }
                     }
                 });
