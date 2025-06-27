@@ -336,7 +336,7 @@ exports.querybalance = async (phone, uuid) => {
 }
 
 
-exports.addpackagebody = async (phone, countername, refilltoptime ,userid) => {
+exports.addpackagebody = async (phone, countername, refilltoptime, userid) => {
 
    try {
 
@@ -379,7 +379,7 @@ exports.addpackagebody = async (phone, countername, refilltoptime ,userid) => {
 }
 
 
-exports.addpackagenamebody = async (phone, countername, refilltoptime ,date) => {
+exports.addpackagenamebody = async (phone, countername, refilltoptime, date) => {
 
    try {
 
@@ -421,6 +421,64 @@ exports.addpackagenamebody = async (phone, countername, refilltoptime ,date) => 
 
 }
 
+exports.newsubscriber = async (phone, offeringID, imsi, uuid) => {
+   try {
+
+      const data = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bcs="http://www.huawei.com/bme/cbsinterface/bcservices" xmlns:cbs="http://www.huawei.com/bme/cbsinterface/cbscommon" xmlns:bcc="http://www.huawei.com/bme/cbsinterface/bccommon">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <bcs:CreateSubscriberRequestMsg>
+         <RequestHeader>
+            <cbs:Version>1</cbs:Version>
+            <cbs:BusinessCode>createNewSub</cbs:BusinessCode>
+            <cbs:MessageSeq>${uuid}</cbs:MessageSeq>
+            <cbs:AccessSecurity>
+               <cbs:LoginSystemCode>APIGEEAPI</cbs:LoginSystemCode>
+               <cbs:Password>cdVOUWF+57KsMd57vH8D3H+ykq4CbeLtc8wCapSScPhjazQDDuTrFUP4sDBpyX+q</cbs:Password>
+            </cbs:AccessSecurity>
+         </RequestHeader>
+         <CreateSubscriberRequest>
+            <bcs:RegisterCustomer OpType="1">
+               <bcs:CustKey>${phone}</bcs:CustKey>
+            </bcs:RegisterCustomer>
+            <bcs:Account>
+               <bcs:AcctKey>${phone}</bcs:AcctKey>
+                <bcs:AcctInfo>
+                  <bcc:InitBalance>0</bcc:InitBalance>                  
+               </bcs:AcctInfo>
+            </bcs:Account>
+            <bcs:Subscriber>
+               <bcs:SubscriberKey>${phone}</bcs:SubscriberKey>
+               <bcs:SubscriberInfo>
+                  <bcc:SubIdentity>
+                     <bcc:SubIdentityType>1</bcc:SubIdentityType>
+                     <bcc:SubIdentity>${phone}</bcc:SubIdentity>
+                     <bcc:PrimaryFlag>1</bcc:PrimaryFlag>
+                  </bcc:SubIdentity>
+                  <bcc:Status>1</bcc:Status>
+               </bcs:SubscriberInfo>
+               <bcs:SubPaymentMode>
+                  <bcs:PaymentMode>0</bcs:PaymentMode>
+                  <bcs:AcctKey>${phone}</bcs:AcctKey>
+               </bcs:SubPaymentMode>
+            </bcs:Subscriber>
+            <bcs:PrimaryOffering>
+               <bcc:OfferingKey>
+                  <bcc:OfferingID>${offeringID}</bcc:OfferingID>
+               </bcc:OfferingKey>
+            </bcs:PrimaryOffering>
+         </CreateSubscriberRequest>
+      </bcs:CreateSubscriberRequestMsg>
+   </soapenv:Body>
+</soapenv:Envelope>`
+
+      return data;
+
+   } catch (error) {
+      console.log(error)
+   }
+
+}
 
 
 
@@ -467,6 +525,7 @@ exports.adddatafile = async (bodydata, numapi) => {
       console.log(error)
    }
 }
+
 const datetime = () => {
    try {
 
@@ -478,3 +537,4 @@ const datetime = () => {
       console.log(error);
    }
 }
+

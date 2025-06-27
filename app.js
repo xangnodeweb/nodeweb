@@ -9,7 +9,7 @@ const apirouter = require("./controllerapi");
 const apichangerouter = require("./controllerchangeapi");
 const apisms = require("./smssend");
 const apiuser = require("./user/controlleruser");
-
+const apisubscriber = require("./subscriber")
 
 app.use(cors());
 app.use(express.json());
@@ -27,6 +27,7 @@ app.use("/api", apirouter);
 app.use("/apichangemain", apichangerouter);
 app.use("/apisms", apisms);
 app.use("/user", apiuser);
+app.use("/subscriber" , apisubscriber);
 // app.use("/image" , express.static(path.join(__dirname , "image")))
 
 app.listen(PORT, () => {
